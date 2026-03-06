@@ -6,7 +6,7 @@
   --bg-secondary: #12121a;
   --bg-card: #1a1a2e;
   --bg-card-hover: #22223a;
-  --accent-green: #00d4aa;
+  --accent-green: #f59e0b;
   --accent-red: #ff4757;
   --accent-blue: #3742fa;
   --accent-yellow: #ffc312;
@@ -15,13 +15,13 @@
   --text-secondary: #8888a0;
   --text-muted: #555570;
   --border: #2a2a3e;
-  --gradient-green: linear-gradient(135deg, #00d4aa, #00b894);
+  --gradient-green: linear-gradient(135deg, #f59e0b, #d97706);
   --gradient-red: linear-gradient(135deg, #ff4757, #ff6b81);
   --gradient-hero: linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 50%, #0a0a0f 100%);
   --radius: 12px;
   --radius-sm: 8px;
   --shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
-  --shadow-hover: 0 8px 32px rgba(0, 212, 170, 0.15);
+  --shadow-hover: 0 8px 32px rgba(245, 158, 11, 0.15);
   --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   --max-width: 1200px;
 }
@@ -39,7 +39,7 @@ body {
 }
 
 a { color: var(--accent-green); text-decoration: none; transition: var(--transition); }
-a:hover { color: #00e6b8; }
+a:hover { color: #fbbf24; }
 
 .container { max-width: var(--max-width); margin: 0 auto; padding: 0 20px; }
 
@@ -99,7 +99,7 @@ a:hover { color: #00e6b8; }
   width: 600px;
   height: 600px;
   transform: translate(-50%, -50%);
-  background: radial-gradient(circle, rgba(0, 212, 170, 0.08) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(245, 158, 11, 0.08) 0%, transparent 70%);
   pointer-events: none;
 }
 
@@ -164,7 +164,7 @@ a:hover { color: #00e6b8; }
 }
 .btn-primary:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(0, 212, 170, 0.3);
+  box-shadow: 0 8px 24px rgba(245, 158, 11, 0.3);
   color: #000;
 }
 
@@ -241,7 +241,7 @@ a:hover { color: #00e6b8; }
 }
 
 .race-card:hover {
-  border-color: rgba(0, 212, 170, 0.3);
+  border-color: rgba(245, 158, 11, 0.3);
   transform: translateY(-4px);
   box-shadow: var(--shadow-hover);
 }
@@ -257,7 +257,7 @@ a:hover { color: #00e6b8; }
   margin-bottom: 16px;
 }
 
-.badge-live { background: rgba(0, 212, 170, 0.15); color: var(--accent-green); }
+.badge-live { background: rgba(245, 158, 11, 0.15); color: var(--accent-green); }
 .badge-hot { background: rgba(255, 71, 87, 0.15); color: var(--accent-red); }
 .badge-new { background: rgba(55, 66, 250, 0.15); color: var(--accent-blue); }
 .badge-ended { background: rgba(136, 136, 160, 0.15); color: var(--text-secondary); }
@@ -404,7 +404,7 @@ a:hover { color: #00e6b8; }
   margin: 0 auto 16px;
 }
 
-.side-green .contender-icon { background: rgba(0, 212, 170, 0.15); }
+.side-green .contender-icon { background: rgba(245, 158, 11, 0.15); }
 .side-red .contender-icon { background: rgba(255, 71, 87, 0.15); }
 
 .contender-card h3 { font-size: 1.3rem; margin-bottom: 8px; }
@@ -467,7 +467,7 @@ a:hover { color: #00e6b8; }
   margin-bottom: 20px;
 }
 
-.green-theme .side-label { background: rgba(0, 212, 170, 0.15); color: var(--accent-green); }
+.green-theme .side-label { background: rgba(245, 158, 11, 0.15); color: var(--accent-green); }
 .red-theme .side-label { background: rgba(255, 71, 87, 0.15); color: var(--accent-red); }
 
 .side-hero h1 {
@@ -494,7 +494,7 @@ a:hover { color: #00e6b8; }
   transition: var(--transition);
 }
 
-.argument-card:hover { border-color: rgba(0, 212, 170, 0.2); }
+.argument-card:hover { border-color: rgba(245, 158, 11, 0.2); }
 
 .argument-card h3 {
   font-size: 1.1rem;
