@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UpDown — Belief Registry | Record Your Convictions</title>
+  <meta name="description" content="Technology races where beliefs matter. Record what you truly believe — especially when you're forced to act against it. Get celebrated when proven right.">
+  <meta property="og:title" content="UpDown — Belief Registry">
+  <meta property="og:description" content="Record your true beliefs about competing technologies. Get celebrated when proven right.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://xhardtech.com/">
+  <link rel="canonical" href="https://xhardtech.com/">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="nav">
+    <div class="container">
+      <a href="/" class="nav-logo">Up<span>Down</span></a>
+      <div class="nav-links">
+        <a href="#races">Races</a>
+        <a href="vindication.html">Vindication</a>
+        <a href="#how">How it works</a>
+        <a href="#races" class="nav-cta">Place Belief</a>
+      </div>
+      <button class="nav-toggle" aria-label="Menu">&#9776;</button>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="container">
+      <h1>
+        Your beliefs deserve to be <span class="highlight">recorded</span>.<br>
+        Especially the ones you're <span class="highlight-red">forced to hide</span>.
+      </h1>
+      <p class="hero-subtitle">
+        Technology races where competing sides battle fair. Place your genuine belief.
+        If you're pressured to act against it — your conviction counts MORE.
+        When proven right, you'll be celebrated.
+      </p>
+      <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
+        <a href="#races" class="btn btn-primary">Explore Races</a>
+        <a href="#how" class="btn btn-secondary">How it works</a>
+      </div>
+
+      <div class="hero-stats">
+        <div class="hero-stat">
+          <span class="number">4</span>
+          <span class="label">Active Races</span>
+        </div>
+        <div class="hero-stat">
+          <span class="number">0</span>
+          <span class="label">Beliefs Recorded</span>
+        </div>
+        <div class="hero-stat">
+          <span class="number">5</span>
+          <span class="label">Historical Vindications</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section id="how" style="padding: 60px 0; border-bottom: 1px solid var(--border);">
+    <div class="container">
+      <h2 style="text-align: center; font-size: 1.8rem; margin-bottom: 40px;">How UpDown Works</h2>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 24px;">
+
+        <div class="argument-card" style="text-align: center;">
+          <h3 style="justify-content: center;">1. Pick a Race</h3>
+          <p>Competing technologies battle head-to-head. Open-source vs Closed-source. EV vs Gas. Choose your side.</p>
+        </div>
+
+        <div class="argument-card" style="text-align: center;">
+          <h3 style="justify-content: center;">2. Record Your Belief</h3>
+          <p>Tell us what you truly believe will win. If you're pressured to act against your belief — tell us that too. Your conviction score goes UP.</p>
+        </div>
+
+        <div class="argument-card" style="text-align: center;">
+          <h3 style="justify-content: center;">3. Get Vindicated</h3>
+          <p>When results come in and you were right — we celebrate you publicly. Especially if you believed under pressure.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ACTIVE RACES -->
+  <section id="races" style="padding: 48px 0;">
+    <div class="container">
+      <h2 style="font-size: 1.5rem; margin-bottom: 8px;">Active Races</h2>
+      <p style="color: var(--text-secondary); margin-bottom: 8px;">Pick a side. Record your belief. Get recognized.</p>
+
+      <div class="filter-bar">
+        <button class="filter-btn active" data-category="all">All</button>
+        <button class="filter-btn" data-category="ai">AI / ML</button>
+        <button class="filter-btn" data-category="transport">Transport</button>
+        <button class="filter-btn" data-category="energy">Energy</button>
+        <button class="filter-btn" data-category="dev">Dev Tools</button>
+        <button class="filter-btn" data-category="health">Health</button>
+      </div>
+
+      <div class="race-grid">
+
+        <!-- Race 1: LLM Open vs Closed -->
+        <div class="race-card" data-category="ai">
+          <span class="race-card-badge badge-hot">HOT</span>
+          <h3>Open-source LLM vs Closed-source LLM</h3>
+          <p class="race-card-desc">Which will reach >95% on MMLU benchmark first?</p>
+          <div class="race-card-meta">
+            <span>Deadline: Dec 31, 2027</span>
+            <span>0 beliefs</span>
+          </div>
+          <div class="odds-bar">
+            <div class="side-a" style="width: 50%"></div>
+            <div class="side-b" style="width: 50%"></div>
+          </div>
+          <div class="odds-labels">
+            <span class="label-a">Open-source 50%</span>
+            <span class="label-b">Closed-source 50%</span>
+          </div>
+          <div style="display: flex; gap: 8px; margin-top: 16px;">
+            <a href="why/open-source-llm-will-win.html" class="btn btn-primary btn-sm" style="flex: 1; justify-content: center;">I believe Open-source</a>
+            <a href="why/closed-source-llm-will-win.html" class="btn btn-red btn-sm" style="flex: 1; justify-content: center;">I believe Closed-source</a>
+          </div>
+          <div style="text-align: center; margin-top: 8px;">
+            <a href="race/llm-open-vs-closed.html" style="font-size: 0.8rem; color: var(--text-muted);">View full race details &rarr;</a>
+          </div>
+        </div>
+
+        <!-- Race 2: VinFast vs Xe Nhat -->
+        <div class="race-card" data-category="transport">
+          <span class="race-card-badge badge-hot">HOT</span>
+          <h3>VinFast vs Xe Nhat (Toyota/Honda)</h3>
+          <p class="race-card-desc">VinFast se vuot Toyota ve doanh so o to tai Viet Nam trong 1 quy truoc 2027?</p>
+          <div class="race-card-meta">
+            <span>Deadline: Dec 31, 2027</span>
+            <span>0 beliefs</span>
+          </div>
+          <div class="odds-bar">
+            <div class="side-a" style="width: 55%"></div>
+            <div class="side-b" style="width: 45%"></div>
+          </div>
+          <div class="odds-labels">
+            <span class="label-a">VinFast 55%</span>
+            <span class="label-b">Xe Nhat 45%</span>
+          </div>
+          <div style="display: flex; gap: 8px; margin-top: 16px;">
+            <a href="why/vinfast-se-thang.html" class="btn btn-primary btn-sm" style="flex: 1; justify-content: center;">Tin VinFast</a>
+            <a href="why/xe-nhat-se-thang.html" class="btn btn-red btn-sm" style="flex: 1; justify-content: center;">Tin Xe Nhat</a>
+          </div>
+          <div style="text-align: center; margin-top: 8px;">
+            <a href="race/vinfast-vs-xe-nhat.html" style="font-size: 0.8rem; color: var(--text-muted);">Xem chi tiet race &rarr;</a>
+          </div>
+        </div>
+
+        <!-- Race 2: EV vs Gas -->
+        <div class="race-card" data-category="transport">
+          <span class="race-card-badge badge-live">LIVE</span>
+          <h3>Electric Vehicles vs Gas Vehicles</h3>
+          <p class="race-card-desc">Which will dominate >50% new car sales in Southeast Asia first?</p>
+          <div class="race-card-meta">
+            <span>Deadline: Dec 31, 2030</span>
+            <span>0 beliefs</span>
+          </div>
+          <div class="odds-bar">
+            <div class="side-a" style="width: 55%"></div>
+            <div class="side-b" style="width: 45%"></div>
+          </div>
+          <div class="odds-labels">
+            <span class="label-a">EV 55%</span>
+            <span class="label-b">Gas 45%</span>
+          </div>
+          <div style="display: flex; gap: 8px; margin-top: 16px;">
+            <a href="why/ev-will-win.html" class="btn btn-primary btn-sm" style="flex: 1; justify-content: center;">I believe EV</a>
+            <a href="why/gas-will-win.html" class="btn btn-red btn-sm" style="flex: 1; justify-content: center;">I believe Gas</a>
+          </div>
+          <div style="text-align: center; margin-top: 8px;">
+            <a href="race/ev-vs-gas.html" style="font-size: 0.8rem; color: var(--text-muted);">View full race details &rarr;</a>
+          </div>
+        </div>
+
+        <!-- Race 3: AI Coding vs Human Coding -->
+        <div class="race-card" data-category="ai">
+          <span class="race-card-badge badge-new">NEW</span>
+          <h3>AI Coding vs Human Coding</h3>
+          <p class="race-card-desc">Will AI write >50% of production code at Fortune 500 companies by 2028?</p>
+          <div class="race-card-meta">
+            <span>Deadline: Dec 31, 2028</span>
+            <span>0 beliefs</span>
+          </div>
+          <div class="odds-bar">
+            <div class="side-a" style="width: 40%"></div>
+            <div class="side-b" style="width: 60%"></div>
+          </div>
+          <div class="odds-labels">
+            <span class="label-a">AI wins 40%</span>
+            <span class="label-b">Humans hold 60%</span>
+          </div>
+          <div style="display: flex; gap: 8px; margin-top: 16px;">
+            <a href="why/ai-coding-will-win.html" class="btn btn-primary btn-sm" style="flex: 1; justify-content: center;">I believe AI</a>
+            <a href="why/human-coding-will-win.html" class="btn btn-red btn-sm" style="flex: 1; justify-content: center;">I believe Humans</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- VINDICATION PREVIEW -->
+  <section style="padding: 48px 0; border-top: 1px solid var(--border);">
+    <div class="container">
+      <h2 style="font-size: 1.5rem; margin-bottom: 8px;">Hall of Vindication</h2>
+      <p style="color: var(--text-secondary); margin-bottom: 24px;">Historical examples of people who believed against the tide — and were proven right.</p>
+
+      <div class="vindication-card">
+        <h3>Steven Sasson vs Kodak (1975 - 2012)</h3>
+        <div class="vindication-result">Digital Camera WON. Sasson was RIGHT.</div>
+        <p class="vindication-story">
+          Invented the digital camera at Kodak in 1975. Kodak forced him to hide it to protect film sales.
+          25 years later, Kodak filed for bankruptcy. His conviction score would have been 98/100 —
+          maximum pressure, maximum vindication.
+        </p>
+      </div>
+
+      <div class="vindication-card">
+        <h3>Nokia Engineers vs Management (2007 - 2013)</h3>
+        <div class="vindication-result">Touchscreen WON. Engineers were RIGHT.</div>
+        <p class="vindication-story">
+          Nokia engineers warned that touchscreen smartphones would dominate. Management doubled down on Symbian and physical keyboards.
+          Nokia's market share dropped from 50% to 3%. Engineers who believed in touchscreen — while being forced to build Symbian — were vindicated.
+        </p>
+      </div>
+
+      <div class="vindication-card">
+        <h3>Netflix vs Blockbuster (2000 - 2010)</h3>
+        <div class="vindication-result">Streaming WON. Believers were RIGHT.</div>
+        <p class="vindication-story">
+          Blockbuster employees who saw streaming as the future — while being told to sell DVD rentals.
+          Netflix offered to sell to Blockbuster for $50M. Blockbuster laughed.
+          Netflix is now worth $300B. Blockbuster is a single store in Oregon.
+        </p>
+      </div>
+
+      <div style="text-align: center; margin-top: 24px;">
+        <a href="vindication.html" class="btn btn-secondary">View All Vindications &rarr;</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-section">
+    <div class="container">
+      <h2>Your belief deserves to be recorded.</h2>
+      <p>Pick a race. Place your conviction. When you're proven right, we'll make sure the world knows.</p>
+      <a href="#races" class="btn btn-primary">Explore Races</a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <p>UpDown — Belief Registry. No money. Just truth and recognition.</p>
+      <p style="margin-top: 8px;">
+        <a href="vindication.html">Vindication</a> &middot;
+        <a href="#races">Races</a> &middot;
+        <a href="https://github.com/updown-belief" target="_blank">GitHub</a>
+      </p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

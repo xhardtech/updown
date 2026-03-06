@@ -1,0 +1,12 @@
+# Chi push site/ len GitHub
+# Ignore tat ca, chi cho phep site/
+*
+!docs/
+!docs/**
+!.gitignore
+!README.md
+!docs/CNAME
+
+# Sensitive
+config.env
+.env.local
