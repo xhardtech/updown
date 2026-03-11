@@ -1,51 +1,17 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>UpDown — Belief Registry | Record Your Convictions</title>
-  <meta name="description" content="Technology races where beliefs matter. Record what you truly believe — especially when you're forced to act against it. Get celebrated when proven right.">
-  <meta property="og:title" content="UpDown — Belief Registry">
-  <meta property="og:description" content="Record your true beliefs about competing technologies. Get celebrated when proven right.">
+  <title>UpDown — Submit Tech Debate URL</title>
+  <meta name="description" content="Found a Vietnam tech debate? Submit the URL. We analyze and comment with insights from both sides.">
+  <meta property="og:title" content="UpDown — Submit Tech Debate">
+  <meta property="og:description" content="Found a Vietnam tech debate? Submit the URL. We analyze and comment with insights.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://xhardtech.com/">
   <link rel="canonical" href="https://xhardtech.com/">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
-
-  <!-- SEO: seo-injected -->
-  <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="UpDown — Belief Registry">
-  <meta name="twitter:description" content="Technology races where beliefs matter. Record what you truly believe — especially when you're forced to act against it. Get celebrated when proven right.">
-  <meta name="ai-summary" content="UpDown is a belief registry for technology races. Users record predictions about competing technologies (AI agents vs copilots, open vs closed LLMs, VinFast vs Toyota, factory robots). Correct predictors are celebrated in a Hall of Vindication.">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <script type="application/ld+json">
-[
-  {
-    "@context": "https://schema.org",
-    "@type": "WebSite",
-    "name": "UpDown \u2014 Belief Registry",
-    "url": "https://xhardtech.com/",
-    "description": "Record your true beliefs about competing technologies. Get celebrated when proven right.",
-    "publisher": {
-      "@type": "Organization",
-      "name": "UpDown",
-      "url": "https://xhardtech.com/"
-    }
-  },
-  {
-    "@context": "https://schema.org",
-    "@type": "Organization",
-    "name": "UpDown",
-    "url": "https://xhardtech.com/",
-    "description": "Belief Registry for Technology Races \u2014 No money, just truth and recognition.",
-    "sameAs": [
-      "https://github.com/xhardtech/updown"
-    ]
-  }
-]
-  </script>
 </head>
 <body>
 
@@ -53,245 +19,181 @@
   <nav class="nav">
     <div class="container">
       <a href="/" class="nav-logo">Up<span>Down</span></a>
-      <div class="nav-links">
-        <a href="#races">Races</a>
-        <a href="vindication.html">Vindication</a>
-        <a href="#how">How it works</a>
-        <a href="submit.html">Submit URL</a>
-        <a href="#races" class="nav-cta">Make Assessment</a>
-      </div>
-      <button class="nav-toggle" aria-label="Menu">&#9776;</button>
     </div>
   </nav>
 
-  <!-- HERO -->
-  <section class="hero">
-    <div class="container">
-      <h1>
-        Your beliefs deserve to be <span class="highlight">recorded</span>.<br>
-        Especially the ones you're <span class="highlight-red">forced to hide</span>.
+  <!-- HERO + FORM -->
+  <section class="hero" style="padding: 80px 0 40px;">
+    <div class="container" style="max-width: 640px;">
+      <h1 style="font-size: clamp(1.8rem, 4vw, 2.5rem); margin-bottom: 16px; text-align: center;">
+        Found a tech debate? <span class="highlight">Send it to us.</span>
       </h1>
-      <p class="hero-subtitle">
-        Technology races with real evidence on both sides. Review the data. Make your assessment.
-        If you're pressured to act against your conclusion — your conviction counts MORE.
-        When proven right, you'll be celebrated.
+      <p style="color: var(--text-secondary); text-align: center; margin-bottom: 40px;">
+        Paste the URL of a public discussion about Vietnam tech directions.
+        We'll analyze it and comment with insights from both sides.
       </p>
-      <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
-        <a href="#races" class="btn btn-primary">Explore Races</a>
-        <a href="#how" class="btn btn-secondary">How it works</a>
-      </div>
 
-      <div class="hero-stats">
-        <div class="hero-stat">
-          <span class="number">5</span>
-          <span class="label">Active Races</span>
-        </div>
-        <div class="hero-stat">
-          <span class="number">0</span>
-          <span class="label">Beliefs Recorded</span>
-        </div>
-        <div class="hero-stat">
-          <span class="number">5</span>
-          <span class="label">Historical Vindications</span>
+      <!-- Supported platforms -->
+      <div style="margin-bottom: 32px; padding: 16px 20px; background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius);">
+        <div style="display: flex; gap: 10px; flex-wrap: wrap; justify-content: center;">
+          <span class="filter-btn active" style="cursor: default;">Facebook</span>
+          <span class="filter-btn active" style="cursor: default;">X / Twitter</span>
+          <span class="filter-btn active" style="cursor: default;">GitHub</span>
+          <span class="filter-btn active" style="cursor: default;">Reddit</span>
+          <span class="filter-btn active" style="cursor: default;">YouTube</span>
+          <span class="filter-btn active" style="cursor: default;">LinkedIn</span>
         </div>
       </div>
-    </div>
-  </section>
 
-  <!-- HOW IT WORKS -->
-  <section id="how" style="padding: 60px 0; border-bottom: 1px solid var(--border);">
-    <div class="container">
-      <h2 style="text-align: center; font-size: 1.8rem; margin-bottom: 40px;">How UpDown Works</h2>
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 24px;">
-
-        <div class="argument-card" style="text-align: center;">
-          <h3 style="justify-content: center;">1. Review the Evidence</h3>
-          <p>Each race presents data, expert analysis, and real-world signals for both sides. No spin. Just evidence — so you can think for yourself.</p>
+      <!-- Form -->
+      <form id="submitForm">
+        <div style="margin-bottom: 16px;">
+          <label for="urlInput" style="display: block; font-weight: 600; margin-bottom: 8px;">URL</label>
+          <input
+            type="url"
+            id="urlInput"
+            placeholder="https://facebook.com/... or https://x.com/..."
+            required
+            style="
+              width: 100%; padding: 14px 16px; background: var(--bg-card);
+              border: 1px solid var(--border); border-radius: var(--radius-sm);
+              color: var(--text-primary); font-size: 1rem; font-family: inherit;
+              outline: none; transition: var(--transition);
+            "
+          >
         </div>
 
-        <div class="argument-card" style="text-align: center;">
-          <h3 style="justify-content: center;">2. Record Your Assessment</h3>
-          <p>After reviewing both sides, record your honest conclusion. If you're pressured to act against it — tell us. Your conviction score goes UP.</p>
+        <div style="margin-bottom: 24px;">
+          <label for="contentInput" style="display: block; font-weight: 600; margin-bottom: 8px;">
+            Content <span style="font-weight: 400; color: var(--text-muted); font-size: 0.85rem;">(paste post content for Facebook/LinkedIn)</span>
+          </label>
+          <textarea
+            id="contentInput"
+            rows="4"
+            placeholder="Copy-paste noi dung bai viet vao day (bat buoc voi Facebook/LinkedIn vi khong the tu dong doc)"
+            style="
+              width: 100%; padding: 14px 16px; background: var(--bg-card);
+              border: 1px solid var(--border); border-radius: var(--radius-sm);
+              color: var(--text-primary); font-size: 0.95rem; font-family: inherit;
+              outline: none; transition: var(--transition); resize: vertical;
+            "
+          ></textarea>
         </div>
 
-        <div class="argument-card" style="text-align: center;">
-          <h3 style="justify-content: center;">3. Get Vindicated</h3>
-          <p>When results come in and your analysis was correct — we celebrate you publicly. History rewards those who think independently.</p>
-        </div>
+        <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;" id="submitBtn">
+          Submit
+        </button>
+      </form>
 
+      <!-- Result -->
+      <div id="result" style="display: none; margin-top: 24px;"></div>
+
+      <!-- How it works -->
+      <div style="margin-top: 48px; padding: 24px; background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius);">
+        <h3 style="font-size: 1rem; margin-bottom: 16px;">How it works</h3>
+        <div style="display: flex; flex-direction: column; gap: 12px;">
+          <div style="display: flex; gap: 12px; align-items: flex-start;">
+            <span style="background: var(--accent-green); color: #000; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.8rem; flex-shrink: 0;">1</span>
+            <p style="color: var(--text-secondary); font-size: 0.9rem;">You find a public tech discussion related to Vietnam development directions</p>
+          </div>
+          <div style="display: flex; gap: 12px; align-items: flex-start;">
+            <span style="background: var(--accent-green); color: #000; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.8rem; flex-shrink: 0;">2</span>
+            <p style="color: var(--text-secondary); font-size: 0.9rem;">Paste the URL (and content for Facebook/LinkedIn) here</p>
+          </div>
+          <div style="display: flex; gap: 12px; align-items: flex-start;">
+            <span style="background: var(--accent-green); color: #000; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.8rem; flex-shrink: 0;">3</span>
+            <p style="color: var(--text-secondary); font-size: 0.9rem;">We analyze with AI and comment with insights from both sides if it qualifies</p>
+          </div>
+        </div>
       </div>
-    </div>
-  </section>
-
-  <!-- ACTIVE RACES -->
-  <section id="races" style="padding: 48px 0;">
-    <div class="container">
-      <h2 style="font-size: 1.5rem; margin-bottom: 8px;">Active Races</h2>
-      <p style="color: var(--text-secondary); margin-bottom: 8px;">Review both sides. Make your assessment. Get recognized when you're right.</p>
-
-      <div class="filter-bar">
-        <button class="filter-btn active" data-category="all">All</button>
-        <button class="filter-btn" data-category="ai">AI / ML</button>
-        <button class="filter-btn" data-category="transport">Transport</button>
-        <button class="filter-btn" data-category="robotics">Robotics</button>
-      </div>
-
-      <div class="race-grid">
-
-        <!-- Race 1: Agentic AI vs AI Copilots -->
-        <div class="race-card" data-category="ai">
-          <span class="race-card-badge badge-hot">HOT</span>
-          <h3>Agentic AI vs AI Copilots</h3>
-          <p class="race-card-desc">Will Agentic AI replace AI Copilots for core business processes before 2028?</p>
-          <div class="race-card-meta">
-            <span>Deadline: Dec 31, 2028</span>
-            <span>0 beliefs</span>
-          </div>
-          <div style="display: flex; gap: 8px; margin-top: 16px;">
-            <a href="why/agentic-ai-will-win.html" class="btn btn-primary btn-sm" style="flex: 1; justify-content: center;">My assessment: Agentic AI</a>
-            <a href="why/ai-copilots-will-win.html" class="btn btn-red btn-sm" style="flex: 1; justify-content: center;">My assessment: Copilots</a>
-          </div>
-          <div style="text-align: center; margin-top: 8px;">
-            <a href="race/agentic-ai-vs-copilots.html" style="font-size: 0.8rem; color: var(--text-muted);">View full race details &rarr;</a>
-          </div>
-        </div>
-
-        <!-- Race 2: VinFast vs Xe Nhat -->
-        <div class="race-card" data-category="transport">
-          <span class="race-card-badge badge-hot">HOT</span>
-          <h3>VinFast vs Japanese Cars (Toyota/Honda)</h3>
-          <p class="race-card-desc">Will VinFast outsell Toyota in quarterly car sales in Vietnam before 2027?</p>
-          <div class="race-card-meta">
-            <span>Deadline: Dec 31, 2027</span>
-            <span>0 beliefs</span>
-          </div>
-          <div style="display: flex; gap: 8px; margin-top: 16px;">
-            <a href="why/vinfast-se-thang.html" class="btn btn-primary btn-sm" style="flex: 1; justify-content: center;">My assessment: VinFast</a>
-            <a href="why/xe-nhat-se-thang.html" class="btn btn-red btn-sm" style="flex: 1; justify-content: center;">My assessment: Japanese</a>
-          </div>
-          <div style="text-align: center; margin-top: 8px;">
-            <a href="race/vinfast-vs-xe-nhat.html" style="font-size: 0.8rem; color: var(--text-muted);">View full race details &rarr;</a>
-          </div>
-        </div>
-
-        <!-- Race 3: LLM Open vs Closed -->
-        <div class="race-card" data-category="ai">
-          <span class="race-card-badge badge-live">LIVE</span>
-          <h3>Open-source LLM vs Closed-source LLM</h3>
-          <p class="race-card-desc">Will open-source LLMs reach >95% on MMLU benchmark before closed-source?</p>
-          <div class="race-card-meta">
-            <span>Deadline: Dec 31, 2027</span>
-            <span>0 beliefs</span>
-          </div>
-          <div style="display: flex; gap: 8px; margin-top: 16px;">
-            <a href="why/open-source-llm-will-win.html" class="btn btn-primary btn-sm" style="flex: 1; justify-content: center;">My assessment: Open-source</a>
-            <a href="why/closed-source-llm-will-win.html" class="btn btn-red btn-sm" style="flex: 1; justify-content: center;">My assessment: Closed-source</a>
-          </div>
-          <div style="text-align: center; margin-top: 8px;">
-            <a href="race/llm-open-vs-closed.html" style="font-size: 0.8rem; color: var(--text-muted);">View full race details &rarr;</a>
-          </div>
-        </div>
-
-        <!-- Race 4: Robot Nha May VN -->
-        <div class="race-card" data-category="robotics">
-          <span class="race-card-badge badge-new">NEW</span>
-          <h3>Vietnam Factory Robots — Which Path Wins?</h3>
-          <p class="race-card-desc">Versatile humanoids, specialized cobots, or AMR+AI Vision for Vietnam's factories?</p>
-          <div class="race-card-meta">
-            <span>Deadline: Dec 31, 2030</span>
-            <span>0 beliefs</span>
-          </div>
-          <div style="display: flex; gap: 6px; margin-top: 16px;">
-            <a href="why/humanoid-se-thang.html" class="btn btn-primary btn-sm" style="flex: 1; justify-content: center; font-size: 0.75rem;">Humanoid</a>
-            <a href="why/cobot-se-thang.html" class="btn btn-sm" style="flex: 1; justify-content: center; font-size: 0.75rem; background: var(--accent-blue, #3b82f6); color: #fff;">Cobot</a>
-            <a href="why/amr-ai-se-thang.html" class="btn btn-sm" style="flex: 1; justify-content: center; font-size: 0.75rem; background: var(--accent-orange, #f59e0b); color: #000;">AMR+AI</a>
-          </div>
-          <div style="text-align: center; margin-top: 8px;">
-            <a href="race/robot-nha-may-vn.html" style="font-size: 0.8rem; color: var(--text-muted);">View full race details &rarr;</a>
-          </div>
-        </div>
-
-        <!-- Race 5: Humanoid Robot vs Lao Dong -->
-        <div class="race-card" data-category="robotics">
-          <span class="race-card-badge badge-live">LIVE</span>
-          <h3>Humanoid Robots vs Human Labor</h3>
-          <p class="race-card-desc">Will humanoid robots replace unskilled labor in Vietnam before 2030?</p>
-          <div class="race-card-meta">
-            <span>Deadline: Dec 31, 2030</span>
-            <span>0 beliefs</span>
-          </div>
-          <div style="display: flex; gap: 8px; margin-top: 16px;">
-            <a href="why/robot-se-thang.html" class="btn btn-primary btn-sm" style="flex: 1; justify-content: center;">My assessment: Robots</a>
-            <a href="why/lao-dong-se-thang.html" class="btn btn-red btn-sm" style="flex: 1; justify-content: center;">My assessment: Humans</a>
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-  <!-- VINDICATION PREVIEW -->
-  <section style="padding: 48px 0; border-top: 1px solid var(--border);">
-    <div class="container">
-      <h2 style="font-size: 1.5rem; margin-bottom: 8px;">Hall of Vindication</h2>
-      <p style="color: var(--text-secondary); margin-bottom: 24px;">Independent thinkers who saw what others couldn't — and history proved them right.</p>
-
-      <div class="vindication-card">
-        <h3>Steven Sasson vs Kodak (1975 - 2012)</h3>
-        <div class="vindication-result">Digital Camera WON. Sasson was RIGHT.</div>
-        <p class="vindication-story">
-          Invented the digital camera at Kodak in 1975. Kodak forced him to hide it to protect film sales.
-          25 years later, Kodak filed for bankruptcy. His conviction score would have been 98/100 —
-          maximum pressure, maximum vindication.
-        </p>
-      </div>
-
-      <div class="vindication-card">
-        <h3>Nokia Engineers vs Management (2007 - 2013)</h3>
-        <div class="vindication-result">Touchscreen WON. Engineers were RIGHT.</div>
-        <p class="vindication-story">
-          Nokia engineers warned that touchscreen smartphones would dominate. Management doubled down on Symbian and physical keyboards.
-          Nokia's market share dropped from 50% to 3%. Engineers who believed in touchscreen — while being forced to build Symbian — were vindicated.
-        </p>
-      </div>
-
-      <div class="vindication-card">
-        <h3>Netflix vs Blockbuster (2000 - 2010)</h3>
-        <div class="vindication-result">Streaming WON. Believers were RIGHT.</div>
-        <p class="vindication-story">
-          Blockbuster employees who saw streaming as the future — while being told to sell DVD rentals.
-          Netflix offered to sell to Blockbuster for $50M. Blockbuster laughed.
-          Netflix is now worth $300B. Blockbuster is a single store in Oregon.
-        </p>
-      </div>
-
-      <div style="text-align: center; margin-top: 24px;">
-        <a href="vindication.html" class="btn btn-secondary">View All Vindications &rarr;</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- CTA -->
-  <section class="cta-section">
-    <div class="container">
-      <h2>You've done the research. Now record it.</h2>
-      <p>You've reviewed the evidence. Make your assessment. When you're proven right, the world will know.</p>
-      <a href="#races" class="btn btn-primary">Explore Races</a>
     </div>
   </section>
 
   <!-- FOOTER -->
   <footer class="footer">
     <div class="container">
-      <p>UpDown — Belief Registry. No money. Just truth and recognition.</p>
-      <p style="margin-top: 8px;">
-        <a href="vindication.html">Vindication</a> &middot;
-        <a href="#races">Races</a> &middot;
-        <a href="https://github.com/xhardtech/updown" target="_blank">GitHub</a>
-      </p>
+      <p>UpDown — No money. Just truth and recognition.</p>
     </div>
   </footer>
 
-  <script src="script.js"></script>
+  <script>
+    const API_BASE = 'https://api.xhardtech.com';
+
+    const form = document.getElementById('submitForm');
+    const urlInput = document.getElementById('urlInput');
+    const contentInput = document.getElementById('contentInput');
+    const submitBtn = document.getElementById('submitBtn');
+    const resultDiv = document.getElementById('result');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const url = urlInput.value.trim();
+      if (!url) return;
+
+      const content = contentInput.value.trim();
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Submitting...';
+      resultDiv.style.display = 'none';
+
+      try {
+        const payload = { url };
+        if (content) payload.content = content;
+
+        const response = await fetch(`${API_BASE}/submit`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          resultDiv.innerHTML = `
+            <div style="padding: 20px; background: rgba(245, 158, 11, 0.1); border: 1px solid var(--accent-green); border-radius: var(--radius);">
+              <h3 style="color: var(--accent-green); margin-bottom: 8px;">Received!</h3>
+              <p style="color: var(--text-secondary); font-size: 0.9rem;">
+                Your submission is in queue. We'll analyze and respond if it qualifies.
+              </p>
+              <p style="color: var(--text-muted); font-size: 0.8rem; margin-top: 8px;">
+                ID: <code style="background: var(--bg-secondary); padding: 2px 6px; border-radius: 4px;">${data.id}</code>
+              </p>
+            </div>
+          `;
+          urlInput.value = '';
+          contentInput.value = '';
+        } else {
+          resultDiv.innerHTML = `
+            <div style="padding: 20px; background: rgba(255, 71, 87, 0.1); border: 1px solid var(--accent-red); border-radius: var(--radius);">
+              <h3 style="color: var(--accent-red); margin-bottom: 8px;">Not accepted</h3>
+              <p style="color: var(--text-secondary); font-size: 0.9rem;">${data.error}</p>
+              ${data.hint ? `<p style="color: var(--text-muted); font-size: 0.8rem; margin-top: 8px;">${data.hint}</p>` : ''}
+              ${data.supported ? `<p style="color: var(--text-muted); font-size: 0.8rem; margin-top: 8px;">Supported: ${data.supported.join(', ')}</p>` : ''}
+            </div>
+          `;
+        }
+
+        resultDiv.style.display = 'block';
+      } catch (err) {
+        resultDiv.innerHTML = `
+          <div style="padding: 20px; background: rgba(255, 71, 87, 0.1); border: 1px solid var(--accent-red); border-radius: var(--radius);">
+            <h3 style="color: var(--accent-red); margin-bottom: 8px;">Error</h3>
+            <p style="color: var(--text-secondary); font-size: 0.9rem;">Could not connect. Please try again later.</p>
+          </div>
+        `;
+        resultDiv.style.display = 'block';
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Submit';
+      }
+    });
+
+    [urlInput, contentInput].forEach(el => {
+      el.addEventListener('focus', () => el.style.borderColor = 'var(--accent-green)');
+      el.addEventListener('blur', () => el.style.borderColor = 'var(--border)');
+    });
+  </script>
+
 </body>
 </html>
