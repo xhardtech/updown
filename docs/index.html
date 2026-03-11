@@ -1,17 +1,41 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>@XHT — AI ghi lại quan điểm công nghệ Việt Nam</title>
-  <meta name="description" content="@XHT ghi nhận bạn chọn hướng nào trong các cuộc tranh luận công nghệ VN và tự động comment lại trên bài gốc. Khi đúng, bạn được vinh danh.">
-  <meta property="og:title" content="@XHT — AI ghi lại quan điểm công nghệ">
-  <meta property="og:description" content="Giống @Grok nhưng cho tech debates VN. Ghi nhận quan điểm, phân tích 2 bên, vinh danh khi đúng.">
+  <title>@XHT — AI that records your tech predictions</title>
+  <meta name="description" content="@XHT records which side you pick in tech debates and auto-comments on the original post. When you're proven right, you get celebrated.">
+  <meta property="og:title" content="@XHT — AI that records your tech predictions">
+  <meta property="og:description" content="Like @Grok but for tech debates. Records your stance, analyzes both sides, celebrates when you're right.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://xhardtech.com/">
   <link rel="canonical" href="https://xhardtech.com/">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
+  <style>
+    .lang-switcher {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .lang-btn {
+      background: none;
+      border: 1px solid transparent;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 1.2rem;
+      line-height: 1;
+      padding: 2px 4px;
+      transition: var(--transition);
+      opacity: 0.5;
+    }
+    .lang-btn:hover { opacity: 0.8; }
+    .lang-btn.active {
+      opacity: 1;
+      border-color: var(--accent-green);
+    }
+  </style>
 </head>
 <body>
 
@@ -19,6 +43,18 @@
   <nav class="nav">
     <div class="container">
       <a href="/" class="nav-logo">X<span>HT</span></a>
+      <div class="lang-switcher" id="langSwitcher">
+        <button class="lang-btn active" data-lang="en" title="English">🇺🇸</button>
+        <button class="lang-btn" data-lang="vi" title="Tiếng Việt">🇻🇳</button>
+        <button class="lang-btn" data-lang="zh" title="中文">🇨🇳</button>
+        <button class="lang-btn" data-lang="ja" title="日本語">🇯🇵</button>
+        <button class="lang-btn" data-lang="ko" title="한국어">🇰🇷</button>
+        <button class="lang-btn" data-lang="fr" title="Français">🇫🇷</button>
+        <button class="lang-btn" data-lang="de" title="Deutsch">🇩🇪</button>
+        <button class="lang-btn" data-lang="es" title="Español">🇪🇸</button>
+        <button class="lang-btn" data-lang="pt" title="Português">🇧🇷</button>
+        <button class="lang-btn" data-lang="th" title="ไทย">🇹🇭</button>
+      </div>
     </div>
   </nav>
 
@@ -26,20 +62,19 @@
   <section class="hero" style="padding: 80px 0 40px;">
     <div class="container" style="max-width: 640px;">
       <h1 style="font-size: clamp(1.8rem, 4vw, 2.5rem); margin-bottom: 16px; text-align: center;">
-        <span class="highlight">@XHT</span> — AI ghi lại quan điểm công nghệ
+        <span class="highlight">@XHT</span> — <span data-i18n="hero_title">AI that records your tech predictions</span>
       </h1>
-      <p style="color: var(--text-secondary); text-align: center; margin-bottom: 16px;">
-        Khi bạn tranh luận về hướng phát triển công nghệ của Việt Nam, @XHT sẽ ghi nhận bạn đã chọn bên nào
-        và tự động comment lại trên bài viết gốc — giống như @Grok, nhưng cho tech debates.
+      <p style="color: var(--text-secondary); text-align: center; margin-bottom: 16px;" data-i18n="hero_desc">
+        When you debate which direction technology should go, @XHT records which side you picked and auto-comments on the original post — like @Grok, but for tech debates.
       </p>
-      <p style="color: var(--text-muted); text-align: center; margin-bottom: 40px; font-size: 0.9rem;">
-        Khi lịch sử chứng minh bạn đúng, bạn sẽ được vinh danh.
+      <p style="color: var(--text-muted); text-align: center; margin-bottom: 40px; font-size: 0.9rem;" data-i18n="hero_sub">
+        When history proves you right, you get celebrated.
       </p>
 
       <!-- Form -->
       <form id="submitForm">
         <div style="margin-bottom: 16px;">
-          <label for="urlInput" style="display: block; font-weight: 600; margin-bottom: 8px;">Paste URL bài viết tranh luận</label>
+          <label for="urlInput" style="display: block; font-weight: 600; margin-bottom: 8px;" data-i18n="form_label">Paste the URL of a tech debate post</label>
           <input
             type="url"
             id="urlInput"
@@ -54,7 +89,7 @@
           >
         </div>
 
-        <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;" id="submitBtn">
+        <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;" id="submitBtn" data-i18n="form_btn">
           Submit
         </button>
       </form>
@@ -64,23 +99,19 @@
 
       <!-- How it works -->
       <div style="margin-top: 48px; padding: 24px; background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius);">
-        <h3 style="font-size: 1rem; margin-bottom: 16px;">@XHT hoạt động như thế nào?</h3>
+        <h3 style="font-size: 1rem; margin-bottom: 16px;" data-i18n="how_title">How does @XHT work?</h3>
         <div style="display: flex; flex-direction: column; gap: 12px;">
           <div style="display: flex; gap: 12px; align-items: flex-start;">
             <span style="background: var(--accent-green); color: #000; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.8rem; flex-shrink: 0;">1</span>
-            <p style="color: var(--text-secondary); font-size: 0.9rem;">Bạn tìm thấy bài viết tranh luận về hướng phát triển công nghệ VN (fab vs fabless, xe điện vs xăng, AI agent vs copilot...)</p>
+            <p style="color: var(--text-secondary); font-size: 0.9rem;" data-i18n="step1">Paste the URL here — @XHT uses AI to analyze the post and identify which side the author picked</p>
           </div>
           <div style="display: flex; gap: 12px; align-items: flex-start;">
             <span style="background: var(--accent-green); color: #000; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.8rem; flex-shrink: 0;">2</span>
-            <p style="color: var(--text-secondary); font-size: 0.9rem;">Paste URL vào đây — @XHT sẽ phân tích bài viết bằng AI, xác định người đăng chọn hướng nào</p>
+            <p style="color: var(--text-secondary); font-size: 0.9rem;" data-i18n="step2">@XHT auto-comments on the original post: records the stance, analyzes both sides, invites others to pick</p>
           </div>
           <div style="display: flex; gap: 12px; align-items: flex-start;">
             <span style="background: var(--accent-green); color: #000; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.8rem; flex-shrink: 0;">3</span>
-            <p style="color: var(--text-secondary); font-size: 0.9rem;">@XHT tự động comment lại trên bài gốc: ghi nhận quan điểm, phân tích 2 bên, mời mọi người chọn hướng</p>
-          </div>
-          <div style="display: flex; gap: 12px; align-items: flex-start;">
-            <span style="background: var(--accent-green); color: #000; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.8rem; flex-shrink: 0;">4</span>
-            <p style="color: var(--text-secondary); font-size: 0.9rem;">Khi lịch sử chứng minh ai đúng — @XHT quay lại vinh danh những người đã dự đoán chính xác</p>
+            <p style="color: var(--text-secondary); font-size: 0.9rem;" data-i18n="step3">When history proves who was right — @XHT comes back to celebrate those who predicted correctly</p>
           </div>
         </div>
       </div>
@@ -100,7 +131,7 @@
         <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M12.186 24h-.007c-3.581-.024-6.334-1.205-8.184-3.509C2.35 18.44 1.5 15.586 1.472 12.01v-.017c.03-3.579.879-6.43 2.525-8.482C5.845 1.205 8.6.024 12.18 0h.014c2.746.02 5.043.725 6.826 2.098 1.677 1.29 2.858 3.13 3.509 5.467l-2.773.752c-1.098-3.96-3.874-5.554-7.567-5.576-2.564.017-4.467.87-5.66 2.536-1.2 1.676-1.834 4.088-1.86 7.166v.536c.165 5.833 2.87 9.262 7.534 9.282 2.124-.012 3.67-.626 4.728-1.878 1.1-1.3 1.505-3.114 1.198-5.394h-5.85v-2.74h8.757l.028.17c.473 2.88.288 5.597-1.19 7.898C18.546 22.695 16.065 24 12.186 24z"/></svg>
         <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
       </div>
-      <p style="color: var(--text-muted); font-size: 0.8rem; text-align: center; margin-top: 16px;">
+      <p style="color: var(--text-muted); font-size: 0.8rem; text-align: center; margin-top: 16px;" data-i18n="platform_note">
         Any public URL with tech discussion content.
       </p>
     </div>
@@ -114,6 +145,221 @@
   </footer>
 
   <script>
+    // === i18n translations ===
+    const translations = {
+      en: {
+        hero_title: 'AI that records your tech predictions',
+        hero_desc: 'When you debate which direction technology should go, @XHT records which side you picked and auto-comments on the original post — like @Grok, but for tech debates.',
+        hero_sub: 'When history proves you right, you get celebrated.',
+        form_label: 'Paste the URL of a tech debate post',
+        form_btn: 'Submit',
+        how_title: 'How does @XHT work?',
+        step1: 'Paste the URL here — @XHT uses AI to analyze the post and identify which side the author picked',
+        step2: '@XHT auto-comments on the original post: records the stance, analyzes both sides, invites others to pick',
+        step3: 'When history proves who was right — @XHT comes back to celebrate those who predicted correctly',
+        platform_note: 'Any public URL with tech discussion content.',
+        result_ok: 'Received!',
+        result_ok_msg: "Your submission is in queue. We'll analyze and respond if it qualifies.",
+        result_fail: 'Not accepted',
+        result_err: 'Error',
+        result_err_msg: 'Could not connect. Please try again later.',
+        submitting: 'Submitting...',
+      },
+      vi: {
+        hero_title: 'AI ghi lại quan điểm công nghệ của bạn',
+        hero_desc: 'Khi bạn tranh luận về hướng phát triển công nghệ, @XHT sẽ ghi nhận bạn đã chọn bên nào và tự động comment lại trên bài viết gốc — giống như @Grok, nhưng cho tech debates.',
+        hero_sub: 'Khi lịch sử chứng minh bạn đúng, bạn sẽ được vinh danh.',
+        form_label: 'Paste URL bài viết tranh luận',
+        form_btn: 'Gửi',
+        how_title: '@XHT hoạt động như thế nào?',
+        step1: 'Paste URL vào đây — @XHT sẽ phân tích bài viết bằng AI, xác định người đăng chọn hướng nào',
+        step2: '@XHT tự động comment lại trên bài gốc: ghi nhận quan điểm, phân tích 2 bên, mời mọi người chọn hướng',
+        step3: 'Khi lịch sử chứng minh ai đúng — @XHT quay lại vinh danh những người đã dự đoán chính xác',
+        platform_note: 'Mọi URL công khai có nội dung tranh luận công nghệ.',
+        result_ok: 'Đã nhận!',
+        result_ok_msg: 'Bài viết đang chờ xử lý. Chúng tôi sẽ phân tích và phản hồi nếu phù hợp.',
+        result_fail: 'Không chấp nhận',
+        result_err: 'Lỗi',
+        result_err_msg: 'Không thể kết nối. Vui lòng thử lại sau.',
+        submitting: 'Đang gửi...',
+      },
+      zh: {
+        hero_title: '记录你的科技预测的AI',
+        hero_desc: '当你讨论科技发展方向时，@XHT会记录你选择了哪一方，并自动在原帖评论——类似@Grok，但专注科技辩论。',
+        hero_sub: '当历史证明你是对的，你将被表彰。',
+        form_label: '粘贴科技辩论帖子的URL',
+        form_btn: '提交',
+        how_title: '@XHT 如何运作？',
+        step1: '在这里粘贴URL——@XHT用AI分析帖子，识别作者选择了哪一方',
+        step2: '@XHT自动在原帖评论：记录立场，分析双方，邀请大家选择',
+        step3: '当历史证明谁是对的——@XHT会回来表彰那些预测正确的人',
+        platform_note: '任何包含科技讨论内容的公开URL。',
+        result_ok: '已收到！',
+        result_ok_msg: '您的提交正在排队中。我们将分析并在符合条件时回复。',
+        result_fail: '未接受',
+        result_err: '错误',
+        result_err_msg: '无法连接。请稍后重试。',
+        submitting: '提交中...',
+      },
+      ja: {
+        hero_title: 'あなたのテック予測を記録するAI',
+        hero_desc: 'テクノロジーの方向性を議論する時、@XHTはあなたがどちらを選んだか記録し、元の投稿に自動コメントします — @Grokのように、テック議論専用です。',
+        hero_sub: '歴史があなたが正しかったと証明した時、称えられます。',
+        form_label: 'テック議論の投稿URLを貼り付け',
+        form_btn: '送信',
+        how_title: '@XHTの仕組みは？',
+        step1: 'ここにURLを貼り付け — @XHTがAIで投稿を分析し、著者がどちらを選んだか特定します',
+        step2: '@XHTが元の投稿に自動コメント：立場を記録、両面を分析、みんなに選択を促します',
+        step3: '歴史が誰が正しかったか証明した時 — @XHTは正確に予測した人を称えに戻ります',
+        platform_note: 'テック議論コンテンツを含む公開URL。',
+        result_ok: '受信しました！',
+        result_ok_msg: '送信はキューに入りました。条件を満たせば分析・回答します。',
+        result_fail: '受け付けられません',
+        result_err: 'エラー',
+        result_err_msg: '接続できません。後でもう一度お試しください。',
+        submitting: '送信中...',
+      },
+      ko: {
+        hero_title: '당신의 기술 예측을 기록하는 AI',
+        hero_desc: '기술 발전 방향에 대해 토론할 때, @XHT는 당신이 어느 쪽을 선택했는지 기록하고 원본 게시물에 자동 댓글을 답니다 — @Grok처럼, 기술 토론 전용입니다.',
+        hero_sub: '역사가 당신이 옳았다고 증명할 때, 당신은 축하받습니다.',
+        form_label: '기술 토론 게시물 URL 붙여넣기',
+        form_btn: '제출',
+        how_title: '@XHT는 어떻게 작동하나요?',
+        step1: '여기에 URL을 붙여넣으세요 — @XHT가 AI로 게시물을 분석하고 작성자가 어느 쪽을 선택했는지 파악합니다',
+        step2: '@XHT가 원본 게시물에 자동 댓글: 입장 기록, 양쪽 분석, 다른 사람들의 선택 초대',
+        step3: '역사가 누가 맞았는지 증명할 때 — @XHT가 정확하게 예측한 사람들을 축하하러 돌아옵니다',
+        platform_note: '기술 토론 콘텐츠가 포함된 공개 URL.',
+        result_ok: '접수되었습니다!',
+        result_ok_msg: '제출이 대기열에 있습니다. 조건을 충족하면 분석하고 응답하겠습니다.',
+        result_fail: '허용되지 않음',
+        result_err: '오류',
+        result_err_msg: '연결할 수 없습니다. 나중에 다시 시도해주세요.',
+        submitting: '제출 중...',
+      },
+      fr: {
+        hero_title: 'IA qui enregistre vos prédictions tech',
+        hero_desc: "Quand vous débattez de la direction technologique, @XHT enregistre quel camp vous avez choisi et commente automatiquement le post original — comme @Grok, mais pour les débats tech.",
+        hero_sub: "Quand l'histoire vous donne raison, vous êtes célébré.",
+        form_label: "Collez l'URL d'un post de débat tech",
+        form_btn: 'Soumettre',
+        how_title: 'Comment fonctionne @XHT ?',
+        step1: "Collez l'URL ici — @XHT utilise l'IA pour analyser le post et identifier quel camp l'auteur a choisi",
+        step2: '@XHT commente automatiquement le post original : enregistre la position, analyse les deux côtés, invite les autres à choisir',
+        step3: "Quand l'histoire prouve qui avait raison — @XHT revient célébrer ceux qui ont prédit correctement",
+        platform_note: 'Toute URL publique avec du contenu de discussion tech.',
+        result_ok: 'Reçu !',
+        result_ok_msg: "Votre soumission est en file d'attente. Nous analyserons et répondrons si elle est qualifiée.",
+        result_fail: 'Non accepté',
+        result_err: 'Erreur',
+        result_err_msg: 'Impossible de se connecter. Veuillez réessayer plus tard.',
+        submitting: 'Envoi...',
+      },
+      de: {
+        hero_title: 'KI, die deine Tech-Vorhersagen aufzeichnet',
+        hero_desc: 'Wenn du über die Richtung der Technologie debattierst, zeichnet @XHT auf, welche Seite du gewählt hast, und kommentiert automatisch den Originalbeitrag — wie @Grok, aber für Tech-Debatten.',
+        hero_sub: 'Wenn die Geschichte dir Recht gibt, wirst du gefeiert.',
+        form_label: 'URL eines Tech-Debattenbeitrags einfügen',
+        form_btn: 'Absenden',
+        how_title: 'Wie funktioniert @XHT?',
+        step1: 'URL hier einfügen — @XHT analysiert den Beitrag mit KI und erkennt, welche Seite der Autor gewählt hat',
+        step2: '@XHT kommentiert automatisch den Originalbeitrag: zeichnet die Position auf, analysiert beide Seiten, lädt andere ein zu wählen',
+        step3: 'Wenn die Geschichte beweist, wer Recht hatte — kommt @XHT zurück, um diejenigen zu feiern, die richtig vorhergesagt haben',
+        platform_note: 'Jede öffentliche URL mit Tech-Diskussionsinhalten.',
+        result_ok: 'Empfangen!',
+        result_ok_msg: 'Ihre Einreichung befindet sich in der Warteschlange. Wir analysieren und antworten, wenn sie qualifiziert ist.',
+        result_fail: 'Nicht akzeptiert',
+        result_err: 'Fehler',
+        result_err_msg: 'Verbindung fehlgeschlagen. Bitte versuchen Sie es später erneut.',
+        submitting: 'Wird gesendet...',
+      },
+      es: {
+        hero_title: 'IA que registra tus predicciones tech',
+        hero_desc: 'Cuando debates sobre la dirección de la tecnología, @XHT registra qué lado elegiste y comenta automáticamente en el post original — como @Grok, pero para debates tech.',
+        hero_sub: 'Cuando la historia demuestra que tenías razón, eres celebrado.',
+        form_label: 'Pega la URL de un post de debate tech',
+        form_btn: 'Enviar',
+        how_title: '¿Cómo funciona @XHT?',
+        step1: 'Pega la URL aquí — @XHT usa IA para analizar el post e identificar qué lado eligió el autor',
+        step2: '@XHT comenta automáticamente en el post original: registra la postura, analiza ambos lados, invita a otros a elegir',
+        step3: 'Cuando la historia demuestra quién tenía razón — @XHT vuelve para celebrar a quienes predijeron correctamente',
+        platform_note: 'Cualquier URL pública con contenido de discusión tech.',
+        result_ok: '¡Recibido!',
+        result_ok_msg: 'Tu envío está en cola. Analizaremos y responderemos si califica.',
+        result_fail: 'No aceptado',
+        result_err: 'Error',
+        result_err_msg: 'No se pudo conectar. Por favor, inténtalo más tarde.',
+        submitting: 'Enviando...',
+      },
+      pt: {
+        hero_title: 'IA que registra suas previsões tech',
+        hero_desc: 'Quando você debate sobre a direção da tecnologia, @XHT registra qual lado você escolheu e comenta automaticamente no post original — como @Grok, mas para debates tech.',
+        hero_sub: 'Quando a história prova que você estava certo, você é celebrado.',
+        form_label: 'Cole a URL de um post de debate tech',
+        form_btn: 'Enviar',
+        how_title: 'Como o @XHT funciona?',
+        step1: 'Cole a URL aqui — @XHT usa IA para analisar o post e identificar qual lado o autor escolheu',
+        step2: '@XHT comenta automaticamente no post original: registra a posição, analisa os dois lados, convida outros a escolher',
+        step3: 'Quando a história prova quem estava certo — @XHT volta para celebrar aqueles que previram corretamente',
+        platform_note: 'Qualquer URL pública com conteúdo de discussão tech.',
+        result_ok: 'Recebido!',
+        result_ok_msg: 'Sua submissão está na fila. Analisaremos e responderemos se qualificar.',
+        result_fail: 'Não aceito',
+        result_err: 'Erro',
+        result_err_msg: 'Não foi possível conectar. Tente novamente mais tarde.',
+        submitting: 'Enviando...',
+      },
+      th: {
+        hero_title: 'AI ที่บันทึกการคาดการณ์เทคโนโลยีของคุณ',
+        hero_desc: 'เมื่อคุณถกเถียงเรื่องทิศทางเทคโนโลยี @XHT จะบันทึกว่าคุณเลือกฝ่ายไหน และคอมเมนต์อัตโนมัติในโพสต์ต้นฉบับ — เหมือน @Grok แต่สำหรับดีเบตเทค',
+        hero_sub: 'เมื่อประวัติศาสตร์พิสูจน์ว่าคุณถูก คุณจะได้รับการยกย่อง',
+        form_label: 'วาง URL ของโพสต์ดีเบตเทค',
+        form_btn: 'ส่ง',
+        how_title: '@XHT ทำงานอย่างไร?',
+        step1: 'วาง URL ที่นี่ — @XHT ใช้ AI วิเคราะห์โพสต์และระบุว่าผู้เขียนเลือกฝ่ายไหน',
+        step2: '@XHT คอมเมนต์อัตโนมัติในโพสต์ต้นฉบับ: บันทึกจุดยืน วิเคราะห์ทั้งสองฝ่าย เชิญคนอื่นเลือก',
+        step3: 'เมื่อประวัติศาสตร์พิสูจน์ว่าใครถูก — @XHT กลับมายกย่องผู้ที่คาดการณ์ถูกต้อง',
+        platform_note: 'URL สาธารณะใดๆ ที่มีเนื้อหาอภิปรายเทค',
+        result_ok: 'ได้รับแล้ว!',
+        result_ok_msg: 'การส่งของคุณอยู่ในคิว เราจะวิเคราะห์และตอบกลับหากมีคุณสมบัติ',
+        result_fail: 'ไม่ยอมรับ',
+        result_err: 'ข้อผิดพลาด',
+        result_err_msg: 'ไม่สามารถเชื่อมต่อได้ กรุณาลองใหม่ภายหลัง',
+        submitting: 'กำลังส่ง...',
+      },
+    };
+
+    let currentLang = localStorage.getItem('xht-lang') || 'en';
+
+    function t(key) {
+      return (translations[currentLang] && translations[currentLang][key]) || translations.en[key] || key;
+    }
+
+    function applyLanguage(lang) {
+      currentLang = lang;
+      localStorage.setItem('xht-lang', lang);
+      document.documentElement.lang = lang;
+
+      // Update all data-i18n elements
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        el.textContent = t(el.dataset.i18n);
+      });
+
+      // Update active flag
+      document.querySelectorAll('.lang-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.lang === lang);
+      });
+    }
+
+    // Init language switcher
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+      btn.addEventListener('click', () => applyLanguage(btn.dataset.lang));
+    });
+
+    // Apply saved language on load
+    applyLanguage(currentLang);
+
+    // === Form submission ===
     const API_BASE = 'https://api.xhardtech.com';
 
     const form = document.getElementById('submitForm');
@@ -128,7 +374,7 @@
       if (!url) return;
 
       submitBtn.disabled = true;
-      submitBtn.textContent = 'Submitting...';
+      submitBtn.textContent = t('submitting');
       resultDiv.style.display = 'none';
 
       try {
@@ -143,10 +389,8 @@
         if (response.ok) {
           resultDiv.innerHTML = `
             <div style="padding: 20px; background: rgba(245, 158, 11, 0.1); border: 1px solid var(--accent-green); border-radius: var(--radius);">
-              <h3 style="color: var(--accent-green); margin-bottom: 8px;">Received!</h3>
-              <p style="color: var(--text-secondary); font-size: 0.9rem;">
-                Your submission is in queue. We'll analyze and respond if it qualifies.
-              </p>
+              <h3 style="color: var(--accent-green); margin-bottom: 8px;">${t('result_ok')}</h3>
+              <p style="color: var(--text-secondary); font-size: 0.9rem;">${t('result_ok_msg')}</p>
               <p style="color: var(--text-muted); font-size: 0.8rem; margin-top: 8px;">
                 ID: <code style="background: var(--bg-secondary); padding: 2px 6px; border-radius: 4px;">${data.id}</code>
               </p>
@@ -156,9 +400,8 @@
         } else {
           resultDiv.innerHTML = `
             <div style="padding: 20px; background: rgba(255, 71, 87, 0.1); border: 1px solid var(--accent-red); border-radius: var(--radius);">
-              <h3 style="color: var(--accent-red); margin-bottom: 8px;">Not accepted</h3>
+              <h3 style="color: var(--accent-red); margin-bottom: 8px;">${t('result_fail')}</h3>
               <p style="color: var(--text-secondary); font-size: 0.9rem;">${data.error}</p>
-              ${data.hint ? `<p style="color: var(--text-muted); font-size: 0.8rem; margin-top: 8px;">${data.hint}</p>` : ''}
               ${data.supported ? `<p style="color: var(--text-muted); font-size: 0.8rem; margin-top: 8px;">Supported: ${data.supported.join(', ')}</p>` : ''}
             </div>
           `;
@@ -168,14 +411,14 @@
       } catch (err) {
         resultDiv.innerHTML = `
           <div style="padding: 20px; background: rgba(255, 71, 87, 0.1); border: 1px solid var(--accent-red); border-radius: var(--radius);">
-            <h3 style="color: var(--accent-red); margin-bottom: 8px;">Error</h3>
-            <p style="color: var(--text-secondary); font-size: 0.9rem;">Could not connect. Please try again later.</p>
+            <h3 style="color: var(--accent-red); margin-bottom: 8px;">${t('result_err')}</h3>
+            <p style="color: var(--text-secondary); font-size: 0.9rem;">${t('result_err_msg')}</p>
           </div>
         `;
         resultDiv.style.display = 'block';
       } finally {
         submitBtn.disabled = false;
-        submitBtn.textContent = 'Submit';
+        submitBtn.textContent = t('form_btn');
       }
     });
 
