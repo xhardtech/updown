@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>XHT — Submit Tech Debate URL</title>
-  <meta name="description" content="Found a Vietnam tech debate? Submit the URL. We analyze and comment with insights from both sides.">
-  <meta property="og:title" content="XHT — Submit Tech Debate">
-  <meta property="og:description" content="Found a Vietnam tech debate? Submit the URL. We analyze and comment with insights.">
+  <title>@XHT — AI ghi lại quan điểm công nghệ Việt Nam</title>
+  <meta name="description" content="@XHT ghi nhận bạn chọn hướng nào trong các cuộc tranh luận công nghệ VN và tự động comment lại trên bài gốc. Khi đúng, bạn được vinh danh.">
+  <meta property="og:title" content="@XHT — AI ghi lại quan điểm công nghệ">
+  <meta property="og:description" content="Giống @Grok nhưng cho tech debates VN. Ghi nhận quan điểm, phân tích 2 bên, vinh danh khi đúng.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://xhardtech.com/">
   <link rel="canonical" href="https://xhardtech.com/">
@@ -26,17 +26,20 @@
   <section class="hero" style="padding: 80px 0 40px;">
     <div class="container" style="max-width: 640px;">
       <h1 style="font-size: clamp(1.8rem, 4vw, 2.5rem); margin-bottom: 16px; text-align: center;">
-        Found a tech debate? <span class="highlight">Send it to us.</span>
+        <span class="highlight">@XHT</span> — AI ghi lại quan điểm công nghệ
       </h1>
-      <p style="color: var(--text-secondary); text-align: center; margin-bottom: 40px;">
-        Paste the URL of a public discussion about Vietnam tech directions.
-        We'll analyze it and comment with insights from both sides.
+      <p style="color: var(--text-secondary); text-align: center; margin-bottom: 16px;">
+        Khi bạn tranh luận về hướng phát triển công nghệ của Việt Nam, @XHT sẽ ghi nhận bạn đã chọn bên nào
+        và tự động comment lại trên bài viết gốc — giống như @Grok, nhưng cho tech debates.
+      </p>
+      <p style="color: var(--text-muted); text-align: center; margin-bottom: 40px; font-size: 0.9rem;">
+        Khi lịch sử chứng minh bạn đúng, bạn sẽ được vinh danh.
       </p>
 
       <!-- Form -->
       <form id="submitForm">
         <div style="margin-bottom: 16px;">
-          <label for="urlInput" style="display: block; font-weight: 600; margin-bottom: 8px;">URL</label>
+          <label for="urlInput" style="display: block; font-weight: 600; margin-bottom: 8px;">Paste URL bài viết tranh luận</label>
           <input
             type="url"
             id="urlInput"
@@ -61,19 +64,23 @@
 
       <!-- How it works -->
       <div style="margin-top: 48px; padding: 24px; background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius);">
-        <h3 style="font-size: 1rem; margin-bottom: 16px;">How it works</h3>
+        <h3 style="font-size: 1rem; margin-bottom: 16px;">@XHT hoạt động như thế nào?</h3>
         <div style="display: flex; flex-direction: column; gap: 12px;">
           <div style="display: flex; gap: 12px; align-items: flex-start;">
             <span style="background: var(--accent-green); color: #000; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.8rem; flex-shrink: 0;">1</span>
-            <p style="color: var(--text-secondary); font-size: 0.9rem;">You find a public tech discussion related to Vietnam development directions</p>
+            <p style="color: var(--text-secondary); font-size: 0.9rem;">Bạn tìm thấy bài viết tranh luận về hướng phát triển công nghệ VN (fab vs fabless, xe điện vs xăng, AI agent vs copilot...)</p>
           </div>
           <div style="display: flex; gap: 12px; align-items: flex-start;">
             <span style="background: var(--accent-green); color: #000; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.8rem; flex-shrink: 0;">2</span>
-            <p style="color: var(--text-secondary); font-size: 0.9rem;">Paste the URL here</p>
+            <p style="color: var(--text-secondary); font-size: 0.9rem;">Paste URL vào đây — @XHT sẽ phân tích bài viết bằng AI, xác định người đăng chọn hướng nào</p>
           </div>
           <div style="display: flex; gap: 12px; align-items: flex-start;">
             <span style="background: var(--accent-green); color: #000; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.8rem; flex-shrink: 0;">3</span>
-            <p style="color: var(--text-secondary); font-size: 0.9rem;">We analyze with AI and comment with insights from both sides if it qualifies</p>
+            <p style="color: var(--text-secondary); font-size: 0.9rem;">@XHT tự động comment lại trên bài gốc: ghi nhận quan điểm, phân tích 2 bên, mời mọi người chọn hướng</p>
+          </div>
+          <div style="display: flex; gap: 12px; align-items: flex-start;">
+            <span style="background: var(--accent-green); color: #000; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.8rem; flex-shrink: 0;">4</span>
+            <p style="color: var(--text-secondary); font-size: 0.9rem;">Khi lịch sử chứng minh ai đúng — @XHT quay lại vinh danh những người đã dự đoán chính xác</p>
           </div>
         </div>
       </div>
