@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bộ Ba — Debater Map | UpDown</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .bo-ba-table { width: 100%; border-collapse: collapse; margin: 24px 0; font-size: 0.9rem; }
+    .bo-ba-table th { background: var(--card-bg); color: var(--accent-green); text-align: left; padding: 12px 16px; border-bottom: 2px solid var(--accent-green); font-weight: 700; }
+    .bo-ba-table td { padding: 10px 16px; border-bottom: 1px solid rgba(255,255,255,0.08); vertical-align: top; }
+    .bo-ba-table tr:hover { background: rgba(255,255,255,0.03); }
+    .industry-header { background: rgba(0,255,136,0.08) !important; }
+    .industry-header td { font-weight: 700; color: var(--accent-green); font-size: 0.95rem; padding: 16px; border-bottom: 1px solid var(--accent-green); }
+    .handle { color: var(--accent-green); font-weight: 600; }
+    .handle a { color: var(--accent-green); text-decoration: none; }
+    .handle a:hover { text-decoration: underline; }
+    .stance-tag { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 0.8rem; font-weight: 600; }
+    .stance-green { background: rgba(0,255,136,0.15); color: var(--accent-green); }
+    .stance-red { background: rgba(255,68,68,0.15); color: var(--accent-red); }
+    .comment-link { color: var(--text-secondary); font-size: 0.8rem; }
+    .comment-link a { color: var(--accent-green); }
+    .stats { display: flex; gap: 24px; margin: 24px 0; flex-wrap: wrap; }
+    .stat-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; padding: 20px; text-align: center; flex: 1; min-width: 120px; }
+    .stat-card .number { font-size: 2rem; font-weight: 800; color: var(--accent-green); }
+    .stat-card .label { color: var(--text-secondary); font-size: 0.85rem; }
+    .filter-bar { display: flex; gap: 8px; flex-wrap: wrap; margin: 16px 0; }
+    .filter-btn { padding: 6px 14px; border-radius: 20px; background: var(--card-bg); border: 1px solid var(--border); color: var(--text-secondary); cursor: pointer; font-size: 0.85rem; }
+    .filter-btn.active { background: var(--accent-green); color: var(--bg); border-color: var(--accent-green); font-weight: 600; }
+    @media (max-width: 768px) {
+      .bo-ba-table { font-size: 0.8rem; }
+      .bo-ba-table th, .bo-ba-table td { padding: 8px 10px; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="nav">
+    <div class="container">
+      <a href="./" class="nav-logo">Up<span>Down</span></a>
+      <div class="nav-links">
+        <a href="./">All Races</a>
+        <a href="vindication.html">Vindication</a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="race-hero">
+    <div class="container">
+      <span class="vs-badge">Debater Map</span>
+      <h1>Bộ Ba — Who Debates What</h1>
+      <p style="color: var(--text-secondary); max-width: 600px; margin: 0 auto;">
+        Industry / Category — @Username — Stance — Evidence URL.<br>
+        Tech leaders publicly debating the future. Their convictions, tracked.
+      </p>
+    </div>
+  </section>
+
+  <div class="container">
+
+    <div class="stats">
+      <div class="stat-card">
+        <div class="number">20</div>
+        <div class="label">Debaters</div>
+      </div>
+      <div class="stat-card">
+        <div class="number">12</div>
+        <div class="label">Active Races</div>
+      </div>
+      <div class="stat-card">
+        <div class="number">7</div>
+        <div class="label">Industries</div>
+      </div>
+      <div class="stat-card">
+        <div class="number">4</div>
+        <div class="label">X-Scanned</div>
+      </div>
+    </div>
+
+    <table class="bo-ba-table">
+      <thead>
+        <tr>
+          <th>Username</th>
+          <th>Org / Role</th>
+          <th>Stance / What</th>
+          <th>Race</th>
+          <th>Evidence</th>
+        </tr>
+      </thead>
+      <tbody>
+
+        <!-- AI / Machine Learning -->
+        <tr class="industry-header"><td colspan="5">AI / Machine Learning (10)</td></tr>
+
+        <tr>
+          <td class="handle"><a href="https://x.com/sama" target="_blank">@sama</a></td>
+          <td>Sam Altman<br><small>CEO, OpenAI</small></td>
+          <td><span class="stance-tag stance-red">Closed Source LLM wins</span></td>
+          <td>LLM: Open vs Closed</td>
+          <td class="comment-link"><a href="https://x.com/sama/status/2027578652477821175" target="_blank">tweet</a> · <a href="https://x.com/sama/status/2029622732594499630" target="_blank">tweet</a></td>
+        </tr>
+
+        <tr>
+          <td class="handle"><a href="https://x.com/ylecun" target="_blank">@ylecun</a></td>
+          <td>Yann LeCun<br><small>Chief AI Scientist, Meta</small></td>
+          <td><span class="stance-tag stance-green">Open Source LLM wins</span></td>
+          <td>LLM: Open vs Closed</td>
+          <td class="comment-link">—</td>
+        </tr>
+
+        <tr>
+          <td class="handle"><a href="https://x.com/satyanadella" target="_blank">@satyanadella</a></td>
+          <td>Satya Nadella<br><small>CEO, Microsoft</small></td>
+          <td><span class="stance-tag stance-red">AI Copilots will win</span></td>
+          <td>Agentic AI vs Copilots</td>
+          <td class="comment-link">—</td>
+        </tr>
+
+        <tr>
+          <td class="handle"><a href="https://x.com/jimfan" target="_blank">@jimfan</a></td>
+          <td>Jim Fan<br><small>Senior Research Scientist, NVIDIA</small></td>
+          <td><span class="stance-tag stance-green">Humanoid Robot wins</span></td>
+          <td>Robot: Humanoid vs Cobot vs AMR</td>
+          <td class="comment-link">—</td>
+        </tr>
+
+        <tr>
+          <td class="handle"><a href="https://x.com/karpathy" target="_blank">@karpathy</a></td>
+          <td>Andrej Karpathy<br><small>AI Researcher, Independent</small></td>
+          <td><span class="stance-tag stance-green">Pure Vision wins</span></td>
+          <td>Autonomous Driving: LiDAR vs Vision</td>
+          <td class="comment-link">—</td>
+        </tr>
+
+        <tr>
+          <td class="handle"><a href="https://x.com/GaryMarcus" target="_blank">@GaryMarcus</a></td>
+          <td>Gary Marcus<br><small>Professor / Author, NYU</small></td>
+          <td><span class="stance-tag stance-red">AI skeptic — tracking LLM race</span></td>
+          <td>LLM: Open vs Closed</td>
+          <td class="comment-link">—</td>
+        </tr>
+
+        <tr>
+          <td class="handle"><a href="https://x.com/EMostaque" target="_blank">@EMostaque</a></td>
+          <td>Emad Mostaque<br><small>CEO, Schelling AI</small></td>
+          <td><span class="stance-tag stance-green">Open Source LLM wins</span></td>
+          <td>LLM: Open vs Closed</td>
+          <td class="comment-link">—</td>
+        </tr>
+
+        <tr>
+          <td class="handle"><a href="https://x.com/drfeifei" target="_blank">@drfeifei</a></td>
+          <td>Fei-Fei Li<br><small>Professor, Stanford / World Labs</small></td>
+          <td><span class="stance-tag stance-green">Tracking AR/VR + Robotics</span></td>
+          <td>Spatial Computing</td>
+          <td class="comment-link">—</td>
+        </tr>
+
+        <tr>
+          <td class="handle"><a href="https://x.com/demabordi" target="_blank">@demishassabis</a></td>
+          <td>Demis Hassabis<br><small>CEO, Google DeepMind</small></td>
+          <td><span class="stance-tag stance-green">Tracking LLM + Quantum + Biotech</span></td>
+          <td>Multiple races</td>
+          <td class="comment-link">—</td>
+        </tr>
+
+        <tr>
+          <td class="handle"><a href="https://x.com/alexandr_wang" target="_blank">@alexandr_wang</a></td>
+          <td>Alexandr Wang<br><small>CEO, Scale AI</small></td>
+          <td><span class="stance-tag stance-green">Tracking Agentic AI</span></td>
+          <td>Agentic AI vs Copilots</td>
+          <td class="comment-link">—</td>
+        </tr>
+
+        <!-- Multi-Industry -->
+        <tr class="industry-header"><td colspan="5">Multi-Industry (1)</td></tr>
+
+        <tr>
+          <td class="handle"><a href="https://x.com/elonmusk" target="_blank">@elonmusk</a></td>
+          <td>Elon Musk<br><small>CEO, Tesla / SpaceX / xAI</small></td>
+          <td>
+            <span class="stance-tag stance-green">Pure Vision wins</span><br>
+            <span class="stance-tag stance-green">Humanoid wins</span><br>
+            <span class="stance-tag stance-green">SpaceX dominates</span>
+          </td>
+          <td>LiDAR vs Vision · Robot · Space</td>
+          <td class="comment-link">
+            <a href="https://x.com/elonmusk/status/2030861395060043957" target="_blank">tweet</a> ·
+            <a href="https://x.com/elonmusk/status/2030856275505094711" target="_blank">tweet</a>
+          </td>
+        </tr>
+
+        <!-- Semiconductors / Chips -->
+        <tr class="industry-header"><td colspan="5">Semiconductors / Chips (4)</td></tr>
+
+        <tr>
+          <td class="handle"><a href="https://x.com/JensenHuang" target="_blank">@JensenHuang</a></td>
+          <td>Jensen Huang<br><small>CEO, NVIDIA</small></td>
+          <td><span class="stance-tag stance-red">Classical HPC wins (not quantum)</span></td>
+          <td>Quantum vs Classical HPC</td>
+          <td class="comment-link"><a href="https://x.com/jensenhuang/status/490602282409787392" target="_blank">tweet</a></td>
+        </tr>
+
+        <tr>
+          <td class="handle"><a href="https://x.com/PGelsinger" target="_blank">@PGelsinger</a></td>
+          <td>Pat Gelsinger<br><small>Former CEO, Intel</small></td>
+          <td><span class="stance-tag stance-red">x86 Resilience</span></td>
+          <td>Chips: ARM vs RISC-V vs x86</td>
+          <td class="comment-link">—</td>
+        </tr>
+
+        <tr>
+          <td class="handle"><a href="https://x.com/LisaSu" target="_blank">@LisaSu</a></td>
+          <td>Lisa Su<br><small>CEO, AMD</small></td>
+          <td><span class="stance-tag stance-red">x86 Resilience</span></td>
+          <td>Chips: ARM vs RISC-V vs x86</td>
+          <td class="comment-link">
+            <a href="https://x.com/LisaSu/status/1994194473484443710" target="_blank">tweet</a> ·
+            <a href="https://x.com/LisaSu/status/1991366432358298091" target="_blank">tweet</a>
+          </td>
+        </tr>
+
+        <tr>
+          <td class="handle"><a href="https://x.com/clabordi" target="_blank">@clattner</a></td>
+          <td>Chris Lattner<br><small>CEO, Modular</small></td>
+          <td><span class="stance-tag stance-green">Tracking chip architecture</span></td>
+          <td>Chips: ARM vs RISC-V vs x86</td>
+          <td class="comment-link">—</td>
+        </tr>
+
+        <!-- Energy / Clean Tech -->
+        <tr class="industry-header"><td colspan="5">Energy / Clean Tech (1)</td></tr>
+
+        <tr>
+          <td class="handle"><a href="https://x.com/BillGates" target="_blank">@BillGates</a></td>
+          <td>Bill Gates<br><small>Co-chair, Breakthrough Energy</small></td>
+          <td><span class="stance-tag stance-green">Advanced Fission (SMR) wins</span></td>
+          <td>Energy: Fusion vs Fission vs Solar</td>
+          <td class="comment-link">
+            <a href="https://x.com/BillGates/status/1943750242148790622" target="_blank">tweet</a>
+          </td>
+        </tr>
+
+        <!-- Automotive / EVs -->
+        <tr class="industry-header"><td colspan="5">Automotive / EVs (2)</td></tr>
+
+        <tr>
+          <td class="handle"><a href="https://x.com/pabordi" target="_blank">@waymo</a></td>
+          <td>Dmitri Dolgov<br><small>Co-CEO, Waymo</small></td>
+          <td><span class="stance-tag stance-red">LiDAR + Sensors wins</span></td>
+          <td>Autonomous Driving: LiDAR vs Vision</td>
+          <td class="comment-link">—</td>
+        </tr>
+
+        <tr>
+          <td class="handle"><a href="https://x.com/pabordi2" target="_blank">@VinFast</a></td>
+          <td>Phạm Nhật Vượng<br><small>Chairman, Vingroup / VinFast</small></td>
+          <td><span class="stance-tag stance-green">VinFast sẽ thắng</span></td>
+          <td>VinFast vs Xe Nhật</td>
+          <td class="comment-link">—</td>
+        </tr>
+
+        <!-- Robotics / Manufacturing -->
+        <tr class="industry-header"><td colspan="5">Robotics / Manufacturing (1)</td></tr>
+
+        <tr>
+          <td class="handle"><a href="https://x.com/BrettAdcock" target="_blank">@BrettAdcock</a></td>
+          <td>Brett Adcock<br><small>CEO, Figure AI</small></td>
+          <td><span class="stance-tag stance-green">Humanoid Robot wins</span></td>
+          <td>Robot: Humanoid vs Cobot vs AMR</td>
+          <td class="comment-link">—</td>
+        </tr>
+
+        <!-- Biotech / Genomics -->
+        <tr class="industry-header"><td colspan="5">Biotech / Genomics (1)</td></tr>
+
+        <tr>
+          <td class="handle"><a href="https://x.com/sabordi" target="_blank">@sabordi</a></td>
+          <td>Stephane Bancel<br><small>CEO, Moderna</small></td>
+          <td><span class="stance-tag stance-green">mRNA Revolution wins</span></td>
+          <td>Biotech: mRNA vs Traditional</td>
+          <td class="comment-link">—</td>
+        </tr>
+
+      </tbody>
+    </table>
+
+    <div class="pressure-section" style="margin-top: 32px;">
+      <h2>Legend</h2>
+      <p>
+        <span class="stance-tag stance-green">Green</span> = Supporting the challenger / disruptive side<br>
+        <span class="stance-tag stance-red">Red</span> = Supporting the incumbent / established side<br>
+        <strong>Evidence</strong> = Link to their public tweet/post expressing this stance<br>
+        <strong>—</strong> = Known stance but no scanned tweet URL yet (X scan incomplete)
+      </p>
+    </div>
+
+    <div class="argument-card" style="margin: 32px 0;">
+      <h3>X Scan Status</h3>
+      <p>Scanned 4/20 celebrities successfully: @elonmusk, @sama, @LisaSu, @BillGates.<br>
+      Remaining 16 need correct X handles or another scan attempt.</p>
+      <p style="color: var(--text-secondary); font-size: 0.85rem; margin-top: 8px;">
+        Generated: March 9, 2026 · Source: <code>bot/scans/debater_map_20260309_1822.json</code>
+      </p>
+    </div>
+
+  </div>
+
+  <footer class="footer">
+    <div class="container">
+      <p>UpDown — Belief Registry. No money. Just truth and recognition.</p>
+      <p style="margin-top: 8px;"><a href="./">Home</a> &middot; <a href="vindication.html">Vindication</a></p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

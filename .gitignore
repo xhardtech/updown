@@ -1,0 +1,12 @@
+# Whitelist — chỉ push docs + config files
+*
+!docs/
+!docs/**
+!.gitignore
+!README.md
+
+# Sensitive — never push (even if whitelisted)
+config.env
+.env.local
+CLAUDE.md
+docs/admin.html
