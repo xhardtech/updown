@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agenda — Offline CĐVM Lần 6</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    background: #0a0a0f;
+    color: #f0f0f0;
+    min-height: 100vh;
+    padding: 20px 16px 40px;
+  }
+
+  .card {
+    max-width: 420px;
+    margin: 0 auto;
+    background: #13131f;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.6);
+  }
+
+  /* Header */
+  .header {
+    background: linear-gradient(135deg, #0d2847 0%, #1a3a5c 100%);
+    padding: 20px 20px 16px;
+    border-bottom: 2px solid #f59e0b;
+  }
+  .header-label {
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: #f59e0b;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .header-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: #fff;
+    line-height: 1.3;
+  }
+  .header-sub {
+    font-size: 12px;
+    color: #94a3b8;
+    margin-top: 6px;
+  }
+
+  /* Name field */
+  .name-section {
+    padding: 16px 20px;
+    border-bottom: 1px solid #1e2030;
+  }
+  .name-label {
+    font-size: 11px;
+    color: #64748b;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .name-field {
+    width: 100%;
+    background: #0a0a0f;
+    border: 1.5px solid #1e2030;
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 16px;
+    color: #f0f0f0;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .name-field:focus { border-color: #f59e0b; }
+  .name-field::placeholder { color: #334155; }
+
+  /* Role legend */
+  .role-section {
+    padding: 14px 20px;
+    border-bottom: 1px solid #1e2030;
+    background: #0f0f1a;
+  }
+  .role-title {
+    font-size: 11px;
+    color: #64748b;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .role-list {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+  }
+  .role-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+  }
+  .pen {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 20px;
+    min-width: 68px;
+    justify-content: center;
+  }
+  .pen-blue  { background: #1e3a5f; color: #60a5fa; border: 1px solid #2563eb; }
+  .pen-red   { background: #3f1a1a; color: #f87171; border: 1px solid #dc2626; }
+  .pen-black { background: #1a1a1a; color: #e0e0e0; border: 1px solid #555; }
+  .role-name { color: #e2e8f0; font-weight: 500; }
+  .role-desc { color: #64748b; font-size: 12px; margin-left: auto; }
+
+  /* Schedule */
+  .schedule-section { padding: 14px 20px 20px; }
+  .schedule-title {
+    font-size: 11px;
+    color: #64748b;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .schedule-item {
+    display: flex;
+    gap: 12px;
+    padding: 9px 0;
+    border-bottom: 1px solid #1a1a2e;
+  }
+  .schedule-item:last-child { border-bottom: none; }
+  .time {
+    font-size: 12px;
+    color: #f59e0b;
+    font-weight: 600;
+    min-width: 88px;
+    padding-top: 1px;
+    font-variant-numeric: tabular-nums;
+  }
+  .event { font-size: 14px; color: #e2e8f0; line-height: 1.4; }
+  .event-note { font-size: 11px; color: #475569; margin-top: 2px; }
+
+  .divider {
+    height: 1px;
+    background: linear-gradient(to right, transparent, #f59e0b44, transparent);
+    margin: 4px 0;
+  }
+
+  /* Gala row */
+  .schedule-item.gala .time { color: #0d9488; }
+  .schedule-item.gala .event { color: #a7f3d0; }
+
+  /* Footer */
+  .footer {
+    padding: 12px 20px;
+    background: #0a0a0f;
+    border-top: 1px solid #1e2030;
+    text-align: center;
+  }
+  .footer-text { font-size: 11px; color: #334155; }
+
+  /* === PRINT STYLES (A5) === */
+  @media print {
+    @page { size: A5; margin: 10mm; }
+    body {
+      background: #fff;
+      color: #111;
+      padding: 0;
+    }
+    .card {
+      max-width: 100%;
+      border-radius: 0;
+      box-shadow: none;
+      background: #fff;
+    }
+    .header {
+      background: #1e3a5f !important;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+    .header-title, .header-label { color: #fff !important; }
+    .header-sub { color: #ccc !important; }
+    .name-section, .role-section, .schedule-section { background: #fff !important; padding: 6px 16px !important; }
+    .header { padding: 10px 16px 8px !important; }
+    .header-title { font-size: 15px !important; }
+    .schedule-item { padding: 4px 0 !important; }
+    .role-item { gap: 7px !important; margin: 0 !important; }
+    .role-list { gap: 4px !important; }
+    .event { font-size: 12px !important; line-height: 1.3 !important; }
+    .event-note { font-size: 10px !important; margin-top: 1px !important; }
+    .time { font-size: 11px !important; min-width: 76px !important; }
+    .name-field { padding: 6px 10px !important; }
+    .footer { padding: 8px 16px !important; }
+    .schedule-title, .role-title, .name-label { margin-bottom: 5px !important; }
+    .divider { margin: 3px 0 !important; }
+    .name-field {
+      background: #fff;
+      border: 1.5px solid #999;
+      color: #111;
+    }
+    .role-section { background: #f8f9fa !important; }
+    .role-title, .schedule-title { color: #666 !important; }
+    .role-name, .event { color: #111 !important; }
+    .role-desc, .event-note { color: #666 !important; }
+    .time { color: #b45309 !important; }
+    .pen-blue  { background: #dbeafe !important; color: #1d4ed8 !important; }
+    .pen-red   { background: #fee2e2 !important; color: #dc2626 !important; }
+    .pen-black { background: #e5e7eb !important; color: #111 !important; border-color: #555 !important; }
+    .schedule-item { border-bottom: 1px solid #e5e7eb !important; }
+    .schedule-item.gala .time { color: #0d9488 !important; }
+    .schedule-item.gala .event { color: #065f46 !important; }
+    .footer { border-top: 1px solid #e5e7eb; }
+    .footer-text { color: #999 !important; }
+    .divider { background: #e5e7eb !important; }
+  }
+</style>
+</head>
+<body>
+<div class="card">
+
+  <!-- Header -->
+  <div class="header">
+    <div class="header-label">Offline Cộng Đồng Vi Mạch Lần 6</div>
+    <div class="header-title">Wafer Fab đang xây<br>và hành động của chúng ta</div>
+    <div class="header-sub">18/04/2026 · Vinpearl Hạ Long Resort &amp; Spa</div>
+  </div>
+
+  <!-- Tên -->
+  <div class="name-section">
+    <div class="name-label">Họ tên</div>
+    <input class="name-field" type="text" placeholder="Ghi tên của bạn vào đây..." />
+  </div>
+
+  <!-- Role legend -->
+  <div class="role-section">
+    <div class="role-title">Màu bút · Vai trò hôm nay</div>
+    <div class="role-list">
+      <div class="role-item">
+        <span class="pen pen-blue">🖊 Xanh</span>
+        <span class="role-name">Nhà nước</span>
+        <span class="role-desc">Chính sách · Đầu tư</span>
+      </div>
+      <div class="role-item">
+        <span class="pen pen-red">🖊 Đỏ</span>
+        <span class="role-name">Nhà trường</span>
+        <span class="role-desc">Nhân lực · Nghiên cứu</span>
+      </div>
+      <div class="role-item">
+        <span class="pen pen-black">🖊 Đen</span>
+        <span class="role-name">Doanh nghiệp</span>
+        <span class="role-desc">Sản xuất · Thị trường</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Schedule -->
+  <div class="schedule-section">
+    <div class="schedule-title">Chương trình</div>
+
+    <div class="schedule-item">
+      <div class="time">13:00 – 13:30</div>
+      <div><div class="event">Check-in</div><div class="event-note">Chụp ảnh backdrop · Nhạc nền</div></div>
+    </div>
+    <div class="schedule-item">
+      <div class="time">13:30 – 13:45</div>
+      <div><div class="event">Khai mạc chính thức</div><div class="event-note">Quốc ca · Tặng hoa · Phát biểu</div></div>
+    </div>
+    <div class="schedule-item">
+      <div class="time">13:45 – 14:00</div>
+      <div style="flex:1">
+        <div class="event">Mini game: Khai mở Fab</div>
+        <div class="event-note">Nhận vai trò · Ký tên agenda</div>
+        <button class="expand-btn" onclick="toggleExpand('expandFab', this)">▶ Xem video</button>
+        <div id="expandFab" class="expand-panel" style="display:none;">
+          <div class="yt-wrap">
+            <iframe id="ytFab" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="schedule-item">
+      <div class="time">14:00 – 14:45</div>
+      <div style="flex:1">
+        <div class="event">Thảo luận nhóm</div>
+        <div class="event-note">Wafer Fab đang xây — bên bạn cần làm gì?</div>
+        <button class="expand-btn" onclick="toggleExpand('expandChat', this)">▶ Hướng dẫn thảo luận online</button>
+        <div id="expandChat" class="expand-panel" style="display:none;">
+          <div class="guide-step">
+            <div class="guide-step-label">Bước 1 — Quét QR để vào hệ thống</div>
+            <div class="guide-step-desc">Quét QR trên agenda bản giấy hoặc bật Đại fab và quét QR trên Đại fab</div>
+            <img src="hinhdaifab.jpg" class="guide-img" alt="Agenda giấy" style="margin-bottom:8px;">
+            <img src="anhtronghop.jpg" class="guide-img" alt="QR Đại fab">
+          </div>
+          <div class="guide-step">
+            <div class="guide-step-label">Bước 2 — Gửi ý kiến thảo luận</div>
+            <div class="guide-step-desc">Chọn vai trò, nhập ý kiến và bấm gửi lên hệ thống</div>
+            <img src="image.png" class="guide-img" alt="Màn hình nhập ý kiến">
+          </div>
+          <button class="scroll-chat-btn" onclick="scrollToChat()">↓ Đến phần nhập ý kiến</button>
+        </div>
+      </div>
+    </div>
+    <div class="schedule-item">
+      <div class="time">14:45 – 15:05</div>
+      <div><div class="event">Giải lao</div></div>
+    </div>
+    <div class="schedule-item">
+      <div class="time">15:05 – 15:50</div>
+      <div style="flex:1">
+        <div class="event">Các nhóm lên sân khấu</div>
+        <div class="event-note">Nhà nước · Nhà trường · Doanh nghiệp</div>
+        <div class="event-note print-only" style="color:#f59e0b;margin-top:3px;">📝 Ghi ý kiến / câu hỏi vào phần Ý kiến thảo luận bên dưới khi chờ được gọi</div>
+        <button class="expand-btn" id="btnResult" onclick="toggleExpand('expandResult', this)">▶ Xem tóm tắt ý kiến các nhóm</button>
+        <div id="expandResult" class="expand-panel" style="display:none;">
+          <div class="guide-step">
+            <div class="guide-step-label">Ý kiến tóm tắt theo nhóm</div>
+            <div class="guide-step-desc">Bấm vào nhóm để xem đầy đủ các hướng đề xuất</div>
+          </div>
+          <div class="result-btns-inline">
+            <a href="result.html?id=e5bdbcfc-1a7f-4e16-9879-321858c85fcc" class="result-btn result-nn">🔵 Nhà nước</a>
+            <a href="result.html?id=caaa3a36-1d28-4c46-91c0-19cef530fd84" class="result-btn result-nt">🔴 Nhà trường</a>
+            <a href="result.html?id=87725d9e-15b7-4dff-bb2b-94e8f56e08ec" class="result-btn result-dn">⚫ Doanh nghiệp</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="schedule-item">
+      <div class="time">15:50 – 16:30</div>
+      <div style="flex:1">
+        <div class="event">Thảo luận chéo &amp; Vote</div>
+        <button class="expand-btn" id="btnVote" onclick="toggleExpand('expandVote', this)">▶ Hướng dẫn vote</button>
+        <div id="expandVote" class="expand-panel" style="display:none;">
+          <div class="guide-step">
+            <div class="guide-step-label">Bước 1 — Mở trang kết quả nhóm bạn muốn vote</div>
+            <div class="guide-step-desc">Chọn một trong 3 nhóm bên dưới để xem các hướng đề xuất</div>
+          </div>
+          <div class="result-btns-inline">
+            <a href="result.html?id=e5bdbcfc-1a7f-4e16-9879-321858c85fcc" class="result-btn result-nn">🔵 Nhà nước</a>
+            <a href="result.html?id=caaa3a36-1d28-4c46-91c0-19cef530fd84" class="result-btn result-nt">🔴 Nhà trường</a>
+            <a href="result.html?id=87725d9e-15b7-4dff-bb2b-94e8f56e08ec" class="result-btn result-dn">⚫ Doanh nghiệp</a>
+          </div>
+          <div class="guide-step" style="margin-top:12px;">
+            <div class="guide-step-label">Bước 2 — Vote cho hướng bạn đồng ý nhất</div>
+            <div class="guide-step-desc">Trên trang kết quả, bấm vào hướng bạn ủng hộ để vote — kết quả cập nhật realtime trên màn hình lớn</div>
+          </div>
+          <video src="videos/huongdan_vote.mp4" controls playsinline muted style="width:100%;border-radius:8px;margin-top:10px;" poster=""></video>
+        </div>
+      </div>
+    </div>
+    <div class="schedule-item">
+      <div class="time">16:30 – 17:00</div>
+      <div><div class="event">Call-to-action &amp; Bế mạc</div></div>
+    </div>
+
+    <div class="divider" style="margin: 8px 0;"></div>
+
+    <div class="schedule-item gala">
+      <div class="time">19:00 – 22:00</div>
+      <div><div class="event">Gala Dinner</div><div class="event-note">Nhà hàng Vinpearl Hạ Long</div></div>
+    </div>
+  </div>
+
+  <!-- Chat section -->
+  <div class="chat-section" id="chatSection">
+    <div class="chat-header">
+      <div class="chat-title">💬 Ý kiến thảo luận</div>
+      <div class="chat-sub">Wafer Fab đang xây — bên bạn cần làm gì trong 1 năm tới?</div>
+      <div style="font-size:10px;color:#475569;margin-top:5px;">📱 Vào bằng QR hiện trên Đại fab đặt trên bàn</div>
+    </div>
+
+    <div class="chat-feed" id="chatFeed">
+      <!-- ý kiến sẽ hiện ở đây -->
+    </div>
+
+    <div class="chat-input-area">
+      <select class="role-select" id="roleSelect">
+        <option value="">Chọn vai trò của bạn…</option>
+        <option value="Nhà nước">🔵 Nhà nước</option>
+        <option value="Nhà trường">🔴 Nhà trường</option>
+        <option value="Doanh nghiệp">⚫ Doanh nghiệp</option>
+      </select>
+      <textarea class="chat-input" id="chatInput" placeholder="Nhập ý kiến của bạn..." rows="3"></textarea>
+      <div id="countdownBanner" style="display:none;background:#1a1a2e;border-radius:8px;padding:8px 12px;text-align:center;">
+        <div style="font-size:11px;color:#64748b;">Chat sẽ được lưu lại sau khi hội nghị bắt đầu</div>
+        <div id="countdownTimer" style="font-size:20px;font-weight:700;color:#f59e0b;margin-top:4px;letter-spacing:2px;">--:--:--</div>
+        <div style="font-size:10px;color:#475569;margin-top:2px;">Ý kiến gửi trước giờ này sẽ tự mất sau 15 giây</div>
+      </div>
+      <button class="send-btn" onclick="sendIdea()">Gửi lên hệ thống</button>
+    </div>
+  </div>
+
+  <!-- Page result buttons -->
+  <div class="result-section" id="resultSection">
+    <div class="result-title">Xem kết quả theo nhóm</div>
+    <div class="result-btns">
+      <a href="result.html?id=e5bdbcfc-1a7f-4e16-9879-321858c85fcc" class="result-btn result-nn">🔵 Nhà nước</a>
+      <a href="result.html?id=caaa3a36-1d28-4c46-91c0-19cef530fd84" class="result-btn result-nt">🔴 Nhà trường</a>
+      <a href="result.html?id=87725d9e-15b7-4dff-bb2b-94e8f56e08ec" class="result-btn result-dn">⚫ Doanh nghiệp</a>
+    </div>
+  </div>
+
+  <!-- Print-only: QR Đại fab -->
+  <div class="daifab-section print-only">
+    <img src="hinhdaifab.jpg" alt="Đại fab QR" class="daifab-img">
+    <div class="daifab-note">Quét QR trên Đại fab hoặc tại đây để vào agenda online và ghi ý kiến của mình tại xhardtech.com/vimach6.html</div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <div class="footer-text">cộng đồng vi mạch việt nam · xhardtech.com/vimach6.html</div>
+  </div>
+
+</div>
+
+<style>
+.chat-section {
+  border-top: 2px solid #f59e0b;
+  background: #0f0f1a;
+}
+.chat-header {
+  padding: 14px 20px 10px;
+  background: #13131f;
+}
+.chat-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: #f59e0b;
+}
+.chat-sub {
+  font-size: 11px;
+  color: #475569;
+  margin-top: 3px;
+}
+.chat-feed {
+  padding: 0 16px;
+  max-height: 320px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+.chat-bubble {
+  background: #1a1a2e;
+  border-radius: 10px;
+  padding: 9px 12px;
+  border-left: 3px solid #334155;
+}
+.chat-bubble.nn  { border-left-color: #2563eb; }
+.chat-bubble.ntr { border-left-color: #dc2626; }
+.chat-bubble.dn  { border-left-color: #555; }
+.bubble-meta {
+  font-size: 10px;
+  color: #64748b;
+  margin-bottom: 4px;
+}
+.bubble-text {
+  font-size: 13px;
+  color: #e2e8f0;
+  line-height: 1.4;
+}
+.chat-input-area {
+  padding: 12px 16px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  border-top: 1px solid #1e2030;
+}
+.role-select {
+  background: #0a0a0f;
+  border: 1.5px solid #1e2030;
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 14px;
+  color: #e2e8f0;
+  outline: none;
+}
+.role-select:focus { border-color: #f59e0b; }
+.chat-input {
+  width: 100%;
+  background: #0a0a0f;
+  border: 1.5px solid #1e2030;
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 14px;
+  color: #e2e8f0;
+  resize: none;
+  outline: none;
+  font-family: inherit;
+}
+.chat-input:focus { border-color: #f59e0b; }
+.send-btn {
+  background: #f59e0b;
+  color: #0a0a0f;
+  border: none;
+  border-radius: 8px;
+  padding: 11px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  width: 100%;
+}
+.send-btn:active { background: #d97706; }
+.empty-state {
+  text-align: center;
+  color: #334155;
+  font-size: 12px;
+  padding: 20px 0;
+}
+
+.daifab-section {
+  padding: 14px 20px;
+  border-top: 1px solid #1e2030;
+  text-align: center;
+}
+.daifab-img {
+  width: 60%;
+  max-width: 200px;
+}
+@media print {
+  .daifab-img {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+  .daifab-note {
+    font-size: 16px !important;
+    font-weight: 700 !important;
+    color: #92400e !important;
+    margin-top: 8px !important;
+    line-height: 1.5 !important;
+  }
+  .event-note.print-only {
+    font-size: 13px !important;
+    font-weight: 700 !important;
+    color: #92400e !important;
+    margin-top: 5px !important;
+    line-height: 1.5 !important;
+    border-left: 3px solid #f59e0b;
+    padding-left: 6px;
+  }
+}
+.daifab-note {
+  font-size: 12px;
+  color: #f59e0b;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.expand-btn {
+  margin-top: 7px;
+  background: #1e2030;
+  border: 1px solid #334155;
+  color: #94a3b8;
+  font-size: 11px;
+  border-radius: 6px;
+  padding: 5px 10px;
+  cursor: pointer;
+  display: inline-block;
+}
+.expand-btn:active { background: #2a2d3e; }
+.expand-btn.open { color: #f59e0b; border-color: #f59e0b; }
+.expand-panel { margin-top: 10px; }
+
+.yt-wrap {
+  position: relative;
+  width: 100%;
+  padding-bottom: 56.25%;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #000;
+}
+.yt-wrap iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.guide-step {
+  margin-bottom: 14px;
+}
+.guide-step-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: #f59e0b;
+  margin-bottom: 4px;
+}
+.guide-step-desc {
+  font-size: 11px;
+  color: #64748b;
+  margin-bottom: 6px;
+  line-height: 1.4;
+}
+.guide-img {
+  width: 100%;
+  border-radius: 8px;
+  display: block;
+}
+.scroll-chat-btn {
+  width: 100%;
+  background: #1a3a5c;
+  border: 1px solid #2563eb;
+  color: #93c5fd;
+  font-size: 13px;
+  font-weight: 600;
+  border-radius: 8px;
+  padding: 10px;
+  cursor: pointer;
+  margin-top: 4px;
+}
+.scroll-chat-btn:active { background: #1e3a5f; }
+
+.result-section {
+  padding: 14px 16px 16px;
+  border-top: 1px solid #1e2030;
+  background: #0f0f1a;
+}
+.result-title {
+  font-size: 11px;
+  color: #475569;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+.result-btns, .result-btns-inline {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.result-btn {
+  display: block;
+  text-align: center;
+  padding: 11px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  border: 1.5px solid;
+}
+.result-nn { background: #1e3a5c; border-color: #2563eb; color: #93c5fd; }
+.result-nt { background: #3b1515; border-color: #dc2626; color: #fca5a5; }
+.result-dn { background: #1a1a1a; border-color: #555; color: #d1d5db; }
+.result-btn:active { opacity: 0.8; }
+
+.print-only { display: none; }
+@media print {
+  .print-only { display: block !important; }
+  .expand-btn, .expand-panel { display: none !important; }
+  .result-section { display: none !important; }
+}
+
+@media print {
+  .chat-section { display: none !important; }
+  .daifab-section { border-top: 1px solid #e5e7eb; }
+  .daifab-note { color: #92400e !important; }
+}
+</style>
+
+<script>
+// 14:00 Vietnam time = 07:00 UTC
+const CHAT_OPEN = new Date('2026-04-18T07:00:00Z');
+const STORAGE_KEY = 'vimach6_ideas';
+
+function isLive() { return new Date() >= CHAT_OPEN; }
+
+function loadIdeas() {
+  try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; }
+  catch(e) { return []; }
+}
+
+function saveIdeas(ideas) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(ideas));
+}
+
+const roleClass = { 'Nhà nước': 'nn', 'Nhà trường': 'ntr', 'Doanh nghiệp': 'dn' };
+
+function renderFeed() {
+  const feed = document.getElementById('chatFeed');
+  const ideas = loadIdeas();
+  if (ideas.length === 0) {
+    feed.innerHTML = '<div class="empty-state">Chưa có ý kiến nào — hãy là người đầu tiên!</div>';
+    return;
+  }
+  feed.innerHTML = ideas.map(i => `
+    <div class="chat-bubble ${roleClass[i.role] || ''}">
+      <div class="bubble-meta">${i.role} · ${i.time}</div>
+      <div class="bubble-text">${i.text}</div>
+    </div>
+  `).join('');
+  feed.scrollTop = feed.scrollHeight;
+}
+
+function sendIdea() {
+  const role = document.getElementById('roleSelect').value;
+  const text = document.getElementById('chatInput').value.trim();
+  if (!role) { alert('Vui lòng chọn vai trò của bạn.'); return; }
+  if (!text) return;
+
+  const entry = {
+    role,
+    text,
+    time: new Date().toLocaleTimeString('vi-VN', {hour:'2-digit', minute:'2-digit'})
+  };
+
+  if (isLive()) {
+    // Persistent — lưu localStorage bình thường
+    const ideas = loadIdeas();
+    ideas.push(entry);
+    saveIdeas(ideas);
+    document.getElementById('chatInput').value = '';
+    renderFeed();
+  } else {
+    // Ephemeral — hiện tạm thời, tự xóa sau 15 giây
+    document.getElementById('chatInput').value = '';
+    const feed = document.getElementById('chatFeed');
+    const div = document.createElement('div');
+    div.className = 'chat-bubble ' + (roleClass[entry.role] || '');
+    div.innerHTML = `<div class="bubble-meta">${entry.role} · ${entry.time} · <span style="color:#f59e0b;">tạm thời</span></div><div class="bubble-text">${entry.text}</div>`;
+    // Remove empty state if present
+    const empty = feed.querySelector('.empty-state');
+    if (empty) empty.remove();
+    feed.appendChild(div);
+    feed.scrollTop = feed.scrollHeight;
+    setTimeout(() => { div.remove(); renderFeed(); }, 15000);
+  }
+}
+
+// Countdown timer
+function updateUI() {
+  const now = new Date();
+  const banner = document.getElementById('countdownBanner');
+  const timerEl = document.getElementById('countdownTimer');
+
+  if (now >= CHAT_OPEN) {
+    banner.style.display = 'none';
+    renderFeed();
+    return;
+  }
+
+  banner.style.display = 'block';
+  const diff = CHAT_OPEN - now;
+  const h = Math.floor(diff / 3600000);
+  const m = Math.floor((diff % 3600000) / 60000);
+  const s = Math.floor((diff % 60000) / 1000);
+  timerEl.textContent =
+    String(h).padStart(2,'0') + ':' +
+    String(m).padStart(2,'0') + ':' +
+    String(s).padStart(2,'0');
+}
+
+renderFeed();
+updateUI();
+setInterval(updateUI, 1000);
+setInterval(renderFeed, 10000);
+
+function toggleExpand(panelId, btn) {
+  const panel = document.getElementById(panelId);
+  const isOpen = panel.style.display !== 'none';
+  panel.style.display = isOpen ? 'none' : 'block';
+  btn.classList.toggle('open', !isOpen);
+  if (panelId === 'expandFab') {
+    const iframe = document.getElementById('ytFab');
+    if (!isOpen) {
+      iframe.src = 'https://www.youtube.com/embed/S_1tqHhVlz0?autoplay=1';
+    } else {
+      iframe.src = '';
+    }
+  }
+}
+
+function scrollToChat() {
+  document.getElementById('chatSection').scrollIntoView({behavior:'smooth'});
+}
+
+</script>
+</body>
+</html>

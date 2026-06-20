@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-QSPV8R01XR"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-QSPV8R01XR');
+</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Xem quan điểm công nghệ — XHT</title>
+  <meta name="description" content="AI phân tích quan điểm công nghệ từ mạng xã hội. Bạn đồng ý hay nghĩ có hướng đi tốt hơn?">
+  <meta property="og:title" content="Xem quan điểm công nghệ — XHT">
+  <meta property="og:description" content="AI phân tích quan điểm công nghệ từ mạng xã hội. Bạn đồng ý hay nghĩ có hướng đi tốt hơn?">
+  <meta property="og:type" content="website">
+  <link rel="canonical" href="https://xhardtech.com/result.html">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="nav">
+    <div class="container">
+      <a href="/" class="nav-logo">X<span>HT</span></a>
+      <div class="nav-links" style="display:flex; gap:8px; align-items:center;">
+        <a href="/">Trang chủ</a>
+        <a href="/login.html" id="navLogin" style="color:#000; background:var(--gradient-green); padding:4px 12px; border-radius:14px; font-size:0.75rem; font-weight:600; text-decoration:none;">Đăng nhập</a>
+        <a href="/dashboard.html" id="navUser" style="color:var(--accent-green); font-size:0.75rem; font-weight:600; display:none;"></a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ═══ LOADING STATE ═══ -->
+  <div id="state-loading" class="race-page">
+    <section class="quote-hero">
+      <div class="quote-container">
+        <div style="color: var(--text-secondary); font-size: 1.1rem; padding: 40px 0;">
+          Đang tải...
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- ═══ PENDING STATE ═══ -->
+  <div id="state-pending" class="race-page" style="display: none;">
+    <section class="quote-hero">
+      <div class="quote-container">
+        <span class="quote-mark">"</span>
+        <div class="quote-text" style="color: var(--text-muted); font-size: 1.2rem;">
+          Nội dung của bạn đang được cập nhật lên hệ thống...
+        </div>
+        <div style="margin-top: 16px;">
+          <div style="background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px 20px; display: inline-block; max-width: 100%;">
+            <p id="pendingUrl" style="color: var(--text-muted); font-size: 0.8rem; word-break: break-all;"></p>
+          </div>
+        </div>
+        <p style="color: var(--text-muted); font-size: 0.8rem; margin-top: 20px;">
+          Bookmark trang này và quay lại sau. AI cần thời gian để đọc hiểu nội dung.
+        </p>
+      </div>
+    </section>
+  </div>
+
+  <!-- ═══ READY STATE — Race page động ═══ -->
+  <div id="state-ready" class="race-page" style="display: none;">
+
+    <!-- QUOTE HERO (user content first, biggest) -->
+    <section class="quote-hero">
+      <div class="quote-container">
+        <div class="quote-source-tag">
+          <span class="platform" id="r-platform"></span>
+          <span>&middot;</span>
+          <span id="r-date"></span>
+        </div>
+        <span class="quote-mark">"</span>
+        <div class="quote-text" id="r-quote"></div>
+        <div class="quote-author">
+          <div class="quote-avatar" id="r-initials"></div>
+          <div class="quote-author-info">
+            <div class="quote-author-name" id="r-author"></div>
+            <div class="quote-author-meta">
+              <a id="r-source-link" href="#" target="_blank">Xem post gốc ↗</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- AI INSIGHT -->
+    <div class="ai-insight">
+      <div class="ai-insight-card">
+        <span class="ai-insight-icon">🔍</span>
+        <div class="ai-insight-text" id="r-insight"></div>
+      </div>
+    </div>
+
+    <!-- RACE: dynamic sides -->
+    <div class="race-section">
+      <div class="race-section-header">
+        <span class="label">Cuộc đua</span>
+        <span class="line"></span>
+      </div>
+      <div class="sides-grid" id="r-sides-grid"></div>
+    </div>
+
+    <!-- SAVE GATE -->
+    <div class="save-gate">
+      <div class="save-gate-card">
+        <span class="save-icon">📌</span>
+        <span class="save-text">
+          <strong>Lưu vào Bộ sưu tập</strong> để theo dõi khi cuộc đua có kết quả
+        </span>
+        <button class="save-btn" id="saveBtn" onclick="handleSave()">Đăng nhập để lưu</button>
+      </div>
+    </div>
+
+    <!-- ENTERPRISE TEASER -->
+    <div class="enterprise-teaser">
+      <div class="enterprise-teaser-card">
+        <p>Bối cảnh thị trường, kịch bản "nếu đúng / nếu sai", phân tích chuyên sâu</p>
+        <a href="/pricing.html">Mở khóa AI phân tích — Enterprise →</a>
+      </div>
+    </div>
+
+    <!-- SUPPORT BANNER -->
+    <div class="support-banner">
+      <div class="support-banner-card">
+        <div class="support-title">Ủng hộ XHT</div>
+        <div class="support-desc">
+          Donate để giúp XHT phát triển nền tảng ghi nhận quan điểm công nghệ.
+        </div>
+        <div class="support-actions">
+          <a href="/login.html" class="support-btn-primary" style="text-decoration: none;">Donate ủng hộ</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- SHARE BAR -->
+    <div class="share-bar">
+      <button class="share-btn" onclick="shareOnFB()">📱 Chia sẻ Facebook</button>
+      <button class="share-btn" onclick="copyLink()">🔗 Sao chép link</button>
+      <button class="share-btn" onclick="exportPDF()">📄 Tải PDF <span style="color:var(--accent-green); font-size:0.65rem; font-weight:700;">PRO</span></button>
+    </div>
+
+    <!-- CTA: logged in = paste link, not logged in = quick vote only -->
+    <div class="race-cta" id="cta">
+      <!-- Logged in: paste link -->
+      <div class="cta-card" id="ctaLoggedIn" style="display: none;">
+        <h2>Bạn nghĩ sao?</h2>
+        <p class="cta-desc" id="r-cta-desc">Paste link quan điểm của bạn.</p>
+        <div class="cta-input-row">
+          <input class="cta-input" type="url" placeholder="Dán link Facebook / X post tại đây..." id="ctaInput">
+          <button class="cta-submit" onclick="submitOpinion()">Gửi</button>
+        </div>
+        <p class="cta-or">hoặc chọn nhanh (vote tạm 15 phút)</p>
+        <div class="cta-sides">
+          <button class="cta-side-btn" id="r-cta-side1-li" onclick="quickVote('agree', this)"></button>
+          <button class="cta-side-btn" id="r-cta-side2-li" onclick="quickVote('disagree', this)"></button>
+        </div>
+        <div id="quickVoteResult" style="display: none; margin-top: 12px;"></div>
+      </div>
+
+      <!-- Not logged in: quick vote (paid) -->
+      <div class="cta-card" id="ctaNotLoggedIn">
+        <h2 style="color: var(--accent-green);">Quick Vote</h2>
+        <p class="cta-desc">Chọn hướng bạn đồng ý — vote nhanh, ghi nhận vĩnh viễn.</p>
+        <div class="cta-sides">
+          <button class="cta-side-btn" id="r-cta-side1" onclick="quickVote('agree', this)" style="border-color: rgba(245,158,11,0.3); background: rgba(245,158,11,0.05);"></button>
+          <button class="cta-side-btn" id="r-cta-side2" onclick="quickVote('disagree', this)" style="border-color: rgba(245,158,11,0.3); background: rgba(245,158,11,0.05);"></button>
+        </div>
+        <div id="quickVoteResultGuest" style="display: none; margin-top: 12px;"></div>
+      </div>
+    </div>
+
+    <!-- OTHER RACES -->
+    <div style="max-width: 680px; margin: 0 auto; padding: 0 20px; text-align: center;">
+      <p style="color: var(--text-muted); font-size: 0.8rem; margin-bottom: 10px;">Xem thêm ví dụ</p>
+      <div style="display: flex; gap: 8px; justify-content: center; flex-wrap: wrap;">
+        <a href="/example.html" class="side-btn">Bản Free</a>
+        <a href="/example-pro.html" class="side-btn">Bản Pro</a>
+        <a href="/example-dashboard.html" class="side-btn">Bộ sưu tập</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ REJECTED STATE ═══ -->
+  <div id="state-rejected" class="race-page" style="display: none;">
+    <section class="quote-hero">
+      <div class="quote-container">
+        <div style="background: rgba(255,71,87,0.1); border: 1px solid var(--accent-red); border-radius: var(--radius); padding: 32px; margin-top: 20px;">
+          <h2 style="color: var(--accent-red); font-size: 1.3rem; margin-bottom: 12px;">Nội dung không liên quan đến công nghệ</h2>
+          <p style="color: var(--text-secondary); margin-bottom: 20px;">Post này không chứa quan điểm rõ ràng về công nghệ hoặc không phù hợp để tạo cuộc đua.</p>
+          <a href="/" class="btn btn-primary" style="display: inline-block;">Thử link khác</a>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- ═══ NOT FOUND STATE ═══ -->
+  <div id="state-notfound" class="race-page" style="display: none;">
+    <section class="quote-hero">
+      <div class="quote-container">
+        <div style="padding: 32px; text-align: center;">
+          <h2 style="color: var(--accent-red); margin-bottom: 12px;">Không tìm thấy</h2>
+          <p style="color: var(--text-secondary); margin-bottom: 20px;">Submission này không tồn tại hoặc đã hết hạn.</p>
+          <a href="/" class="btn btn-primary" style="display: inline-block;">Gửi link mới</a>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- WATERMARK (free) -->
+  <div class="watermark">
+    Phân tích bởi <a href="/">XHT</a> &middot; <a href="/pricing.html">Bỏ watermark →</a>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="race-footer">
+    <p>XHT ghi nhận quan điểm công nghệ. Lịch sử sẽ phân định ai đúng.</p>
+    <p style="margin-top: 8px;">
+      <a href="/">Trang chủ</a> &middot;
+      <a href="/pricing.html">Bảng giá</a> &middot;
+      <a href="/example.html">Ví dụ</a>
+    </p>
+  </footer>
+
+  <script>
+    const API_BASE = 'https://api.xhardtech.com';
+
+    function escapeHtml(str) {
+      if (!str) return '';
+      return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+
+    // Show one state, hide all others
+    function showState(state) {
+      ['loading', 'pending', 'ready', 'rejected', 'notfound'].forEach(s => {
+        const el = document.getElementById(`state-${s}`);
+        if (el) el.style.display = s === state ? 'block' : 'none';
+      });
+    }
+
+    // Populate race page from API data
+    function renderRacePage(data) {
+      // Quote hero
+      document.getElementById('r-platform').textContent = data.quote_platform || data.platform || '';
+      document.getElementById('r-date').textContent = data.quote_date || '';
+      document.getElementById('r-quote').textContent = data.quote_text || '';
+      document.getElementById('r-initials').textContent = data.quote_author_initials || '';
+      document.getElementById('r-author').textContent = data.quote_author || '';
+      document.getElementById('r-source-link').href = data.url || '#';
+      document.getElementById('r-source-link').textContent = `Xem post gốc trên ${data.quote_platform || data.platform || 'web'} ↗`;
+
+      // AI insight
+      document.getElementById('r-insight').innerHTML = data.ai_insight
+        ? `<strong>AI hiểu:</strong> ${escapeHtml(data.ai_insight)}`
+        : '';
+
+      // Build sides array from data (support 2, 3, or more sides)
+      const sides = [];
+      if (data.side1_name) sides.push({ icon: data.side1_icon || '💡', name: data.side1_name, context: data.side1_context || '', count: data.side1_count ?? 1, key: 'agree' });
+      if (data.side2_name) sides.push({ icon: data.side2_icon || '🔀', name: data.side2_name, context: data.side2_context || '', count: data.side2_count ?? 0, key: 'disagree' });
+      if (data.side3_name) sides.push({ icon: data.side3_icon || '🔄', name: data.side3_name, context: data.side3_context || '', count: data.side3_count ?? 0, key: 'side3' });
+      if (data.side4_name) sides.push({ icon: data.side4_icon || '💫', name: data.side4_name, context: data.side4_context || '', count: data.side4_count ?? 0, key: 'side4' });
+      _allSides = sides;
+
+      // Render sides grid dynamically
+      const sidesGrid = document.getElementById('r-sides-grid');
+      if (sides.length === 3) sidesGrid.style.gridTemplateColumns = 'repeat(3, 1fr)';
+      if (sides.length >= 4) sidesGrid.style.gridTemplateColumns = 'repeat(2, 1fr)';
+
+      sidesGrid.innerHTML = sides.map((side, i) => {
+        const isActive = side.count > 0;
+        return `
+          <div class="side-card ${isActive ? 'active' : 'empty'}" id="r-side${i}-card">
+            <span class="side-icon">${side.icon}</span>
+            <div class="side-name">${escapeHtml(side.name)}</div>
+            <div class="side-sub">${escapeHtml(side.context)}</div>
+            <span class="side-count" id="r-side${i}-count" ${!isActive ? 'style="color: var(--text-muted);"' : ''}>${side.count}</span>
+            <span class="side-count-label">người đồng ý</span>
+            ${!isActive ? '<p class="empty-msg">Chưa ai chọn hướng này</p>' : ''}
+            <button class="side-btn" onclick="handleAgree()">Đồng ý ✓</button>
+          </div>`;
+      }).join('');
+
+      // CTA — populate both logged-in and guest versions
+      document.getElementById('r-cta-desc').textContent =
+        `${data.race_title || 'Cuộc đua này'} — bạn nghĩ sao? Paste link quan điểm của bạn.`;
+
+      // Quick vote buttons — dynamic sides
+      const ctaSide1 = document.getElementById('r-cta-side1');
+      const ctaSide2 = document.getElementById('r-cta-side2');
+      if (ctaSide1 && sides[0]) ctaSide1.textContent = `${sides[0].icon} ${sides[0].name}`;
+      if (ctaSide2 && sides[1]) ctaSide2.textContent = `${sides[1].icon} ${sides[1].name}`;
+
+      // Add extra CTA buttons for side 3+
+      const ctaSidesContainer = ctaSide2?.parentElement;
+      if (ctaSidesContainer) {
+        for (let i = 2; i < sides.length; i++) {
+          const btn = document.createElement('button');
+          btn.className = 'cta-side-btn';
+          btn.textContent = `${sides[i].icon} ${sides[i].name}`;
+          btn.onclick = () => quickVote(sides[i].key, btn);
+          ctaSidesContainer.appendChild(btn);
+        }
+      }
+
+      // Logged-in CTA buttons
+      const liSide1 = document.getElementById('r-cta-side1-li');
+      const liSide2 = document.getElementById('r-cta-side2-li');
+      if (liSide1 && sides[0]) liSide1.textContent = `${sides[0].icon} ${sides[0].name}`;
+      if (liSide2 && sides[1]) liSide2.textContent = `${sides[1].icon} ${sides[1].name}`;
+      const liContainer = liSide2?.parentElement;
+      if (liContainer) {
+        for (let i = 2; i < sides.length; i++) {
+          const btn = document.createElement('button');
+          btn.className = 'cta-side-btn';
+          btn.textContent = `${sides[i].icon} ${sides[i].name}`;
+          btn.onclick = () => quickVote(sides[i].key, btn);
+          liContainer.appendChild(btn);
+        }
+      }
+
+      // Toggle CTA based on login state
+      const isLoggedIn = document.cookie.includes('xht_user');
+      document.getElementById('ctaLoggedIn').style.display = isLoggedIn ? 'block' : 'none';
+      document.getElementById('ctaNotLoggedIn').style.display = isLoggedIn ? 'none' : 'block';
+
+      // Update page title
+      document.title = data.quote_text
+        ? `"${data.quote_text.substring(0, 50)}..." — XHT`
+        : 'Xem quan điểm công nghệ — XHT';
+
+      showState('ready');
+      if (window.xhtTrack) xhtTrack.viewResult(data.race_title);
+    }
+
+    // Main: fetch and render
+    async function loadResult() {
+      const params = new URLSearchParams(window.location.search);
+      const id = params.get('id');
+
+      if (!id) {
+        showState('notfound');
+        return;
+      }
+
+      try {
+        const response = await fetch(`${API_BASE}/result/${id}`);
+        const data = await response.json();
+
+        if (!response.ok) {
+          showState('notfound');
+          return;
+        }
+
+        if (data.status === 'approved' && data.quote_text) {
+          // Text2Race data available — render race page
+          renderRacePage(data);
+        } else if (data.status === 'approved' && data.pin_comment) {
+          // Legacy: old-style pin comment (backward compat)
+          renderRacePage({
+            ...data,
+            quote_text: data.pin_comment,
+            quote_author: data.author || 'Unknown',
+            quote_author_initials: (data.author || 'U')[0],
+            quote_platform: data.platform,
+            ai_insight: '',
+            side1_name: data.stance || 'Quan điểm này',
+            side1_icon: '💡',
+            side1_count: 1,
+            side2_name: 'Nghĩ khác',
+            side2_icon: '🔀',
+            side2_count: 0,
+          });
+        } else if (data.status === 'rejected' || data.status === 'filtered_out') {
+          showState('rejected');
+        } else {
+          // Pending
+          document.getElementById('pendingUrl').textContent = data.url || '';
+          showState('pending');
+        }
+      } catch {
+        showState('notfound');
+      }
+    }
+
+    // Share helpers
+    function shareOnFB() {
+      if (window.xhtTrack) xhtTrack.share('facebook');
+      // Use OG endpoint for better Facebook preview
+      const id = new URLSearchParams(window.location.search).get('id');
+      const shareUrl = id
+        ? encodeURIComponent(`https://api.xhardtech.com/og?id=${id}`)
+        : encodeURIComponent(window.location.href);
+      window.open('https://www.facebook.com/sharer/sharer.php?u=' + shareUrl, '_blank', 'width=600,height=400');
+    }
+
+    function copyLink() {
+      navigator.clipboard.writeText(window.location.href).then(() => {
+        const btn = event.target.closest('.share-btn');
+        if (btn) {
+          const orig = btn.innerHTML;
+          btn.innerHTML = '✓ Đã copy!';
+          setTimeout(() => btn.innerHTML = orig, 2000);
+        }
+      });
+    }
+
+    function scrollToCTA() {
+      document.getElementById('cta').scrollIntoView({ behavior: 'smooth' });
+      setTimeout(() => document.getElementById('ctaInput').focus(), 500);
+    }
+
+    function submitOpinion() {
+      const url = document.getElementById('ctaInput').value;
+      if (!url) { document.getElementById('ctaInput').focus(); return; }
+      if (window.xhtTrack) xhtTrack.submitUrl(url);
+      fetch(`${API_BASE}/submit`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ url }),
+      })
+        .then(r => r.json())
+        .then(data => {
+          if (data.id) {
+            window.location.href = `/result.html?id=${data.id}`;
+          } else {
+            alert(data.error || 'Có lỗi xảy ra');
+          }
+        })
+        .catch(() => alert('Không thể kết nối. Thử lại sau.'));
+    }
+
+    // Handle agree button — logged in: scroll to CTA, not logged in: scroll to CTA too
+    function handleAgree() {
+      scrollToCTA();
+    }
+
+    // Quick vote — logged in: temp 15min free, not logged in: paid quick vote form
+    async function quickVote(type, btn) {
+      // Logged in users: free temp vote
+      if (document.cookie.includes('xht_user')) {
+        return quickVoteLoggedIn(type, btn);
+      }
+      // Not logged in: show paid quick vote form
+      return showPaidVoteForm(type, btn);
+    }
+
+    // Show paid vote form for non-logged-in users
+    function showPaidVoteForm(type, btn) {
+      const id = new URLSearchParams(window.location.search).get('id');
+      if (!id) return;
+
+      // Mã CK: 3 số ngắn (cho dễ nhập khi chuyển khoản)
+      const ckCode = String(Math.floor(Math.random() * 900) + 100); // 100-999
+      // Mã vote: dài, unique (để tracking)
+      const voteRef = 'QV' + id.substring(0, 6).toUpperCase() + Date.now().toString(36).toUpperCase();
+      const sideName = type === 'agree'
+        ? (document.getElementById('r-side1-name')?.textContent || 'Bên 1')
+        : (document.getElementById('r-side2-name')?.textContent || 'Bên 2');
+
+      // Highlight chosen side
+      document.querySelectorAll('.cta-side-btn').forEach(b => {
+        b.disabled = true;
+        b.style.opacity = '0.5';
+      });
+      btn.style.opacity = '1';
+      btn.style.borderColor = 'var(--accent-green)';
+      btn.style.color = 'var(--accent-green)';
+      btn.textContent = '✓ Đã chọn';
+
+      const resultDiv = document.getElementById('quickVoteResultGuest');
+      resultDiv.style.display = 'block';
+      resultDiv.innerHTML = `
+        <div style="background: var(--bg-card); border: 1px solid rgba(245,158,11,0.3); border-radius: var(--radius); padding: 20px;">
+          <p style="font-size: 0.9rem; font-weight: 700; margin-bottom: 4px;">Bạn chọn: ${escapeHtml(sideName)}</p>
+          <p style="font-size: 0.78rem; color: var(--text-secondary); margin-bottom: 16px;">Điền thông tin để xác nhận vote.</p>
+
+          <label style="font-size: 0.78rem; color: var(--text-muted); display: block; margin-bottom: 4px;">Email (bắt buộc)</label>
+          <input type="email" id="paidVoteEmail" placeholder="email@example.com" required style="
+            width: 100%; padding: 10px 14px; background: var(--bg-secondary); border: 1px solid var(--border);
+            border-radius: 10px; color: var(--text-primary); font-size: 0.85rem; font-family: inherit;
+            outline: none; margin-bottom: 16px; box-sizing: border-box;
+          ">
+
+          <div style="text-align: center; margin-bottom: 12px;">
+            <img src="/qr/${ckCode}.png" alt="QR chuyển khoản" style="width: 150px; border-radius: 8px; margin-bottom: 8px;">
+            <p style="font-size: 0.78rem; color: var(--text-muted);">Quét QR để chuyển 10.000đ</p>
+          </div>
+
+          <p style="font-size: 0.7rem; color: var(--accent-yellow); margin-bottom: 12px; line-height: 1.4;">
+            Lưu ý: Đây là chế độ vote nhanh thu phí, đảm bảo chuyển khoản để hiệu lực vote được lưu lại hệ thống.
+          </p>
+
+          <button onclick="submitPaidVote('${type}', '${voteRef}', '${ckCode}')" style="
+            width: 100%; padding: 12px; border-radius: 10px; background: var(--gradient-green);
+            color: #000; font-weight: 700; font-size: 0.9rem; border: none; cursor: pointer;
+          ">Xác nhận vote</button>
+        </div>
+      `;
+      resultDiv.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    async function submitPaidVote(type, voteRef, ckCode) {
+      if (window.xhtTrack) xhtTrack.vote(type, true);
+      const email = document.getElementById('paidVoteEmail')?.value?.trim();
+      if (!email || !email.includes('@')) {
+        alert('Vui lòng nhập email hợp lệ.');
+        document.getElementById('paidVoteEmail')?.focus();
+        return;
+      }
+
+      const id = new URLSearchParams(window.location.search).get('id');
+      if (!id) return;
+
+      try {
+        const res = await fetch(`${API_BASE}/vote/${id}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ vote: type, paid_vote: true, email: email, vote_ref: voteRef, ck_code: ckCode }),
+        });
+        const data = await res.json();
+
+        if (data.ok) {
+          // Update counts dynamically by key
+          const sideIndex = _allSides.findIndex(s => s.key === type);
+          if (sideIndex >= 0) {
+            const countEl = document.getElementById(`r-side${sideIndex}-count`);
+            if (countEl) countEl.textContent = parseInt(countEl.textContent || '0') + 1;
+            const card = document.getElementById(`r-side${sideIndex}-card`);
+            if (card) { card.classList.remove('empty'); card.classList.add('active'); }
+            const emptyEl = document.getElementById(`r-side${sideIndex}-empty`);
+            if (emptyEl) emptyEl.style.display = 'none';
+            const countEl2 = document.getElementById(`r-side${sideIndex}-count`);
+            if (countEl2) countEl2.style.color = 'var(--accent-green)';
+          }
+
+          document.getElementById('quickVoteResultGuest').innerHTML = `
+            <div style="background: var(--bg-card); border: 1px solid var(--accent-green); border-radius: var(--radius); padding: 16px; text-align: center;">
+              <p style="color: var(--accent-green); font-weight: 600; font-size: 0.9rem;">✓ Vote đã ghi nhận!</p>
+              <p style="color: var(--text-secondary); font-size: 0.78rem; margin-top: 4px;">Mã CK: <strong>${ckCode}</strong> &middot; Mã vote: <strong>${voteRef}</strong></p>
+              <p style="color: var(--text-muted); font-size: 0.72rem; margin-top: 4px;">Vote sẽ được duy trì sau khi admin xác nhận chuyển khoản.</p>
+            </div>`;
+        } else {
+          alert(data.error || 'Lỗi');
+        }
+      } catch { alert('Không thể kết nối.'); }
+    }
+
+    // Logged-in quick vote (free, temp 15min)
+    async function quickVoteLoggedIn(type, btn) {
+      if (window.xhtTrack) xhtTrack.vote(type, false);
+
+      const id = new URLSearchParams(window.location.search).get('id');
+      if (!id) return;
+
+      btn.disabled = true;
+      btn.textContent = 'Đang gửi...';
+
+      try {
+        const res = await fetch(`${API_BASE}/vote/${id}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'include',
+          body: JSON.stringify({ vote: type }),
+        });
+        const data = await res.json();
+
+        if (data.ok) {
+          // Update side counts dynamically by key
+          const sideIndex = _allSides.findIndex(s => s.key === type);
+          if (sideIndex >= 0) {
+            const countEl = document.getElementById(`r-side${sideIndex}-count`);
+            if (countEl) countEl.textContent = parseInt(countEl.textContent || '0') + 1;
+            const card = document.getElementById(`r-side${sideIndex}-card`);
+            if (card) { card.classList.remove('empty'); card.classList.add('active'); }
+            const emptyEl = document.getElementById(`r-side${sideIndex}-empty`);
+            if (emptyEl) emptyEl.style.display = 'none';
+            const countEl2 = document.getElementById(`r-side${sideIndex}-count`);
+            if (countEl2) countEl2.style.color = 'var(--accent-green)';
+          }
+
+          // Show countdown
+          const resultDiv = document.getElementById('quickVoteResult');
+          let seconds = 15 * 60;
+          resultDiv.style.display = 'block';
+
+          const timer = setInterval(() => {
+            const min = Math.floor(seconds / 60);
+            const sec = seconds % 60;
+            resultDiv.innerHTML = `
+              <div style="background: rgba(245,158,11,0.08); border: 1px solid rgba(245,158,11,0.2); border-radius: var(--radius-sm); padding: 12px 16px; text-align: center;">
+                <p style="font-size: 0.82rem; color: var(--accent-green); font-weight: 600;">✓ Vote tạm đã ghi nhận!</p>
+                <p style="font-size: 0.75rem; color: var(--text-muted);">Hết hiệu lực sau <strong>${min}:${sec.toString().padStart(2, '0')}</strong></p>
+                <p style="font-size: 0.78rem; color: var(--text-primary); margin-top: 8px;">Đây chỉ là vote tạm — sẽ tự mất sau 15 phút.</p>
+                <button onclick="scrollToCTA()" style="margin-top: 8px; padding: 8px 20px; border-radius: 18px; background: var(--gradient-green); color: #000; font-weight: 700; font-size: 0.8rem; border: none; cursor: pointer;">Paste link để vote vĩnh viễn ↓</button>
+              </div>`;
+            seconds--;
+            if (seconds < 0) {
+              clearInterval(timer);
+              resultDiv.innerHTML = `
+                <div style="background: rgba(255,71,87,0.08); border: 1px solid rgba(255,71,87,0.2); border-radius: var(--radius-sm); padding: 10px 16px; text-align: center;">
+                  <p style="font-size: 0.82rem; color: var(--accent-red);">Vote tạm đã hết hạn.</p>
+                  <p style="font-size: 0.72rem; color: var(--text-secondary);">Paste link post/comment để vote vĩnh viễn.</p>
+                </div>`;
+              // Refresh vote counts
+              fetch(`${API_BASE}/votes/${id}`).then(r => r.json()).then(d => {
+                _allSides.forEach((side, i) => {
+                  const el = document.getElementById(`r-side${i}-count`);
+                  if (el && d[side.key] !== undefined) el.textContent = d[side.key];
+                });
+              }).catch(() => {});
+            }
+          }, 1000);
+
+          // Disable both buttons
+          document.querySelectorAll('.cta-side-btn').forEach(b => {
+            b.disabled = true;
+            b.style.opacity = '0.5';
+          });
+          btn.style.opacity = '1';
+          btn.style.borderColor = 'var(--accent-green)';
+          btn.style.color = 'var(--accent-green)';
+          btn.textContent = '✓ Đã chọn';
+        } else {
+          alert(data.error || 'Lỗi');
+          btn.disabled = false;
+          btn.textContent = type === 'agree' ? document.getElementById('r-cta-side1').dataset.label : document.getElementById('r-cta-side2').dataset.label;
+        }
+      } catch {
+        alert('Không thể kết nối.');
+        btn.disabled = false;
+      }
+    }
+
+    // PDF export (Pro only — uses browser print)
+    function exportPDF() {
+      const plan = document.cookie.includes('xht_plan=pro') ? 'pro' : 'free';
+      if (plan !== 'pro') {
+        alert('Tính năng PDF dành cho gói Pro (10k/tháng). Nâng cấp để tải PDF không watermark.');
+        return;
+      }
+      // Hide watermark and non-printable elements, then print
+      const watermark = document.querySelector('.watermark');
+      const saveGate = document.querySelector('.save-gate');
+      const support = document.querySelector('.support-banner');
+      const cta = document.querySelector('.race-cta');
+      if (watermark) watermark.style.display = 'none';
+      if (saveGate) saveGate.style.display = 'none';
+      if (support) support.style.display = 'none';
+      if (cta) cta.style.display = 'none';
+      window.print();
+      // Restore after print
+      setTimeout(() => {
+        if (watermark) watermark.style.display = '';
+        if (saveGate) saveGate.style.display = '';
+        if (support) support.style.display = '';
+        if (cta) cta.style.display = '';
+      }, 1000);
+    }
+
+    // Save/bookmark logic
+    function handleSave() {
+      const id = new URLSearchParams(window.location.search).get('id');
+      if (!id) return;
+
+      // Check if logged in (cookie)
+      if (!document.cookie.includes('xht_user')) {
+        window.location.href = `/login.html?redirect=${encodeURIComponent(window.location.pathname + window.location.search)}`;
+        return;
+      }
+
+      // Already logged in — save
+      fetch(`${API_BASE}/me/save/${id}`, {
+        method: 'POST',
+        credentials: 'include',
+      })
+        .then(r => r.json())
+        .then(data => {
+          if (data.ok) {
+            const btn = document.getElementById('saveBtn');
+            btn.textContent = '✓ Đã lưu vào sổ';
+            btn.style.background = '#22c55e';
+            btn.onclick = () => window.location.href = '/dashboard.html';
+          }
+        })
+        .catch(() => {});
+    }
+
+    // Update save gate if already logged in
+    function updateSaveGate() {
+      if (document.cookie.includes('xht_user')) {
+        const btn = document.getElementById('saveBtn');
+        if (btn) {
+          btn.textContent = 'Lưu vào bộ sưu tập';
+          // Update the save text
+          const saveText = btn.closest('.save-gate-card')?.querySelector('.save-text');
+          if (saveText) saveText.innerHTML = '<strong>Lưu vào Bộ sưu tập</strong> để theo dõi khi cuộc đua có kết quả';
+        }
+      }
+    }
+
+    // Check login state in nav
+    (function() {
+      const userMatch = document.cookie.match(/xht_user=([^;]+)/);
+      if (userMatch) {
+        const userName = decodeURIComponent(userMatch[1]);
+        const isPro = document.cookie.includes('xht_plan=pro');
+        const loginEl = document.getElementById('navLogin');
+        const userEl = document.getElementById('navUser');
+        const proBadge = `<span style="background:linear-gradient(135deg,#ffd700,#f59e0b,#d97706);color:#000;padding:3px 8px;border-radius:10px;font-size:0.6rem;font-weight:800;letter-spacing:1px;margin-right:6px;box-shadow:0 2px 8px rgba(245,158,11,0.4);text-shadow:0 0 4px rgba(255,215,0,0.3);">PRO</span>`;
+        if (isPro) {
+          if (loginEl) loginEl.style.display = 'none';
+          if (userEl) userEl.innerHTML = proBadge + userName;
+        } else {
+          if (loginEl) loginEl.textContent = 'Nâng cấp Pro';
+          if (userEl) userEl.textContent = userName;
+        }
+        if (userEl) userEl.style.display = 'inline';
+        // Add logout link
+        if (userEl && userEl.parentNode) {
+          const logoutLink = document.createElement('a');
+          logoutLink.href = '#'; logoutLink.onclick = function() { xhtLogout(); return false; };
+          logoutLink.textContent = 'Đăng xuất';
+          logoutLink.style.cssText = 'color:var(--text-muted);font-size:0.65rem;margin-left:4px;';
+          userEl.parentNode.appendChild(logoutLink);
+        }
+      }
+    })();
+
+    // Init
+    loadResult();
+    updateSaveGate();
+
+  </script>
+
+<script src="/xht-auth.js"></script>
+<script src="/xht-track.js"></script>
+</body>
+</html>

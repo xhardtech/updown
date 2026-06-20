@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>XhardTech — run your RTL</title>
+<meta name="description" content="Submit a hardware design from a git repo and get a real run. Sign in with your school or work email.">
+<meta property="og:title" content="XhardTech — run your RTL">
+<meta property="og:url" content="https://xhardtech.com/">
+<link rel="canonical" href="https://xhardtech.com/">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0a0f;--bg2:#12121a;--card:#16161f;--line:#26262f;--green:#f59e0b;--grad:linear-gradient(135deg,#f59e0b,#d97706);--ok:#23d18b;--text:#ededf2;--text2:#8c8c9c;--muted:#56566a;--r:10px;--t:.2s ease}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:Inter,system-ui,sans-serif;line-height:1.55;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}.mono{font-family:'JetBrains Mono',monospace}
+.wrap{max-width:680px;margin:0 auto;padding:0 20px}
+.nav{border-bottom:1px solid var(--line)}
+.nav .wrap{max-width:980px;display:flex;align-items:center;justify-content:space-between;height:56px}
+.logo{font-weight:800;font-size:1.05rem}.logo .x{background:var(--grad);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.btn{border:none;cursor:pointer;font-family:inherit;font-weight:600;border-radius:var(--r);transition:var(--t);font-size:.9rem;display:inline-flex;align-items:center;gap:7px}
+.btn-p{background:var(--grad);color:#000;padding:11px 18px;font-weight:700}
+.btn-p:hover{filter:brightness(1.05)}.btn-p:disabled{opacity:.5;cursor:not-allowed}
+.btn-g{background:transparent;color:var(--text);padding:8px 14px;border:1px solid var(--line)}.btn-g:hover{border-color:var(--muted)}
+.chip{display:inline-flex;align-items:center;gap:7px;font-size:.82rem;color:var(--text2)}
+.badge{display:inline-flex;gap:5px;align-items:center;font-size:.76rem;font-weight:600;padding:4px 10px;border-radius:20px;background:var(--card);border:1px solid var(--line)}
+main{padding:48px 0 60px}
+h1{font-size:1.9rem;font-weight:800;letter-spacing:-.02em;margin-bottom:7px}
+.sub{color:var(--text2);margin-bottom:30px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px}
+.field{display:flex;flex-direction:column;gap:6px;margin-bottom:13px}
+label{font-size:.78rem;color:var(--text2);font-weight:600}
+input,select{background:var(--bg);border:1px solid var(--line);border-radius:var(--r);padding:11px 13px;color:var(--text);font-family:inherit;font-size:.92rem;transition:var(--t);width:100%}
+input:focus,select:focus{outline:none;border-color:var(--green)}
+.row{display:grid;grid-template-columns:1fr 160px;gap:11px}
+.note{font-size:.82rem;padding:9px 12px;border-radius:var(--r);margin-top:10px}
+.note.warn{background:rgba(255,71,87,.08);border:1px solid rgba(255,71,87,.22);color:#ff9aa5}
+.note.ok{background:rgba(35,209,139,.08);border:1px solid rgba(35,209,139,.22);color:#7af0c0}
+.runs{margin-top:34px}
+.runs h2{font-size:.95rem;color:var(--text2);font-weight:600;margin-bottom:12px}
+.run{display:flex;align-items:center;gap:12px;padding:12px 14px;border:1px solid var(--line);border-radius:var(--r);margin-bottom:8px;font-size:.88rem;background:var(--card)}
+.st{font-size:.68rem;font-weight:700;text-transform:uppercase;padding:3px 8px;border-radius:8px;letter-spacing:.03em}
+.st.queued{background:rgba(136,84,208,.14);color:#b69af0}.st.running{background:rgba(55,66,250,.16);color:#8b93ff}.st.done{background:rgba(35,209,139,.14);color:var(--ok)}.st.error{background:rgba(255,71,87,.14);color:#ff9aa5}
+.run .nm{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.run .nm b{font-weight:600}.run .nm span{color:var(--muted)}
+.empty{color:var(--muted);font-size:.88rem;padding:22px 0;text-align:center}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.72);display:none;align-items:center;justify-content:center;z-index:50;padding:18px}
+.modal.show{display:flex}
+.box{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:26px;max-width:400px;width:100%}
+.box h3{margin-bottom:5px}.box .s{font-size:.85rem;color:var(--text2);margin-bottom:18px}.box .x{float:right;cursor:pointer;color:var(--muted);font-size:1.3rem;line-height:1}
+.foot{border-top:1px solid var(--line);padding:22px 0;color:var(--muted);font-size:.8rem;text-align:center}
+</style>
+</head>
+<body>
+<nav class="nav"><div class="wrap">
+  <div class="logo"><span class="x">Xhard</span>Tech</div>
+  <div id="navAuth"><button class="btn btn-g" onclick="openAuth()">Sign in</button></div>
+</div></nav>
+
+<main><div class="wrap">
+  <h1>Run your RTL.</h1>
+  <p class="sub">Point us at a repo. We run it and show you the result.</p>
+
+  <div class="card">
+    <div class="field"><label>Repository</label><input id="jrepo" placeholder="https://github.com/your/design" autocomplete="off"></div>
+    <div class="row">
+      <div class="field"><label>Top module</label><input id="jtop" placeholder="top" autocomplete="off"></div>
+      <div class="field"><label>Target</label><select id="jback">
+        <option value="auto">Auto</option><option value="sim">Simulation</option><option value="overlay">Hardware</option>
+      </select></div>
+    </div>
+    <button class="btn btn-p" id="jbtn" onclick="submitJob()" style="width:100%">Run</button>
+    <div id="jmsg"></div>
+  </div>
+
+  <div class="runs">
+    <h2>Recent runs</h2>
+    <div id="runsList"><div class="empty">Loading…</div></div>
+  </div>
+</div></main>
+
+<div class="foot"><span class="x" style="font-weight:700;background:var(--grad);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent">Xhard</span><span style="color:var(--muted)">Tech · xhardtech.com</span></div>
+
+<div class="modal" id="authModal"><div class="box">
+  <span class="x" onclick="closeAuth()">×</span>
+  <div id="s1">
+    <h3>Sign in</h3>
+    <div class="s">We'll email you a code. Use your school or work email to get a verified badge.</div>
+    <div class="field"><label>Email</label><input id="aEmail" placeholder="you@university.edu" autocomplete="email"></div>
+    <button class="btn btn-p" id="aB1" onclick="authStart()" style="width:100%">Continue</button>
+    <div id="aM1"></div>
+  </div>
+  <div id="s2" style="display:none">
+    <h3>Enter code</h3>
+    <div class="s">Sent to <b id="aShow"></b>.</div>
+    <div class="field"><label>Code</label><input id="aCode" placeholder="123456" inputmode="numeric" class="mono"></div>
+    <button class="btn btn-p" id="aB2" onclick="authVerify()" style="width:100%">Verify</button>
+    <div id="aM2"></div>
+  </div>
+  <div id="s3" style="display:none">
+    <h3>You're in ✓</h3>
+    <div id="prof" class="s"></div>
+    <div class="s" style="margin-top:6px">Add your address (optional).</div>
+    <div class="row" style="grid-template-columns:1fr 90px"><div class="field"><label>City</label><input id="adCity" placeholder="City"></div><div class="field"><label>Country</label><input id="adCountry" placeholder="VN" maxlength="2" class="mono"></div></div>
+    <div class="field"><label>Address</label><input id="adLine" placeholder="Street, no."></div>
+    <button class="btn btn-g" onclick="setAddress()" style="width:100%;margin-bottom:9px">Save address</button>
+    <div id="aM3"></div>
+    <button class="btn btn-p" onclick="closeAuth()" style="width:100%;margin-top:4px">Done</button>
+  </div>
+</div></div>
+
+<script>
+const API='https://api.xhardtech.com/rtl';let profile=null;const $=id=>document.getElementById(id);
+async function api(p,o={}){const r=await fetch(API+p,{credentials:'include',headers:{'Content-Type':'application/json'},...o});return r.json().catch(()=>({error:'error'}));}
+function openAuth(){$('authModal').classList.add('show');}function closeAuth(){$('authModal').classList.remove('show');nav();}
+function ic(t){return t==='gold'?'🥇':t==='silver'?'🥈':t==='bronze'?'🥉':'•';}
+function nav(){$('navAuth').innerHTML=profile?`<span class="chip"><span class="badge">${ic((profile.trust||{}).tier)} ${profile.email}</span></span>`:`<button class="btn btn-g" onclick="openAuth()">Sign in</button>`;}
+function pcard(p){const i=p.institution,a=p.address,tr=p.trust||{};let h=`<span class="badge">${ic(tr.tier)} ${tr.tier||'verified'}</span> `;if(i&&i.verified)h+=`<span class="badge">${i.name} ✓</span> `;if(a)h+=`<span class="badge">${a.city||a.country} ${a.geoMatch?'✓':'⚠'}</span>`;return h;}
+async function authStart(){const email=$('aEmail').value.trim();$('aM1').innerHTML='';$('aB1').disabled=true;const r=await api('/auth/start',{method:'POST',body:JSON.stringify({email})});$('aB1').disabled=false;if(r.error){$('aM1').innerHTML=`<div class="note warn">${r.error}</div>`;return;}window._e=email;$('aShow').textContent=email;$('s1').style.display='none';$('s2').style.display='block';if(r.delivery!=='smtp'&&r.delivery!=='resend')$('aM2').innerHTML=`<div class="note">Code relayed to admin (email delivery pending).</div>`;}
+async function authVerify(){$('aM2').innerHTML='';$('aB2').disabled=true;const r=await api('/auth/verify',{method:'POST',body:JSON.stringify({email:window._e,code:$('aCode').value.trim()})});$('aB2').disabled=false;if(r.error){$('aM2').innerHTML=`<div class="note warn">${r.error}</div>`;return;}profile=r.profile;nav();$('s2').style.display='none';$('s3').style.display='block';$('prof').innerHTML=pcard(profile);}
+async function setAddress(){$('aM3').innerHTML='';const r=await api('/profile/address',{method:'POST',body:JSON.stringify({line:$('adLine').value,city:$('adCity').value,country:$('adCountry').value})});if(r.error){$('aM3').innerHTML=`<div class="note warn">${r.error}</div>`;return;}profile=r.profile;nav();$('prof').innerHTML=pcard(profile);$('aM3').innerHTML=`<div class="note ${r.geoMatch?'ok':'warn'}">${r.geoMatch?'Address confirmed ✓':'Address could not be confirmed.'}</div>`;}
+async function submitJob(){$('jmsg').innerHTML='';if(!profile){openAuth();return;}$('jbtn').disabled=true;const r=await api('/submit',{method:'POST',body:JSON.stringify({repo:$('jrepo').value.trim(),top:$('jtop').value.trim(),backend:$('jback').value})});$('jbtn').disabled=false;if(r.error){$('jmsg').innerHTML=`<div class="note warn">${r.error}</div>`;return;}$('jmsg').innerHTML=`<div class="note ok">Queued — see it below.</div>`;$('jrepo').value='';$('jtop').value='';runs();}
+async function runs(){const r=await api('/jobs');const el=$('runsList');if(!r.jobs||!r.jobs.length){el.innerHTML='<div class="empty">No runs yet.</div>';return;}el.innerHTML=r.jobs.map(j=>`<div class="run"><span class="st ${j.status}">${j.status}</span><span class="nm"><b>${j.top}</b> <span>${(j.repo||'').replace('https://','').replace('github.com/','')}</span></span><span style="color:var(--muted);font-size:.76rem">${j.ownerInst||''}</span></div>`).join('');}
+(async()=>{const r=await api('/profile/me');profile=r.profile;nav();runs();setInterval(runs,15000);})();
+</script>
+</body>
+</html>

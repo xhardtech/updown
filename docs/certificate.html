@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-QSPV8R01XR"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-QSPV8R01XR');
+</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Certificate of Vindication — XHARDTECH</title>
+  <meta name="description" content="Official certificate proving a correct prediction on XHARDTECH Belief Registry.">
+  <meta property="og:title" content="Certificate of Vindication — XHARDTECH">
+  <meta property="og:description" content="This person predicted correctly. History proved them right.">
+  <meta property="og:type" content="website">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .certificate-wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 80vh;
+      padding: 40px 20px;
+    }
+
+    .certificate {
+      max-width: 720px;
+      width: 100%;
+      background: var(--bg-card);
+      border: 2px solid var(--accent-yellow);
+      border-radius: 20px;
+      padding: 48px 40px;
+      position: relative;
+      overflow: hidden;
+      text-align: center;
+    }
+
+    .certificate::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--accent-yellow), var(--accent-green), var(--accent-yellow));
+    }
+
+    .certificate::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--accent-yellow), var(--accent-green), var(--accent-yellow));
+    }
+
+    /* Corner decorations */
+    .corner {
+      position: absolute;
+      width: 48px;
+      height: 48px;
+      border: 2px solid var(--accent-yellow);
+      opacity: 0.4;
+    }
+    .corner-tl { top: 12px; left: 12px; border-right: none; border-bottom: none; border-radius: 8px 0 0 0; }
+    .corner-tr { top: 12px; right: 12px; border-left: none; border-bottom: none; border-radius: 0 8px 0 0; }
+    .corner-bl { bottom: 12px; left: 12px; border-right: none; border-top: none; border-radius: 0 0 0 8px; }
+    .corner-br { bottom: 12px; right: 12px; border-left: none; border-top: none; border-radius: 0 0 8px 0; }
+
+    .cert-badge {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent-yellow), #d97706);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.5rem;
+      margin: 0 auto 24px;
+      box-shadow: 0 4px 24px rgba(245, 158, 11, 0.3);
+    }
+
+    .cert-title {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      color: var(--accent-yellow);
+      margin-bottom: 8px;
+    }
+
+    .cert-heading {
+      font-size: clamp(1.5rem, 4vw, 2.2rem);
+      font-weight: 800;
+      line-height: 1.2;
+      margin-bottom: 32px;
+      color: var(--text-primary);
+    }
+
+    .cert-heading .highlight {
+      color: var(--accent-green);
+    }
+
+    .cert-label {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+
+    .cert-name {
+      font-size: clamp(1.8rem, 5vw, 2.8rem);
+      font-weight: 800;
+      color: var(--accent-green);
+      margin-bottom: 32px;
+      word-break: break-word;
+    }
+
+    .cert-divider {
+      width: 120px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--accent-yellow), transparent);
+      margin: 0 auto 28px;
+    }
+
+    .cert-details {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-bottom: 32px;
+      text-align: center;
+    }
+
+    .cert-detail-item {
+      padding: 16px;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+    }
+
+    .cert-detail-label {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+
+    .cert-detail-value {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .cert-detail-value.correct {
+      color: var(--accent-green);
+    }
+
+    .cert-stance {
+      padding: 20px;
+      background: rgba(245, 158, 11, 0.08);
+      border: 1px solid rgba(245, 158, 11, 0.2);
+      border-radius: var(--radius-sm);
+      margin-bottom: 32px;
+    }
+
+    .cert-stance-label {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+
+    .cert-stance-text {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--accent-green);
+    }
+
+    .cert-conviction {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 20px;
+      background: rgba(245, 158, 11, 0.15);
+      border-radius: 20px;
+      font-weight: 700;
+      font-size: 0.9rem;
+      color: var(--accent-yellow);
+      margin-bottom: 28px;
+    }
+
+    .cert-quote {
+      font-style: italic;
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      margin-bottom: 32px;
+      padding: 0 20px;
+    }
+
+    .cert-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+    }
+
+    .cert-footer-item {
+      text-align: center;
+    }
+
+    .cert-footer-label {
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+
+    .cert-footer-value {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+    }
+
+    .cert-seal {
+      font-size: 0.7rem;
+      font-weight: 800;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--accent-yellow);
+    }
+
+    /* Actions */
+    .cert-actions {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      margin-top: 32px;
+      flex-wrap: wrap;
+    }
+
+    .cert-actions .btn {
+      font-size: 0.85rem;
+      padding: 12px 24px;
+    }
+
+    /* Empty state / form */
+    .cert-form {
+      max-width: 520px;
+      margin: 0 auto;
+    }
+
+    .cert-form label {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      margin-bottom: 6px;
+      text-align: left;
+    }
+
+    .cert-form input,
+    .cert-form select {
+      width: 100%;
+      padding: 12px 16px;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      color: var(--text-primary);
+      font-size: 0.95rem;
+      font-family: inherit;
+      margin-bottom: 16px;
+      transition: var(--transition);
+    }
+
+    .cert-form input:focus,
+    .cert-form select:focus {
+      outline: none;
+      border-color: var(--accent-green);
+    }
+
+    .cert-form select option {
+      background: var(--bg-secondary);
+    }
+
+    /* Screenshot mode */
+    .screenshot-mode .nav,
+    .screenshot-mode .cert-actions,
+    .screenshot-mode .footer {
+      display: none !important;
+    }
+
+    .screenshot-mode .certificate-wrapper {
+      min-height: auto;
+      padding: 20px;
+    }
+
+    /* Print */
+    @media print {
+      body { background: #000; }
+      .nav, .cert-actions, .footer { display: none; }
+      .certificate-wrapper { min-height: auto; padding: 0; }
+    }
+
+    @media (max-width: 480px) {
+      .certificate { padding: 32px 20px; }
+      .cert-details { grid-template-columns: 1fr; gap: 12px; }
+      .cert-footer { flex-direction: column; gap: 16px; align-items: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="nav">
+    <div class="container">
+      <a href="/" class="nav-logo">X<span>HT</span></a>
+      <div class="nav-links">
+        <a href="/">Home</a>
+        <a href="/pricing.html">Pricing</a>
+        <a href="/tools.html">Tools</a>
+        <a href="/" class="nav-cta">Submit Prediction</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="certificate-wrapper">
+    <div class="certificate" id="certificate">
+      <div class="corner corner-tl"></div>
+      <div class="corner corner-tr"></div>
+      <div class="corner corner-bl"></div>
+      <div class="corner corner-br"></div>
+
+      <div class="cert-badge">&#127942;</div>
+
+      <div class="cert-title">XHARDTECH Belief Registry</div>
+      <h1 class="cert-heading">Certificate of <span class="highlight">Vindication</span></h1>
+
+      <div class="cert-divider"></div>
+
+      <div class="cert-label">Hereby certifies that</div>
+      <div class="cert-name" id="certName">—</div>
+
+      <div class="cert-stance" id="certStance" style="display:none;">
+        <div class="cert-stance-label">Correctly predicted</div>
+        <div class="cert-stance-text" id="certStanceText"></div>
+      </div>
+
+      <div class="cert-details">
+        <div class="cert-detail-item">
+          <div class="cert-detail-label">Race</div>
+          <div class="cert-detail-value" id="certRace">—</div>
+        </div>
+        <div class="cert-detail-item">
+          <div class="cert-detail-label">Result</div>
+          <div class="cert-detail-value correct" id="certResult">CORRECT</div>
+        </div>
+        <div class="cert-detail-item">
+          <div class="cert-detail-label">Belief recorded</div>
+          <div class="cert-detail-value" id="certDate">—</div>
+        </div>
+        <div class="cert-detail-item">
+          <div class="cert-detail-label">Vindicated on</div>
+          <div class="cert-detail-value" id="certVDate">—</div>
+        </div>
+      </div>
+
+      <div class="cert-conviction" id="certConviction" style="display:none;">
+        &#9733; Conviction Score: <span id="certScore"></span>/100
+      </div>
+
+      <div class="cert-quote" id="certQuote" style="display:none;"></div>
+
+      <div class="cert-footer">
+        <div class="cert-footer-item">
+          <div class="cert-footer-label">Certificate ID</div>
+          <div class="cert-footer-value" id="certId">—</div>
+        </div>
+        <div class="cert-footer-item">
+          <div class="cert-seal">Up&#8203;Down</div>
+          <div class="cert-footer-label" style="margin-top:4px;">xhardtech.com</div>
+        </div>
+        <div class="cert-footer-item">
+          <div class="cert-footer-label">Verified</div>
+          <div class="cert-footer-value">&#10003; On-chain record</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Actions outside certificate for clean screenshot -->
+  <div class="cert-actions" id="certActions">
+    <button class="btn btn-primary" onclick="downloadCert()">Download Image</button>
+    <button class="btn btn-secondary" onclick="copyLink()">Copy Link</button>
+    <button class="btn btn-secondary" onclick="shareTwitter()">Share on X</button>
+  </div>
+
+  <!-- Generator form (shown when no params) -->
+  <div class="container" id="generatorSection" style="display:none; padding-bottom: 60px;">
+    <div style="text-align:center; margin-bottom: 32px;">
+      <h2 style="font-size: 1.4rem; margin-bottom: 8px;">Generate a Certificate</h2>
+      <p style="color: var(--text-secondary); font-size: 0.9rem;">Fill in the details to create a vindication certificate</p>
+    </div>
+    <div class="cert-form">
+      <label for="inputName">Name / Username</label>
+      <input type="text" id="inputName" placeholder="@username or Full Name">
+
+      <label for="inputRace">Race</label>
+      <input type="text" id="inputRace" placeholder="e.g. Robot nhà máy: Humanoid vs Cobot vs AMR">
+
+      <label for="inputStance">Correct prediction (stance)</label>
+      <input type="text" id="inputStance" placeholder="e.g. Humanoid sẽ thắng">
+
+      <label for="inputDate">Belief recorded date</label>
+      <input type="date" id="inputDate">
+
+      <label for="inputVDate">Vindication date</label>
+      <input type="date" id="inputVDate">
+
+      <label for="inputScore">Conviction Score (optional, 0-100)</label>
+      <input type="number" id="inputScore" min="0" max="100" placeholder="85">
+
+      <label for="inputQuote">Quote (optional)</label>
+      <input type="text" id="inputQuote" placeholder="What they said when no one believed them...">
+
+      <div style="text-align:center; margin-top: 8px;">
+        <button class="btn btn-primary" onclick="generateCert()">Generate Certificate</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- PREMIUM UPSELL -->
+  <div class="container" id="premiumUpsell" style="max-width: 640px; padding-bottom: 40px;">
+    <div style="background: var(--bg-card); border: 1px solid var(--accent-yellow); border-radius: var(--radius); padding: 28px; text-align: center;">
+      <div style="font-size: 1.5rem; margin-bottom: 8px;">&#11088;</div>
+      <h3 style="font-size: 1.1rem; margin-bottom: 8px;">Want a Premium Certificate?</h3>
+      <p style="color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 16px;">
+        Remove watermark, get Gold/Dark/Minimal themes, high-res PDF export, and a verified QR code.
+      </p>
+      <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+        <a href="/pricing.html" class="btn btn-primary btn-sm">Nâng cấp Pro — 10k/tháng</a>
+        <a href="/" class="btn btn-secondary btn-sm">Keep Free</a>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="container">
+      <p>XHT — xhardtech.com | <a href="/">Home</a> | <a href="/pricing.html">Pricing</a> | <a href="/tools.html">Tools</a></p>
+    </div>
+  </footer>
+
+  <script>
+    // Parse URL params
+    const params = new URLSearchParams(window.location.search);
+
+    function populateCert(data) {
+      const el = (id) => document.getElementById(id);
+
+      if (data.name) el('certName').textContent = data.name;
+      if (data.race) el('certRace').textContent = data.race;
+      if (data.date) el('certDate').textContent = data.date;
+      if (data.vdate) el('certVDate').textContent = data.vdate;
+
+      if (data.stance) {
+        el('certStance').style.display = 'block';
+        el('certStanceText').textContent = data.stance;
+      }
+
+      if (data.score) {
+        el('certConviction').style.display = 'inline-flex';
+        el('certScore').textContent = data.score;
+      }
+
+      if (data.quote) {
+        el('certQuote').style.display = 'block';
+        el('certQuote').textContent = '"' + data.quote + '"';
+      }
+
+      // Generate cert ID from name + race
+      const raw = (data.name || '') + (data.race || '') + (data.date || '');
+      let hash = 0;
+      for (let i = 0; i < raw.length; i++) {
+        hash = ((hash << 5) - hash) + raw.charCodeAt(i);
+        hash |= 0;
+      }
+      el('certId').textContent = 'UD-' + Math.abs(hash).toString(36).toUpperCase().slice(0, 8);
+    }
+
+    // Check if URL has params
+    if (params.get('name')) {
+      populateCert({
+        name: params.get('name'),
+        race: params.get('race'),
+        stance: params.get('stance'),
+        date: params.get('date'),
+        vdate: params.get('vdate'),
+        score: params.get('score'),
+        quote: params.get('quote')
+      });
+    } else {
+      // Show generator form
+      document.getElementById('generatorSection').style.display = 'block';
+      document.getElementById('certActions').style.display = 'none';
+    }
+
+    function generateCert() {
+      const data = {
+        name: document.getElementById('inputName').value,
+        race: document.getElementById('inputRace').value,
+        stance: document.getElementById('inputStance').value,
+        date: document.getElementById('inputDate').value,
+        vdate: document.getElementById('inputVDate').value,
+        score: document.getElementById('inputScore').value,
+        quote: document.getElementById('inputQuote').value
+      };
+
+      if (!data.name || !data.race) {
+        alert('Please fill in at least Name and Race.');
+        return;
+      }
+
+      // Update URL
+      const url = new URL(window.location);
+      Object.entries(data).forEach(([k, v]) => {
+        if (v) url.searchParams.set(k, v);
+        else url.searchParams.delete(k);
+      });
+      window.history.pushState({}, '', url);
+
+      // Populate and show
+      populateCert(data);
+      document.getElementById('generatorSection').style.display = 'none';
+      document.getElementById('certActions').style.display = 'flex';
+    }
+
+    function copyLink() {
+      navigator.clipboard.writeText(window.location.href).then(() => {
+        const btn = event.target;
+        btn.textContent = 'Copied!';
+        setTimeout(() => { btn.textContent = 'Copy Link'; }, 2000);
+      });
+    }
+
+    function shareTwitter() {
+      const name = params.get('name') || document.getElementById('inputName').value || '';
+      const race = params.get('race') || document.getElementById('inputRace').value || '';
+      const text = encodeURIComponent(
+        name + ' was RIGHT about ' + race + '.\n\nHistory proved them correct. Certificate of Vindication:\n' + window.location.href + '\n\nvia @xhardtech'
+      );
+      window.open('https://x.com/intent/tweet?text=' + text, '_blank');
+    }
+
+    function downloadCert() {
+      // Add screenshot mode
+      document.body.classList.add('screenshot-mode');
+      const cert = document.getElementById('certificate');
+
+      // Use html2canvas if available, otherwise fallback to print
+      if (typeof html2canvas !== 'undefined') {
+        html2canvas(cert, {
+          backgroundColor: '#0a0a0f',
+          scale: 2
+        }).then(canvas => {
+          const link = document.createElement('a');
+          link.download = 'xht-certificate.png';
+          link.href = canvas.toDataURL();
+          link.click();
+          document.body.classList.remove('screenshot-mode');
+        });
+      } else {
+        // Dynamically load html2canvas
+        const script = document.createElement('script');
+        script.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';
+        script.onload = () => downloadCert();
+        document.head.appendChild(script);
+      }
+    }
+  </script>
+
+</body>
+</html>

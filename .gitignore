@@ -1,0 +1,18 @@
+# Whitelist — chỉ push docs + config files
+*
+!docs/
+!docs/**
+!.gitignore
+!README.md
+
+# Video — chặn toàn bộ code/prompts, chỉ cho video output khi cần
+# !video/output/
+# !video/output/*.mp4
+# !video/output/*.json
+
+# Sensitive — never push (even if whitelisted)
+config.env
+.env.local
+CLAUDE.md
+docs/admin.html
+README_org.md

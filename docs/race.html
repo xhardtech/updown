@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-QSPV8R01XR"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-QSPV8R01XR');
+</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cuộc đua — XHT</title>
+  <meta property="og:type" content="website">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .race-hero-bar { padding: 48px 0 32px; text-align: center; border-bottom: 1px solid var(--border); }
+    .race-hero-bar h1 { font-size: clamp(1.4rem, 3.5vw, 2rem); font-weight: 800; margin-bottom: 8px; }
+    .race-hero-bar .race-status { font-size: 0.75rem; color: var(--accent-green); text-transform: uppercase; letter-spacing: 1px; }
+    .race-content { max-width: 800px; margin: 0 auto; padding: 0 20px 80px; }
+    .opinion-list { margin-top: 24px; }
+    .opinion-item {
+      background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 16px 20px; margin-bottom: 12px; transition: var(--transition);
+    }
+    .opinion-item:hover { border-color: rgba(245,158,11,0.3); }
+    .opinion-item .op-header { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+    .opinion-item .op-avatar {
+      width: 32px; height: 32px; border-radius: 50%; background: var(--bg-secondary);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.7rem; font-weight: 800; color: var(--accent-green); flex-shrink: 0;
+    }
+    .opinion-item .op-author { font-weight: 600; font-size: 0.85rem; }
+    .opinion-item .op-date { font-size: 0.7rem; color: var(--text-muted); }
+    .opinion-item .op-quote {
+      font-size: 0.9rem; color: var(--text-primary); line-height: 1.5;
+      border-left: 3px solid rgba(245,158,11,0.3); padding-left: 12px; margin-bottom: 8px;
+    }
+    .opinion-item .op-links { font-size: 0.72rem; }
+    .opinion-item .op-links a { color: var(--text-muted); margin-right: 12px; }
+    .opinion-item .op-links a:hover { color: var(--accent-green); }
+    .side-section { margin-top: 32px; }
+    .side-section-header { display: flex; align-items: center; gap: 8px; margin-bottom: 16px; }
+    .side-section-header .side-label { font-size: 1rem; font-weight: 700; }
+    .side-section-header .side-badge {
+      font-size: 0.7rem; padding: 2px 10px; border-radius: 10px;
+      background: rgba(245,158,11,0.15); color: var(--accent-green); font-weight: 700;
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="nav">
+    <div class="container">
+      <a href="/" class="nav-logo">X<span>HT</span></a>
+      <div class="nav-links" style="display:flex;gap:8px;align-items:center;">
+        <a href="/">Trang chủ</a>
+        <a href="/login.html" id="navLogin" style="color:#000;background:var(--gradient-green);padding:4px 12px;border-radius:14px;font-size:0.75rem;font-weight:600;text-decoration:none;">Đăng nhập</a>
+        <a href="/dashboard.html" id="navUser" style="color:var(--accent-green);font-size:0.75rem;font-weight:600;display:none;"></a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Loading -->
+  <div id="state-loading" class="race-content" style="text-align: center; padding-top: 80px;">
+    <p style="color: var(--text-secondary);">Đang tải...</p>
+  </div>
+
+  <!-- Not found -->
+  <div id="state-notfound" class="race-content" style="display: none; text-align: center; padding-top: 80px;">
+    <h2 style="color: var(--accent-red); margin-bottom: 12px;">Không tìm thấy cuộc đua</h2>
+    <a href="/" class="btn btn-primary" style="display: inline-block; margin-top: 16px;">Trang chủ</a>
+  </div>
+
+  <!-- Race page -->
+  <div id="state-ready" style="display: none;">
+    <div class="race-hero-bar">
+      <div class="container">
+        <span class="race-status" id="r-status"></span>
+        <h1 id="r-title"></h1>
+      </div>
+    </div>
+
+    <div class="race-content">
+      <!-- Sides overview -->
+      <div style="margin-top: 24px;">
+        <div class="sides-grid" id="r-sides-grid"></div>
+      </div>
+
+      <!-- Analysis (Pro only) -->
+      <div id="r-analysis" style="margin-top: 24px; display: none;"></div>
+
+      <!-- Opinions by side -->
+      <div id="r-sides-content"></div>
+
+      <!-- CTA -->
+      <div class="race-cta" id="cta" style="margin-top: 40px;">
+        <div class="cta-card">
+          <h2>Bạn nghĩ sao?</h2>
+          <p class="cta-desc" id="r-cta-desc">Paste link quan điểm của bạn.</p>
+          <div class="cta-input-row">
+            <input class="cta-input" type="url" placeholder="Dán link Facebook / X post tại đây..." id="ctaInput">
+            <button class="cta-submit" onclick="submitOpinion()">Gửi</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="watermark">
+    Phân tích bởi <a href="/">XHT</a>
+  </div>
+
+  <footer class="race-footer">
+    <p>XHT ghi nhận quan điểm công nghệ. Lịch sử sẽ phân định ai đúng.</p>
+    <p style="margin-top: 8px;">
+      <a href="/">Trang chủ</a> &middot;
+      <a href="/pricing.html">Bảng giá</a>
+    </p>
+  </footer>
+
+  <script>
+    const API_BASE = 'https://api.xhardtech.com';
+
+    function escapeHtml(str) {
+      if (!str) return '';
+      return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    }
+
+    function showState(state) {
+      ['loading', 'notfound', 'ready'].forEach(s => {
+        const el = document.getElementById(`state-${s}`);
+        if (el) el.style.display = s === state ? 'block' : 'none';
+      });
+    }
+
+    async function loadRace() {
+      const params = new URLSearchParams(window.location.search);
+      const slug = params.get('slug');
+      if (!slug) { showState('notfound'); return; }
+
+      try {
+        const res = await fetch(`${API_BASE}/race/${slug}`);
+        if (!res.ok) { showState('notfound'); return; }
+        const race = await res.json();
+        renderRace(race);
+      } catch {
+        showState('notfound');
+      }
+    }
+
+    function renderRace(race) {
+      document.title = `${race.title} — XHT`;
+      document.getElementById('r-title').textContent = race.title;
+      document.getElementById('r-status').textContent = race.status === 'open' ? 'Đang mở' : 'Đã kết thúc';
+      document.getElementById('r-cta-desc').textContent = `${race.title} — bạn nghĩ sao? Paste link quan điểm của bạn.`;
+
+      // Sides grid
+      const sidesGrid = document.getElementById('r-sides-grid');
+      sidesGrid.innerHTML = race.sides.map((side, i) => {
+        const count = side.opinion_ids?.length || 0;
+        const isActive = count > 0;
+        return `
+          <div class="side-card ${isActive ? 'active' : 'empty'}">
+            <span class="side-icon">${side.icon || '🔀'}</span>
+            <div class="side-name">${escapeHtml(side.name)}</div>
+            <div class="side-sub">${escapeHtml(side.context || '')}</div>
+            <span class="side-count" ${!isActive ? 'style="color: var(--text-muted);"' : ''}>${count}</span>
+            <span class="side-count-label">quan điểm</span>
+          </div>`;
+      }).join('');
+
+      // Opinions grouped by side
+      const sidesContent = document.getElementById('r-sides-content');
+      sidesContent.innerHTML = race.sides.map((side, i) => {
+        const sideOpinions = (race.opinions || []).filter(o => o.side_index === i);
+        return `
+          <div class="side-section">
+            <div class="side-section-header">
+              <span>${side.icon || '🔀'}</span>
+              <span class="side-label">${escapeHtml(side.name)}</span>
+              <span class="side-badge">${sideOpinions.length}</span>
+            </div>
+            <div class="opinion-list">
+              ${sideOpinions.length === 0 ? '<p style="color: var(--text-muted); font-size: 0.85rem; font-style: italic;">Chưa có quan điểm nào. Paste link để là người đầu tiên.</p>' :
+                sideOpinions.map(op => `
+                  <div class="opinion-item" id="op-${op.id}">
+                    <div class="op-header">
+                      <div class="op-avatar">${escapeHtml((op.quote_author || '?')[0])}</div>
+                      <span class="op-author">${escapeHtml(op.quote_author || 'Ẩn danh')}</span>
+                      <span class="op-date">${op.quote_date || ''}</span>
+                    </div>
+                    <div class="op-quote">"${escapeHtml((op.quote_text || '').substring(0, 200))}${(op.quote_text||'').length > 200 ? '...' : ''}"</div>
+                    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px; flex-wrap: wrap;">
+                      <button onclick="vote('${op.id}','agree')" class="side-btn" id="vote-agree-${op.id}" style="font-size: 0.7rem; padding: 4px 12px;">Đồng ý ✓ <span id="agree-count-${op.id}">0</span></button>
+                      <span id="vote-pct-${op.id}" style="font-size: 0.7rem; color: var(--text-muted);"></span>
+                    </div>
+                    <div id="vote-content-${op.id}" style="display: none; margin-bottom: 8px;">
+                      <div style="display: flex; gap: 6px;">
+                        <input type="url" id="vote-url-${op.id}" placeholder="Paste link post/comment FB của bạn..." style="flex:1; padding: 6px 10px; background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 6px; color: var(--text-primary); font-size: 0.75rem; font-family: inherit; outline: none;">
+                        <button onclick="submitVoteContent('${op.id}')" class="side-btn" style="font-size: 0.68rem; padding: 4px 10px; background: var(--gradient-green); color: #000; border-color: transparent;">Vote vĩnh viễn</button>
+                      </div>
+                      <p style="font-size: 0.65rem; color: var(--text-muted); margin-top: 4px;">Vote tạm (15 phút). Paste link post/comment để vote vĩnh viễn + được ghi nhận trong cuộc đua.</p>
+                    </div>
+                    <div class="op-links">
+                      <a href="/result.html?id=${op.id}">Xem chi tiết ↗</a>
+                      <a href="${op.url || '#'}" target="_blank">Post gốc ↗</a>
+                    </div>
+                  </div>
+                `).join('')
+              }
+            </div>
+          </div>`;
+      }).join('');
+
+      showState('ready');
+
+      // Track + load votes
+      if (window.xhtTrack) xhtTrack.viewRace(race.title);
+      loadAllVotes(race.opinions || []);
+
+      // Load analysis (Pro only)
+      loadAnalysis(race.slug);
+    }
+
+    function submitOpinion() {
+      const url = document.getElementById('ctaInput').value;
+      if (!url) { document.getElementById('ctaInput').focus(); return; }
+      fetch(`${API_BASE}/submit`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ url }),
+      })
+        .then(r => r.json())
+        .then(data => {
+          if (data.id) window.location.href = `/result.html?id=${data.id}`;
+          else alert(data.error || 'Có lỗi xảy ra');
+        })
+        .catch(() => alert('Không thể kết nối.'));
+    }
+
+    let _lastVoteType = {};
+
+    async function vote(opId, type) {
+      if (!document.cookie.includes('xht_user')) {
+        window.location.href = `/login.html?redirect=${encodeURIComponent(window.location.href)}`;
+        return;
+      }
+      _lastVoteType[opId] = type;
+      try {
+        const res = await fetch(`${API_BASE}/vote/${opId}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'include',
+          body: JSON.stringify({ vote: type }),
+        });
+        const data = await res.json();
+        if (data.ok) {
+          updateVoteUI(opId, data);
+          // Show content URL input for permanent vote
+          if (!data.permanent) {
+            const contentDiv = document.getElementById(`vote-content-${opId}`);
+            if (contentDiv) contentDiv.style.display = 'block';
+          }
+        } else {
+          alert(data.error || 'Lỗi');
+        }
+      } catch { alert('Không thể kết nối.'); }
+    }
+
+    async function submitVoteContent(opId) {
+      const urlInput = document.getElementById(`vote-url-${opId}`);
+      const contentUrl = urlInput?.value?.trim();
+      if (!contentUrl) { urlInput?.focus(); return; }
+
+      const type = _lastVoteType[opId] || 'agree';
+      try {
+        const res = await fetch(`${API_BASE}/vote/${opId}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'include',
+          body: JSON.stringify({ vote: type, content_url: contentUrl }),
+        });
+        const data = await res.json();
+        if (data.ok) {
+          updateVoteUI(opId, data);
+          const contentDiv = document.getElementById(`vote-content-${opId}`);
+          if (contentDiv) {
+            contentDiv.innerHTML = '<p style="font-size: 0.75rem; color: var(--accent-green); font-weight: 600;">✓ Vote vĩnh viễn! Content đang được xử lý.</p>';
+          }
+        } else {
+          alert(data.error || 'Lỗi');
+        }
+      } catch { alert('Không thể kết nối.'); }
+    }
+
+    function updateVoteUI(opId, data) {
+      const agreeEl = document.getElementById(`agree-count-${opId}`);
+      const disagreeEl = document.getElementById(`disagree-count-${opId}`);
+      const pctEl = document.getElementById(`vote-pct-${opId}`);
+      if (agreeEl) agreeEl.textContent = data.agree || 0;
+      if (disagreeEl) disagreeEl.textContent = data.disagree || 0;
+      if (pctEl && (data.agree + data.disagree) > 0) {
+        pctEl.textContent = `${data.agree_pct}% đồng ý`;
+      }
+      // Highlight user's vote
+      const agreeBtn = document.getElementById(`vote-agree-${opId}`);
+      const disagreeBtn = document.getElementById(`vote-disagree-${opId}`);
+      if (agreeBtn) agreeBtn.style.borderColor = data.user_vote === 'agree' ? 'var(--accent-green)' : '';
+      if (disagreeBtn) disagreeBtn.style.borderColor = data.user_vote === 'disagree' ? 'var(--accent-red)' : '';
+    }
+
+    // Load votes for all opinions after race loads
+    async function loadAllVotes(opinions) {
+      for (const op of opinions) {
+        try {
+          const res = await fetch(`${API_BASE}/votes/${op.id}`);
+          const data = await res.json();
+          updateVoteUI(op.id, data);
+        } catch {}
+      }
+    }
+
+    async function loadAnalysis(slug) {
+      const el = document.getElementById('r-analysis');
+      try {
+        const res = await fetch(`${API_BASE}/race-analysis/${slug}`, { credentials: 'include' });
+        if (res.status === 403) {
+          // Not Pro — show teaser
+          el.innerHTML = `
+            <div style="background: rgba(245,158,11,0.03); border: 1px dashed rgba(245,158,11,0.2); border-radius: var(--radius); padding: 20px; text-align: center;">
+              <p style="font-size: 0.9rem; font-weight: 600; margin-bottom: 6px;">Phân tích chuyên sâu</p>
+              <p style="font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 12px;">Xem % mỗi bên, top arguments, xu hướng thay đổi, cảnh báo</p>
+              <a href="/pricing.html" class="side-btn" style="text-decoration: none; background: var(--gradient-green); color: #000; border: none; padding: 8px 20px;">Nâng cấp Pro — 10k/tháng</a>
+            </div>`;
+          el.style.display = 'block';
+          return;
+        }
+        if (!res.ok) return; // No analysis yet
+
+        const data = await res.json();
+        el.innerHTML = `
+          <div style="background: var(--bg-card); border: 1px solid rgba(245,158,11,0.3); border-radius: var(--radius); padding: 20px;">
+            <div style="font-size: 0.75rem; font-weight: 600; color: var(--accent-green); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px;">
+              🔬 Phân tích chuyên sâu &middot; PRO
+            </div>
+            <p style="font-size: 0.9rem; color: var(--text-primary); margin-bottom: 12px;">${escapeHtml(data.summary || '')}</p>
+            ${(data.side_analysis || []).map(s => `
+              <div style="padding: 10px; background: var(--bg-secondary); border-radius: 8px; margin-bottom: 8px;">
+                <div style="font-size: 0.8rem; font-weight: 600;">${s.pct}% ủng hộ bên này</div>
+                <div style="font-size: 0.78rem; color: var(--text-secondary); margin-top: 4px;">Top arguments: ${(s.top_arguments || []).join(', ')}</div>
+              </div>
+            `).join('')}
+            ${data.segments?.notable_shift ? `<p style="font-size: 0.8rem; color: var(--accent-yellow); margin-top: 8px;">⚡ ${escapeHtml(data.segments.notable_shift)}</p>` : ''}
+            ${(data.alerts || []).map(a => `<p style="font-size: 0.78rem; color: var(--accent-red); margin-top: 4px;">🚨 ${escapeHtml(a)}</p>`).join('')}
+            <p style="font-size: 0.7rem; color: var(--text-muted); margin-top: 8px;">Cập nhật: ${data.updated_at ? new Date(data.updated_at).toLocaleDateString('vi') : ''}</p>
+          </div>`;
+        el.style.display = 'block';
+      } catch {}
+    }
+
+    loadRace();
+  </script>
+
+<script src="/xht-auth.js"></script>
+<script src="/xht-track.js"></script>
+</body>
+</html>

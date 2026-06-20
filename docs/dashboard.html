@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-QSPV8R01XR"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-QSPV8R01XR');
+</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bộ sưu tập — XHT</title>
+  <meta name="robots" content="noindex">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .dash { max-width: 800px; margin: 0 auto; padding: 0 20px 80px; }
+    .user-header {
+      padding: 40px 0 24px;
+      display: flex; align-items: center; gap: 16px;
+      border-bottom: 1px solid var(--border); margin-bottom: 24px;
+    }
+    .user-avatar-lg {
+      width: 48px; height: 48px; border-radius: 50%;
+      background: var(--bg-card); border: 2px solid var(--accent-green);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem; font-weight: 800; color: var(--accent-green);
+    }
+    .user-header h1 { font-size: 1.2rem; font-weight: 700; }
+    .user-header .sub { font-size: 0.8rem; color: var(--text-muted); }
+    .stats-row {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 24px;
+    }
+    @media (max-width: 500px) { .stats-row { grid-template-columns: repeat(2, 1fr); } }
+    .stat-box {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: var(--radius-sm); padding: 14px; text-align: center;
+    }
+    .stat-num { font-size: 1.6rem; font-weight: 800; color: var(--accent-green); display: block; line-height: 1; }
+    .stat-lbl { font-size: 0.65rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-top: 4px; }
+    .pred-card {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 16px 20px; margin-bottom: 12px;
+      transition: var(--transition);
+    }
+    .pred-card:hover { border-color: rgba(245,158,11,0.3); transform: translateY(-1px); }
+    .pred-top { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; flex-wrap: wrap; }
+    .pred-race { font-size: 0.72rem; padding: 2px 10px; border-radius: 10px; background: rgba(245,158,11,0.1); color: var(--accent-green); font-weight: 600; }
+    .pred-date { font-size: 0.72rem; color: var(--text-muted); margin-left: auto; }
+    .pred-quote {
+      font-size: 0.95rem; color: var(--text-primary); font-weight: 500;
+      margin-bottom: 8px; line-height: 1.5;
+      border-left: 3px solid rgba(245,158,11,0.3); padding-left: 12px;
+    }
+    .pred-sides { font-size: 0.75rem; color: var(--text-muted); margin-bottom: 8px; }
+    .pred-actions { display: flex; gap: 8px; font-size: 0.75rem; }
+    .pred-actions a { color: var(--text-muted); }
+    .pred-actions a:hover { color: var(--accent-green); }
+    .empty-dash { text-align: center; padding: 60px 20px; }
+    .empty-dash p { color: var(--text-muted); margin-bottom: 16px; }
+    .not-logged-in { text-align: center; padding: 80px 20px; }
+  </style>
+</head>
+<body>
+
+  <nav class="nav">
+    <div class="container">
+      <a href="/" class="nav-logo">X<span>HT</span></a>
+      <div class="nav-links">
+        <a href="/">Trang chủ</a>
+        <a href="/example.html">Ví dụ</a>
+        <a href="#" id="navUser" style="color: var(--accent-green); display: none;"></a>
+        <a href="/login.html" id="navLogin">Đăng nhập</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- NOT LOGGED IN -->
+  <div id="notLoggedIn" class="not-logged-in" style="display: none;">
+    <h2 style="margin-bottom: 12px;">Bạn chưa đăng nhập</h2>
+    <p style="color: var(--text-secondary); margin-bottom: 24px;">Đăng nhập để xem Bộ sưu tập của bạn.</p>
+    <a href="/login.html?redirect=/dashboard.html" class="btn btn-primary">Đăng nhập</a>
+  </div>
+
+  <!-- DASHBOARD -->
+  <div id="dashView" class="dash" style="display: none;">
+
+    <div class="user-header">
+      <div class="user-avatar-lg" id="userAvatar"></div>
+      <div>
+        <h1 id="userName"></h1>
+        <div class="sub" id="userSub"></div>
+      </div>
+      <a href="#" onclick="xhtLogout(); return false;" style="margin-left: auto; font-size: 0.8rem; color: var(--text-muted);">Đăng xuất</a>
+    </div>
+
+    <div class="stats-row">
+      <div class="stat-box">
+        <span class="stat-num" id="statTotal">0</span>
+        <div class="stat-lbl">Dự đoán</div>
+      </div>
+      <div class="stat-box">
+        <span class="stat-num" id="statApproved" style="color: #22c55e;">0</span>
+        <div class="stat-lbl">Đang hoạt động</div>
+      </div>
+      <div class="stat-box">
+        <span class="stat-num" id="statTopics">0</span>
+        <div class="stat-lbl">Chủ đề</div>
+      </div>
+    </div>
+
+    <h2 style="font-size: 1rem; font-weight: 700; margin-bottom: 16px;">Bộ sưu tập</h2>
+
+    <div id="predList"></div>
+
+    <!-- EMPTY STATE -->
+    <div id="emptyState" class="empty-dash" style="display: none;">
+      <p>Bạn chưa lưu dự đoán nào.</p>
+      <a href="/" class="btn btn-primary btn-sm">Paste link để bắt đầu</a>
+    </div>
+
+  </div>
+
+  <footer class="race-footer">
+    <p>XHT ghi nhận quan điểm công nghệ. Lịch sử sẽ phân định ai đúng.</p>
+    <p style="margin-top: 8px;">
+      <a href="/">Trang chủ</a> &middot;
+      <a href="/pricing.html">Bảng giá</a>
+    </p>
+  </footer>
+
+  <script>
+    const API_BASE = 'https://api.xhardtech.com';
+
+    function escapeHtml(str) {
+      if (!str) return '';
+      return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    }
+
+    // Check login state from cookie
+    function getCookie(name) {
+      const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+      return match ? decodeURIComponent(match[2]) : null;
+    }
+
+    async function init() {
+      const userName = getCookie('xht_user');
+
+      if (!userName) {
+        document.getElementById('notLoggedIn').style.display = 'block';
+        return;
+      }
+
+      // Show nav user
+      document.getElementById('navLogin').style.display = 'none';
+      document.getElementById('navUser').style.display = 'inline';
+      document.getElementById('navUser').textContent = userName;
+
+      // Show dashboard
+      document.getElementById('dashView').style.display = 'block';
+      document.getElementById('userAvatar').textContent = userName[0].toUpperCase();
+      document.getElementById('userName').textContent = userName;
+
+      // Fetch user data
+      try {
+        const meRes = await fetch(`${API_BASE}/me`, { credentials: 'include' });
+        if (meRes.ok) {
+          const me = await meRes.json();
+          document.getElementById('userSub').textContent =
+            `${me.plan === 'pro' ? 'Pro' : 'Free'} &middot; Thành viên từ ${new Date(me.created_at).toLocaleDateString('vi')}`;
+          document.getElementById('statTopics').textContent = (me.followed_topics || []).length;
+        }
+      } catch {}
+
+      // Fetch predictions
+      try {
+        const predRes = await fetch(`${API_BASE}/me/predictions`, { credentials: 'include' });
+        if (predRes.ok) {
+          const data = await predRes.json();
+          document.getElementById('statTotal').textContent = data.count;
+          document.getElementById('statApproved').textContent =
+            data.predictions.filter(p => p.status === 'approved').length;
+
+          if (data.count === 0) {
+            document.getElementById('emptyState').style.display = 'block';
+          } else {
+            renderPredictions(data.predictions);
+          }
+        } else {
+          document.getElementById('notLoggedIn').style.display = 'block';
+          document.getElementById('dashView').style.display = 'none';
+        }
+      } catch {
+        document.getElementById('predList').innerHTML =
+          '<p style="color: var(--text-muted); text-align: center;">Không thể tải dữ liệu.</p>';
+      }
+    }
+
+    function renderPredictions(predictions) {
+      const list = document.getElementById('predList');
+      list.innerHTML = predictions.map(p => `
+        <div class="pred-card">
+          <div class="pred-top">
+            <span class="pred-race">${escapeHtml(p.race_title || '')}</span>
+            <span class="pred-date">${p.submitted_at ? new Date(p.submitted_at).toLocaleDateString('vi') : ''}</span>
+          </div>
+          <div class="pred-quote">"${escapeHtml((p.quote_text || '').substring(0, 120))}${(p.quote_text||'').length > 120 ? '...' : ''}"</div>
+          <div class="pred-sides">
+            ${p.side1_icon || ''} ${escapeHtml(p.side1_name || '')} vs ${p.side2_icon || '🔀'} ${escapeHtml(p.side2_name || '')}
+          </div>
+          <div class="pred-actions">
+            <a href="/result.html?id=${p.id}">Xem race ↗</a>
+            <a href="${p.url || '#'}" target="_blank">Post gốc ↗</a>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    init();
+  </script>
+
+<script src="/xht-auth.js"></script>
+<script src="/xht-track.js"></script>
+</body>
+</html>

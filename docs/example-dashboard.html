@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-QSPV8R01XR"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-QSPV8R01XR');
+</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bộ sưu tập — Nguyễn Văn A — XHT Pro</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .dashboard { max-width: 800px; margin: 0 auto; padding: 0 20px 80px; }
+
+    /* Pro badge */
+    .pro-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 10px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #f59e0b, #d97706);
+      color: #000;
+      font-size: 0.65rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    /* User header */
+    .user-header {
+      padding: 40px 0 32px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 32px;
+    }
+    .user-avatar {
+      width: 56px; height: 56px;
+      border-radius: 50%;
+      background: var(--bg-card);
+      border: 2px solid var(--accent-green);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: var(--accent-green);
+    }
+    .user-info h1 {
+      font-size: 1.3rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .user-info .user-since {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    /* Stats row */
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-bottom: 32px;
+    }
+    @media (max-width: 500px) {
+      .stats-row { grid-template-columns: repeat(2, 1fr); }
+    }
+    .stat-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 16px;
+      text-align: center;
+    }
+    .stat-number {
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: var(--accent-green);
+      display: block;
+      line-height: 1;
+    }
+    .stat-label {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-top: 4px;
+    }
+    .stat-card.highlight { border-color: rgba(245,158,11,0.3); }
+    .stat-card.highlight .stat-number { color: #22c55e; }
+
+    /* Section */
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+    .section-header h2 {
+      font-size: 1.1rem;
+      font-weight: 700;
+    }
+    .section-header .filter-tabs {
+      display: flex;
+      gap: 4px;
+    }
+    .filter-tab {
+      padding: 4px 12px;
+      border-radius: 16px;
+      font-size: 0.75rem;
+      font-weight: 500;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: var(--transition);
+      font-family: inherit;
+    }
+    .filter-tab:hover { border-color: var(--accent-green); color: var(--text-secondary); }
+    .filter-tab.active {
+      background: var(--accent-green);
+      color: #000;
+      border-color: var(--accent-green);
+      font-weight: 600;
+    }
+
+    /* Prediction cards */
+    .prediction-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      margin-bottom: 12px;
+      transition: var(--transition);
+    }
+    .prediction-card:hover {
+      border-color: rgba(245,158,11,0.3);
+      transform: translateY(-1px);
+    }
+    .prediction-top {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 10px;
+      flex-wrap: wrap;
+    }
+    .prediction-race {
+      font-size: 0.75rem;
+      padding: 2px 10px;
+      border-radius: 10px;
+      background: rgba(245,158,11,0.1);
+      color: var(--accent-green);
+      font-weight: 600;
+    }
+    .prediction-date {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-left: auto;
+    }
+    .prediction-status {
+      font-size: 0.65rem;
+      padding: 2px 8px;
+      border-radius: 8px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .status-pending {
+      background: rgba(136,136,160,0.15);
+      color: var(--text-secondary);
+    }
+    .status-leading {
+      background: rgba(34,197,94,0.15);
+      color: #22c55e;
+    }
+    .status-trailing {
+      background: rgba(255,71,87,0.15);
+      color: var(--accent-red);
+    }
+    .status-vindicated {
+      background: rgba(245,158,11,0.2);
+      color: var(--accent-green);
+    }
+    .prediction-quote {
+      font-size: 1rem;
+      color: var(--text-primary);
+      font-weight: 500;
+      margin-bottom: 10px;
+      line-height: 1.5;
+      border-left: 3px solid rgba(245,158,11,0.3);
+      padding-left: 14px;
+    }
+    .prediction-stance {
+      font-size: 0.78rem;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: var(--text-secondary);
+    }
+    .prediction-footer {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+    .prediction-footer a { color: var(--text-muted); }
+    .prediction-footer a:hover { color: var(--accent-green); }
+    .prediction-progress {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .progress-bar {
+      flex: 1;
+      height: 4px;
+      border-radius: 2px;
+      background: var(--bg-secondary);
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      border-radius: 2px;
+      transition: width 0.6s ease;
+    }
+    .progress-fill.green { background: #22c55e; }
+    .progress-fill.red { background: var(--accent-red); }
+    .progress-fill.gold { background: var(--accent-green); }
+
+    /* Follow topics */
+    .follow-section { margin-top: 40px; }
+    .follow-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .follow-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      border-radius: 20px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      transition: var(--transition);
+    }
+    .follow-tag .bell { color: var(--accent-green); font-size: 0.7rem; }
+    .follow-tag .remove {
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 0.7rem;
+      margin-left: 2px;
+    }
+    .follow-tag .remove:hover { color: var(--accent-red); }
+
+    /* Export bar */
+    .export-bar {
+      display: flex;
+      gap: 8px;
+      margin: 24px 0;
+      flex-wrap: wrap;
+    }
+    .export-btn {
+      padding: 8px 16px;
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      background: var(--bg-card);
+      color: var(--text-secondary);
+      font-size: 0.8rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: var(--transition);
+      font-family: inherit;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .export-btn:hover {
+      border-color: var(--accent-green);
+      color: var(--text-primary);
+    }
+
+    /* Empty state for free upsell */
+    .upsell-card {
+      background: linear-gradient(135deg, rgba(245,158,11,0.05), rgba(245,158,11,0.02));
+      border: 1px dashed rgba(245,158,11,0.3);
+      border-radius: var(--radius);
+      padding: 32px;
+      text-align: center;
+      margin-top: 24px;
+    }
+    .upsell-card h3 {
+      font-size: 1rem;
+      margin-bottom: 8px;
+    }
+    .upsell-card p {
+      color: var(--text-secondary);
+      font-size: 0.85rem;
+      margin-bottom: 16px;
+    }
+    .upsell-btn {
+      display: inline-block;
+      padding: 10px 28px;
+      border-radius: 24px;
+      background: var(--gradient-green);
+      color: #000;
+      font-weight: 700;
+      font-size: 0.85rem;
+      border: none;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .upsell-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 16px rgba(245,158,11,0.3);
+      color: #000;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="nav">
+    <div class="container">
+      <a href="/" class="nav-logo">X<span>HT</span></a>
+      <div class="nav-links">
+        <a href="/">Trang chủ</a>
+        <a href="/example.html">Race ví dụ</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="dashboard">
+
+    <!-- USER HEADER -->
+    <div class="user-header">
+      <div class="user-avatar">NA</div>
+      <div class="user-info">
+        <h1>Nguyễn Văn A <span class="pro-badge">PRO</span></h1>
+        <div class="user-since">Thành viên từ 03/2026 &middot; 7 dự đoán</div>
+      </div>
+    </div>
+
+    <!-- STATS -->
+    <div class="stats-row">
+      <div class="stat-card">
+        <span class="stat-number">7</span>
+        <div class="stat-label">Dự đoán</div>
+      </div>
+      <div class="stat-card highlight">
+        <span class="stat-number">2</span>
+        <div class="stat-label">Đang dẫn</div>
+      </div>
+      <div class="stat-card">
+        <span class="stat-number">1</span>
+        <div class="stat-label">Được chứng nhận</div>
+      </div>
+      <div class="stat-card">
+        <span class="stat-number">71%</span>
+        <div class="stat-label">Độ chính xác</div>
+      </div>
+    </div>
+
+    <!-- EXPORT BAR (Pro only) -->
+    <div class="export-bar">
+      <button class="export-btn">📄 Xuất PDF toàn bộ</button>
+      <button class="export-btn">📊 Chia sẻ trang cá nhân</button>
+      <button class="export-btn">🔗 Sao chép link sổ</button>
+    </div>
+
+    <!-- FOLLOW TOPICS (Pro only) -->
+    <div class="follow-section">
+      <div class="section-header">
+        <h2>Chủ đề đang theo dõi</h2>
+      </div>
+      <div class="follow-list">
+        <span class="follow-tag">
+          <span class="bell">🔔</span> Pin xe điện
+          <span class="remove">✕</span>
+        </span>
+        <span class="follow-tag">
+          <span class="bell">🔔</span> Robot nhà máy
+          <span class="remove">✕</span>
+        </span>
+        <span class="follow-tag">
+          <span class="bell">🔔</span> LLM Race
+          <span class="remove">✕</span>
+        </span>
+      </div>
+      <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 8px;">
+        Nhận email khi có quan điểm mới trong các chủ đề này
+      </p>
+    </div>
+
+    <!-- PREDICTIONS LIST -->
+    <div style="margin-top: 32px;">
+      <div class="section-header">
+        <h2>Bộ sưu tập</h2>
+        <div class="filter-tabs">
+          <button class="filter-tab active">Tất cả</button>
+          <button class="filter-tab">Đang dẫn</button>
+          <button class="filter-tab">Chờ</button>
+          <button class="filter-tab">Đã xác nhận</button>
+        </div>
+      </div>
+
+      <!-- Prediction 1: Vindicated -->
+      <div class="prediction-card" style="border-left: 3px solid var(--accent-green);">
+        <div class="prediction-top">
+          <span class="prediction-race">Pin xe điện</span>
+          <span class="prediction-status status-vindicated">Được chứng nhận</span>
+          <span class="prediction-date">15/01/2026</span>
+        </div>
+        <div class="prediction-quote">
+          "Solid-state battery còn lâu mới production-ready, BYD Blade ngon rồi."
+        </div>
+        <div class="prediction-stance">Chọn: LFP (BYD Blade) đã đủ tốt</div>
+        <div class="prediction-footer">
+          <div class="prediction-progress">
+            <div class="progress-bar">
+              <div class="progress-fill gold" style="width: 100%;"></div>
+            </div>
+            <span style="color: var(--accent-green); font-weight: 600;">Đúng!</span>
+          </div>
+          <a href="#">Xem race ↗</a>
+          <a href="#">Chứng nhận ↗</a>
+          <a href="#">Post gốc ↗</a>
+        </div>
+      </div>
+
+      <!-- Prediction 2: Leading -->
+      <div class="prediction-card" style="border-left: 3px solid #22c55e;">
+        <div class="prediction-top">
+          <span class="prediction-race">Robot nhà máy</span>
+          <span class="prediction-status status-leading">Đang dẫn</span>
+          <span class="prediction-date">22/02/2026</span>
+        </div>
+        <div class="prediction-quote">
+          "Humanoid chỉ là PR thôi, vào nhà máy không dùng được. Cobot của Universal Robots mới là thứ đang tạo ra giá trị thật."
+        </div>
+        <div class="prediction-stance">Chọn: Cobot thực tế hơn Humanoid</div>
+        <div class="prediction-footer">
+          <div class="prediction-progress">
+            <div class="progress-bar">
+              <div class="progress-fill green" style="width: 65%;"></div>
+            </div>
+            <span>65% đồng ý</span>
+          </div>
+          <a href="#">Xem race ↗</a>
+          <a href="#">Post gốc ↗</a>
+        </div>
+      </div>
+
+      <!-- Prediction 3: Leading -->
+      <div class="prediction-card" style="border-left: 3px solid #22c55e;">
+        <div class="prediction-top">
+          <span class="prediction-race">LLM Race</span>
+          <span class="prediction-status status-leading">Đang dẫn</span>
+          <span class="prediction-date">05/03/2026</span>
+        </div>
+        <div class="prediction-quote">
+          "Llama 4 gần ngang Claude rồi, chỉ là vấn đề thời gian. Meta cho free thì ai trả tiền API mãi."
+        </div>
+        <div class="prediction-stance">Chọn: Open-source LLM sẽ bắt kịp closed-source</div>
+        <div class="prediction-footer">
+          <div class="prediction-progress">
+            <div class="progress-bar">
+              <div class="progress-fill green" style="width: 52%;"></div>
+            </div>
+            <span>52% đồng ý</span>
+          </div>
+          <a href="#">Xem race ↗</a>
+          <a href="#">Post gốc ↗</a>
+        </div>
+      </div>
+
+      <!-- Prediction 4: Trailing -->
+      <div class="prediction-card" style="border-left: 3px solid var(--accent-red);">
+        <div class="prediction-top">
+          <span class="prediction-race">Chip AI</span>
+          <span class="prediction-status status-trailing">Đang thua</span>
+          <span class="prediction-date">10/03/2026</span>
+        </div>
+        <div class="prediction-quote">
+          "MI300X benchmark ngon hơn H100 mà rẻ hơn 30%. Doanh nghiệp sẽ chuyển sang AMD."
+        </div>
+        <div class="prediction-stance">Chọn: AMD sẽ vượt NVIDIA trong AI training</div>
+        <div class="prediction-footer">
+          <div class="prediction-progress">
+            <div class="progress-bar">
+              <div class="progress-fill red" style="width: 28%;"></div>
+            </div>
+            <span>28% đồng ý</span>
+          </div>
+          <a href="#">Xem race ↗</a>
+          <a href="#">Post gốc ↗</a>
+        </div>
+      </div>
+
+      <!-- Prediction 5: Pending -->
+      <div class="prediction-card">
+        <div class="prediction-top">
+          <span class="prediction-race">Vệ tinh LEO</span>
+          <span class="prediction-status status-pending">Chờ thêm dữ liệu</span>
+          <span class="prediction-date">20/03/2026</span>
+        </div>
+        <div class="prediction-quote">
+          "OneWeb, Kuiper đều chậm quá. SpaceX đã phóng hơn 6000 vệ tinh rồi, game over."
+        </div>
+        <div class="prediction-stance">Chọn: Starlink sẽ thống trị internet vệ tinh</div>
+        <div class="prediction-footer">
+          <div class="prediction-progress">
+            <div class="progress-bar">
+              <div class="progress-fill gold" style="width: 0%;"></div>
+            </div>
+            <span>Mới 2 quan điểm</span>
+          </div>
+          <a href="#">Xem race ↗</a>
+          <a href="#">Post gốc ↗</a>
+        </div>
+      </div>
+
+      <!-- Prediction 6: Pending -->
+      <div class="prediction-card">
+        <div class="prediction-top">
+          <span class="prediction-race">Năng lượng hạt nhân</span>
+          <span class="prediction-status status-pending">Chờ thêm dữ liệu</span>
+          <span class="prediction-date">25/03/2026</span>
+        </div>
+        <div class="prediction-quote">
+          "NuScale đã được cấp phép. Microsoft, Google đều đặt hàng SMR cho data center. Đây là tương lai."
+        </div>
+        <div class="prediction-stance">Chọn: SMR (lò phản ứng nhỏ) sẽ thay thế điện than</div>
+        <div class="prediction-footer">
+          <div class="prediction-progress">
+            <div class="progress-bar">
+              <div class="progress-fill gold" style="width: 0%;"></div>
+            </div>
+            <span>Mới 1 quan điểm</span>
+          </div>
+          <a href="#">Xem race ↗</a>
+          <a href="#">Post gốc ↗</a>
+        </div>
+      </div>
+
+      <!-- Prediction 7: Pending -->
+      <div class="prediction-card">
+        <div class="prediction-top">
+          <span class="prediction-race">Công nghệ gene</span>
+          <span class="prediction-status status-pending">Chờ thêm dữ liệu</span>
+          <span class="prediction-date">28/03/2026</span>
+        </div>
+        <div class="prediction-quote">
+          "Casgevy đã được FDA duyệt cho sickle cell. Bước tiếp theo là solid tumor. Tin tôi đi."
+        </div>
+        <div class="prediction-stance">Chọn: CRISPR sẽ chữa được ung thư trong 10 năm</div>
+        <div class="prediction-footer">
+          <div class="prediction-progress">
+            <div class="progress-bar">
+              <div class="progress-fill gold" style="width: 0%;"></div>
+            </div>
+            <span>Mới 3 quan điểm</span>
+          </div>
+          <a href="#">Xem race ↗</a>
+          <a href="#">Post gốc ↗</a>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- FOOTER -->
+  <footer style="text-align: center; padding: 40px 20px; border-top: 1px solid var(--border); color: var(--text-muted); font-size: 0.8rem;">
+    <p>XHT ghi nhận quan điểm công nghệ. Lịch sử sẽ phân định ai đúng.</p>
+    <p style="margin-top: 8px;">
+      <a href="/" style="color: var(--text-secondary);">Trang chủ</a> &middot;
+      <a href="/example.html" style="color: var(--text-secondary);">Race ví dụ</a> &middot;
+      <a href="/pricing.html" style="color: var(--text-secondary);">Bảng giá</a>
+    </p>
+  </footer>
+
+<script src="/xht-auth.js"></script>
+<script src="/xht-track.js"></script>
+</body>
+</html>

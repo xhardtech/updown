@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-QSPV8R01XR"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-QSPV8R01XR');
+</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Xác nhận vote — XHT</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <nav class="nav">
+    <div class="container">
+      <a href="/" class="nav-logo">X<span>HT</span></a>
+    </div>
+  </nav>
+
+  <section class="hero" style="padding: 60px 0 20px;">
+    <div class="container" style="max-width: 500px;">
+
+      <!-- Loading -->
+      <div id="loading" style="text-align: center;">
+        <p style="color: var(--text-secondary);">Đang tải...</p>
+      </div>
+
+      <!-- Error -->
+      <div id="error" style="display: none; text-align: center;">
+        <h2 style="color: var(--accent-red); margin-bottom: 12px;">Không tìm thấy</h2>
+        <a href="/" class="btn btn-primary" style="display: inline-block; text-decoration: none;">Trang chủ</a>
+      </div>
+
+      <!-- Receipt -->
+      <div id="receipt" style="display: none;">
+        <div style="background: var(--bg-card); border: 2px solid var(--accent-green); border-radius: var(--radius); overflow: hidden;">
+
+          <!-- Header -->
+          <div style="background: linear-gradient(135deg, rgba(245,158,11,0.1), rgba(245,158,11,0.03)); padding: 24px; text-align: center; border-bottom: 1px solid var(--border);">
+            <div style="font-size: 2.5rem; margin-bottom: 8px;">✓</div>
+            <h1 style="font-size: 1.3rem; font-weight: 800; margin-bottom: 4px; color: var(--accent-green);">Vote đã được xác nhận</h1>
+            <p style="font-size: 0.8rem; color: var(--text-muted);" id="rc-date"></p>
+          </div>
+
+          <!-- Content -->
+          <div style="padding: 24px;">
+
+            <!-- Voter info -->
+            <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 20px;">
+              <div style="width: 40px; height: 40px; border-radius: 50%; background: rgba(245,158,11,0.15); display: flex; align-items: center; justify-content: center; font-size: 1rem; font-weight: 800; color: var(--accent-green);" id="rc-avatar"></div>
+              <div>
+                <div style="font-weight: 600; font-size: 0.9rem;" id="rc-email"></div>
+                <div style="font-size: 0.72rem; color: var(--text-muted);">Mã vote: <span id="rc-ref" style="color: var(--accent-green); font-weight: 600;"></span></div>
+              </div>
+            </div>
+
+            <!-- Vote choice -->
+            <div style="background: var(--bg-secondary); border-radius: var(--radius-sm); padding: 16px; margin-bottom: 16px;">
+              <p style="font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px;">Đã vote cho</p>
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span style="font-size: 1.4rem;" id="rc-side-icon"></span>
+                <span style="font-size: 1rem; font-weight: 700;" id="rc-side-name"></span>
+              </div>
+            </div>
+
+            <!-- Race info -->
+            <div style="background: var(--bg-secondary); border-radius: var(--radius-sm); padding: 16px; margin-bottom: 16px;">
+              <p style="font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px;">Trong cuộc đua</p>
+              <p style="font-size: 0.95rem; font-weight: 600;" id="rc-race-title"></p>
+              <div style="margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--border);">
+                <p style="font-size: 0.8rem; color: var(--text-secondary); font-style: italic; border-left: 3px solid rgba(245,158,11,0.3); padding-left: 10px;" id="rc-quote"></p>
+                <p style="font-size: 0.72rem; color: var(--text-muted); margin-top: 4px;" id="rc-author"></p>
+              </div>
+            </div>
+
+            <!-- Link to result page -->
+            <a id="rc-result-link" href="#" style="display: block; text-align: center; padding: 12px; border-radius: 10px; background: var(--gradient-green); color: #000; font-weight: 700; font-size: 0.85rem; text-decoration: none; margin-bottom: 12px;">
+              Xem cuộc đua →
+            </a>
+
+            <!-- Share -->
+            <div style="text-align: center;">
+              <button onclick="shareReceipt()" style="background: none; border: 1px solid var(--border); border-radius: 20px; padding: 8px 16px; color: var(--text-secondary); font-size: 0.8rem; cursor: pointer; font-family: inherit;">
+                📱 Chia sẻ
+              </button>
+            </div>
+
+          </div>
+
+          <!-- Footer -->
+          <div style="padding: 16px; border-top: 1px solid var(--border); text-align: center;">
+            <p style="font-size: 0.68rem; color: var(--text-muted);">XHT — xhardtech.com — Ghi nhận quan điểm công nghệ</p>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <script>
+    const API_BASE = 'https://api.xhardtech.com';
+    const params = new URLSearchParams(window.location.search);
+
+    async function loadReceipt() {
+      const subId = params.get('id');
+      const voteRef = params.get('ref');
+      const voteType = params.get('vote');
+      const email = params.get('email');
+
+      if (!subId) {
+        document.getElementById('loading').style.display = 'none';
+        document.getElementById('error').style.display = 'block';
+        return;
+      }
+
+      try {
+        const res = await fetch(`${API_BASE}/result/${subId}`);
+        const data = await res.json();
+
+        if (!res.ok || !data.quote_text) {
+          document.getElementById('loading').style.display = 'none';
+          document.getElementById('error').style.display = 'block';
+          return;
+        }
+
+        // Populate receipt
+        const displayEmail = email || 'Voter';
+        document.getElementById('rc-avatar').textContent = displayEmail[0].toUpperCase();
+        document.getElementById('rc-email').textContent = displayEmail;
+        document.getElementById('rc-ref').textContent = voteRef || '';
+        document.getElementById('rc-date').textContent = new Date().toLocaleDateString('vi', { year: 'numeric', month: 'long', day: 'numeric' });
+
+        // Side info
+        if (voteType === 'agree') {
+          document.getElementById('rc-side-icon').textContent = data.side1_icon || '✓';
+          document.getElementById('rc-side-name').textContent = data.side1_name || 'Đồng ý';
+        } else {
+          document.getElementById('rc-side-icon').textContent = data.side2_icon || '✓';
+          document.getElementById('rc-side-name').textContent = data.side2_name || 'Hướng khác';
+        }
+
+        // Race info
+        document.getElementById('rc-race-title').textContent = data.race_title || '';
+        document.getElementById('rc-quote').textContent = '"' + (data.quote_text || '').substring(0, 150) + (data.quote_text?.length > 150 ? '...' : '') + '"';
+        document.getElementById('rc-author').textContent = '— ' + (data.quote_author || '');
+
+        // Link
+        document.getElementById('rc-result-link').href = `/result.html?id=${subId}`;
+
+        document.title = `Vote xác nhận: ${data.race_title || 'XHT'}`;
+
+        document.getElementById('loading').style.display = 'none';
+        document.getElementById('receipt').style.display = 'block';
+
+      } catch {
+        document.getElementById('loading').style.display = 'none';
+        document.getElementById('error').style.display = 'block';
+      }
+    }
+
+    function shareReceipt() {
+      navigator.clipboard.writeText(window.location.href).then(() => {
+        alert('Link đã copy!');
+      });
+    }
+
+    loadReceipt();
+  </script>
+
+<script src="/xht-track.js"></script>
+</body>
+</html>

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-QSPV8R01XR"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-QSPV8R01XR');
+</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Đang đăng nhập — XHT</title>
+  <meta name="robots" content="noindex">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <nav class="nav">
+    <div class="container">
+      <a href="/" class="nav-logo">X<span>HT</span></a>
+    </div>
+  </nav>
+
+  <section class="hero" style="padding: 80px 0;">
+    <div class="container" style="max-width: 400px; text-align: center;">
+      <div id="loading">
+        <p style="color: var(--text-secondary); font-size: 1.1rem; margin-bottom: 8px;">Đang đăng nhập...</p>
+        <p style="color: var(--text-muted); font-size: 0.85rem;">Vui lòng đợi.</p>
+      </div>
+      <div id="error" style="display: none;">
+        <h2 style="color: var(--accent-red); margin-bottom: 12px;">Link không hợp lệ</h2>
+        <p style="color: var(--text-secondary); margin-bottom: 20px;">Link đăng nhập đã hết hạn hoặc không đúng.</p>
+        <a href="/login.html" class="btn btn-primary" style="display: inline-block; text-decoration: none;">Đăng nhập lại</a>
+      </div>
+      <div id="success" style="display: none;">
+        <h2 style="color: var(--accent-green); margin-bottom: 12px;">Đăng nhập thành công!</h2>
+        <p style="color: var(--text-secondary);">Đang chuyển hướng...</p>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    const API_BASE = 'https://api.xhardtech.com';
+    const params = new URLSearchParams(window.location.search);
+    const token = params.get('token');
+    const redirect = params.get('redirect') || '/';
+
+    async function verify() {
+      if (!token) {
+        document.getElementById('loading').style.display = 'none';
+        document.getElementById('error').style.display = 'block';
+        return;
+      }
+
+      try {
+        const res = await fetch(`${API_BASE}/auth/verify?token=${token}`, { credentials: 'include' });
+        const data = await res.json();
+
+        if (!res.ok || !data.ok) {
+          document.getElementById('loading').style.display = 'none';
+          document.getElementById('error').style.display = 'block';
+          return;
+        }
+
+        // Track login success
+        if (window.xhtTrack) xhtTrack.login(data.method || 'email');
+
+        // Session cookie set by API via Set-Cookie header (HttpOnly — secure)
+        // Other cookies set client-side (non-sensitive, for UI only)
+        const maxAge = 30 * 24 * 3600;
+        const domain = 'domain=.xhardtech.com';
+        document.cookie = `xht_plan=${data.plan}; path=/; ${domain}; max-age=${maxAge}; secure; samesite=lax`;
+        document.cookie = `xht_user=${encodeURIComponent(data.name)}; path=/; ${domain}; max-age=${maxAge}; secure; samesite=lax`;
+        document.cookie = `xht_method=${data.method}; path=/; ${domain}; max-age=${maxAge}; secure; samesite=lax`;
+        document.cookie = `xht_contact=${encodeURIComponent(data.contact)}; path=/; ${domain}; max-age=${maxAge}; secure; samesite=lax`;
+
+        // Show success
+        document.getElementById('loading').style.display = 'none';
+        document.getElementById('success').style.display = 'block';
+
+        // Redirect
+        const safeRedirect = redirect.startsWith('/') && !redirect.startsWith('//') ? redirect : '/';
+        setTimeout(() => { window.location.href = safeRedirect; }, 1000);
+
+      } catch {
+        document.getElementById('loading').style.display = 'none';
+        document.getElementById('error').style.display = 'block';
+      }
+    }
+
+    verify();
+  </script>
+
+<script src="/xht-track.js"></script>
+</body>
+</html>

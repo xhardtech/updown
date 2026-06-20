@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-QSPV8R01XR"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-QSPV8R01XR');
+</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bảng xếp hạng — XHT</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <nav class="nav">
+    <div class="container">
+      <a href="/" class="nav-logo">X<span>HT</span></a>
+      <div class="nav-links" style="display:flex;gap:8px;align-items:center;">
+        <a href="/">Trang chủ</a>
+        <a href="/login.html" id="navLogin" style="color:#000;background:var(--gradient-green);padding:4px 12px;border-radius:14px;font-size:0.75rem;font-weight:600;text-decoration:none;">Đăng nhập</a>
+        <a href="/dashboard.html" id="navUser" style="color:var(--accent-green);font-size:0.75rem;font-weight:600;display:none;"></a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="hero" style="padding: 60px 0 20px;">
+    <div class="container" style="max-width: 700px; text-align: center;">
+      <h1 style="font-size: 1.5rem; margin-bottom: 8px;">Bảng xếp hạng dự đoán</h1>
+      <p style="color: var(--text-secondary); font-size: 0.9rem;">Ai dự đoán chính xác nhất? Lịch sử phán xét.</p>
+    </div>
+  </section>
+
+  <div class="container" style="max-width: 700px; padding-bottom: 80px;">
+    <div id="leaderboardContent">
+      <p style="color: var(--text-muted); text-align: center;">Đang tải...</p>
+    </div>
+
+    <div id="proTeaser" style="display: none; margin-top: 24px;">
+      <div style="background: rgba(245,158,11,0.03); border: 1px dashed rgba(245,158,11,0.2); border-radius: var(--radius); padding: 20px; text-align: center;">
+        <p style="font-size: 0.85rem; margin-bottom: 8px;">Xem toàn bộ bảng xếp hạng + accuracy score cá nhân</p>
+        <a href="/pricing.html" class="side-btn" style="text-decoration: none; background: var(--gradient-green); color: #000; border: none; padding: 8px 20px;">Nâng cấp Pro — 10k/tháng</a>
+      </div>
+    </div>
+  </div>
+
+  <footer class="race-footer">
+    <p>XHT ghi nhận quan điểm công nghệ. Lịch sử sẽ phân định ai đúng.</p>
+  </footer>
+
+  <script>
+    const API_BASE = 'https://api.xhardtech.com';
+
+    async function loadLeaderboard() {
+      const el = document.getElementById('leaderboardContent');
+      try {
+        const res = await fetch(`${API_BASE}/leaderboard`, { credentials: 'include' });
+        const data = await res.json();
+
+        if (!data.entries || data.entries.length === 0) {
+          el.innerHTML = '<div style="text-align: center; padding: 40px; color: var(--text-muted);"><p>Chưa có race nào settled. Bảng xếp hạng sẽ hiện khi lịch sử phán xét.</p></div>';
+          return;
+        }
+
+        el.innerHTML = `
+          <table class="leaderboard-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Người dự đoán</th>
+                <th>Đúng</th>
+                <th>Race</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${data.entries.map(e => `
+                <tr>
+                  <td><span class="rank-badge ${e.rank <= 3 ? 'rank-' + e.rank : ''}">${e.rank}</span></td>
+                  <td style="font-weight: 600;">${e.author}</td>
+                  <td style="color: var(--accent-green); font-weight: 700;">${e.correct}</td>
+                  <td style="font-size: 0.8rem; color: var(--text-secondary);">${(e.races || []).join(', ')}</td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>`;
+
+        if (data.limited) {
+          document.getElementById('proTeaser').style.display = 'block';
+        }
+      } catch {
+        el.innerHTML = '<p style="color: var(--text-muted); text-align: center;">Không thể tải dữ liệu.</p>';
+      }
+    }
+
+    loadLeaderboard();
+  </script>
+
+<script src="/xht-auth.js"></script>
+<script src="/xht-track.js"></script>
+</body>
+</html>

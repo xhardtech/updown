@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-QSPV8R01XR"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-QSPV8R01XR');
+</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bảng giá — XHT</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; padding: 40px 0 60px; max-width: 900px; margin: 0 auto; }
+    .pricing-card { background: var(--bg-card); border: 2px solid var(--border); border-radius: var(--radius); padding: 32px 24px; text-align: center; transition: var(--transition); }
+    .pricing-card:hover { border-color: rgba(245,158,11,0.3); transform: translateY(-4px); box-shadow: var(--shadow-hover); }
+    .pricing-card.featured { border-color: var(--accent-green); }
+    .pricing-card h2 { font-size: 1.3rem; margin-bottom: 4px; }
+    .pricing-price { font-size: 2rem; font-weight: 800; margin: 12px 0; }
+    .pricing-price span { font-size: 0.9rem; font-weight: 400; color: var(--text-muted); }
+    .pricing-features { list-style: none; padding: 0; margin: 20px 0; text-align: left; }
+    .pricing-features li { padding: 6px 0; font-size: 0.85rem; color: var(--text-secondary); padding-left: 24px; position: relative; }
+    .pricing-features li::before { content: '✓'; position: absolute; left: 0; color: var(--accent-green); font-weight: 700; }
+    .pricing-features li.disabled { opacity: 0.4; }
+    .pricing-features li.disabled::before { content: '✗'; color: var(--accent-red); }
+  </style>
+</head>
+<body>
+
+  <nav class="nav">
+    <div class="container">
+      <a href="/" class="nav-logo">X<span>HT</span></a>
+      <div class="nav-links" style="display:flex;gap:8px;align-items:center;">
+        <a href="/">Trang chủ</a>
+        <a href="/login.html" id="navLogin" style="color:#000;background:var(--gradient-green);padding:4px 12px;border-radius:14px;font-size:0.75rem;font-weight:600;text-decoration:none;">Đăng nhập</a>
+        <a href="/dashboard.html" id="navUser" style="color:var(--accent-green);font-size:0.75rem;font-weight:600;display:none;"></a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="hero" style="padding: 60px 0 20px; text-align: center;">
+    <div class="container">
+      <h1 style="font-size: clamp(1.6rem, 4vw, 2.2rem); margin-bottom: 8px;">Bảng giá</h1>
+      <p style="color: var(--text-secondary); max-width: 500px; margin: 0 auto;">Ghi nhận quan điểm công nghệ. Lịch sử sẽ phán xét.</p>
+    </div>
+  </section>
+
+  <div class="container">
+    <div class="pricing-grid">
+
+      <!-- FREE -->
+      <div class="pricing-card">
+        <h2>Free</h2>
+        <div class="pricing-price">0đ</div>
+        <ul class="pricing-features">
+          <li>Submit 3 lần/ngày</li>
+          <li>Xem race page + vote opinions</li>
+          <li>Lưu vào bộ sưu tập</li>
+          <li>Share lên Facebook (có watermark)</li>
+          <li>Basic certificate khi vindicated</li>
+          <li>Xem leaderboard top 10</li>
+          <li class="disabled">PDF export</li>
+          <li class="disabled">Follow topics + noti</li>
+          <li class="disabled">Analysis chuyên sâu</li>
+          <li class="disabled">Premium certificate</li>
+        </ul>
+        <a href="/login.html" class="btn btn-secondary" style="width: 100%; justify-content: center; text-decoration: none;">Đăng nhập miễn phí</a>
+      </div>
+
+      <!-- PRO -->
+      <div class="pricing-card featured">
+        <h2>Pro</h2>
+        <div class="pricing-price" style="color: var(--accent-green);">10.000đ <span>/tháng</span></div>
+        <ul class="pricing-features">
+          <li>Unlimited submit</li>
+          <li>Xem race page + vote opinions</li>
+          <li>Lưu vào bộ sưu tập</li>
+          <li>Share không watermark</li>
+          <li>PDF export đẹp</li>
+          <li>Follow topics + nhận noti</li>
+          <li>Analysis chuyên sâu (khi race 20+)</li>
+          <li>Premium certificate (Gold/Dark/Minimal)</li>
+          <li>Full leaderboard + accuracy score</li>
+          <li>Badge "Early Believer"</li>
+        </ul>
+        <a href="/login.html" class="btn btn-primary" style="width: 100%; justify-content: center; text-decoration: none;">Nâng cấp Pro</a>
+      </div>
+
+      <!-- ENTERPRISE -->
+      <div class="pricing-card">
+        <h2>Enterprise</h2>
+        <div class="pricing-price">100.000đ <span>/tháng</span></div>
+        <ul class="pricing-features">
+          <li>Tất cả tính năng Pro</li>
+          <li>API access (query opinions + race data)</li>
+          <li>AI Analysis đầy đủ (bối cảnh, kịch bản)</li>
+          <li>Embed race widget vào website</li>
+          <li>Team accounts (10 người)</li>
+          <li>Custom race creation</li>
+          <li>White-label certificate</li>
+          <li>Sentiment report theo ngành</li>
+          <li>Export CSV</li>
+        </ul>
+        <a href="/login.html" class="btn btn-secondary" style="width: 100%; justify-content: center; text-decoration: none;">Liên hệ</a>
+      </div>
+
+    </div>
+
+    <!-- QR Payment -->
+    <div style="max-width: 400px; margin: 0 auto 60px; text-align: center;">
+      <h3 style="font-size: 1.1rem; margin-bottom: 16px;">Thanh toán</h3>
+      <img src="/qr-donate.png" alt="QR chuyển khoản" style="width: 180px; border-radius: 8px; margin-bottom: 12px;">
+      <p style="font-size: 0.78rem; color: var(--text-muted);">
+        Quét QR chuyển khoản<br>
+        Nội dung CK: <strong>XHT PRO [email/SĐT]</strong><br>
+        hoặc <strong>XHT ENTERPRISE [email/SĐT]</strong>
+      </p>
+      <p style="font-size: 0.68rem; color: var(--text-muted); margin-top: 8px;">
+        VIB — Lê Đức Anh — 066704060105555
+      </p>
+    </div>
+  </div>
+
+  <footer class="race-footer">
+    <p>XHT ghi nhận quan điểm công nghệ. Lịch sử sẽ phân định ai đúng.</p>
+    <p style="margin-top: 8px;">
+      <a href="/">Trang chủ</a> &middot;
+      <a href="/login.html">Đăng nhập</a>
+    </p>
+  </footer>
+
+<script src="/xht-auth.js"></script>
+<script src="/xht-track.js"></script>
+</body>
+</html>

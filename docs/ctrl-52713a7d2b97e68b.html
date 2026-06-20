@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-QSPV8R01XR"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-QSPV8R01XR');
+</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin — XHT</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .admin-login { max-width: 400px; margin: 80px auto; text-align: center; }
+    .admin-input {
+      width: 100%; padding: 14px 16px; background: var(--bg-card);
+      border: 1px solid var(--border); border-radius: var(--radius-sm);
+      color: var(--text-primary); font-size: 1rem; font-family: inherit;
+      outline: none; margin-bottom: 16px;
+    }
+    .admin-input:focus { border-color: var(--accent-green); }
+    .queue-card {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 24px; margin-bottom: 16px;
+    }
+    .queue-card:hover { border-color: rgba(245, 158, 11, 0.3); }
+    .queue-meta { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 12px; display: flex; gap: 16px; flex-wrap: wrap; }
+    .queue-meta span { display: inline-flex; align-items: center; gap: 4px; }
+    .queue-content { color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 16px; padding: 12px; background: var(--bg-secondary); border-radius: var(--radius-sm); max-height: 120px; overflow-y: auto; }
+    .queue-reply { width: 100%; min-height: 100px; padding: 12px; background: var(--bg-secondary); border: 1px solid var(--border); border-radius: var(--radius-sm); color: var(--text-primary); font-size: 0.9rem; font-family: inherit; resize: vertical; margin-bottom: 12px; outline: none; }
+    .queue-reply:focus { border-color: var(--accent-green); }
+    .queue-actions { display: flex; gap: 8px; }
+    .filter-info { display: flex; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; }
+    .filter-tag { padding: 4px 10px; border-radius: 12px; font-size: 0.75rem; font-weight: 600; }
+    .filter-tag.pass { background: rgba(245, 158, 11, 0.15); color: var(--accent-green); }
+    .filter-tag.info { background: rgba(55, 66, 250, 0.15); color: var(--accent-blue); }
+    .tab-bar { display: flex; gap: 0; margin-bottom: 24px; border-bottom: 1px solid var(--border); }
+    .tab-btn { padding: 12px 24px; background: none; border: none; color: var(--text-muted); font-size: 0.9rem; cursor: pointer; border-bottom: 2px solid transparent; font-family: inherit; font-weight: 500; }
+    .tab-btn.active { color: var(--accent-green); border-bottom-color: var(--accent-green); }
+    .tab-btn:hover { color: var(--text-primary); }
+    .empty-state { text-align: center; padding: 60px 20px; color: var(--text-muted); }
+    .copy-btn { background: var(--bg-secondary); border: 1px solid var(--border); color: var(--text-secondary); padding: 6px 12px; border-radius: var(--radius-sm); cursor: pointer; font-size: 0.8rem; font-family: inherit; }
+    .copy-btn:hover { border-color: var(--accent-green); color: var(--text-primary); }
+
+    /* Text2Race editing */
+    .t2r-section { margin: 16px 0; padding: 16px; background: var(--bg-secondary); border-radius: var(--radius-sm); border: 1px solid var(--border); }
+    .t2r-section-title { font-size: 0.75rem; font-weight: 700; color: var(--accent-green); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; }
+    .t2r-row { display: flex; gap: 8px; margin-bottom: 8px; align-items: center; }
+    .t2r-row label { font-size: 0.75rem; color: var(--text-muted); min-width: 80px; flex-shrink: 0; }
+    .t2r-input { flex: 1; padding: 6px 10px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 6px; color: var(--text-primary); font-size: 0.85rem; font-family: inherit; outline: none; }
+    .t2r-input:focus { border-color: var(--accent-green); }
+    .t2r-textarea { width: 100%; min-height: 60px; padding: 8px 10px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 6px; color: var(--text-primary); font-size: 0.85rem; font-family: inherit; outline: none; resize: vertical; }
+    .t2r-textarea:focus { border-color: var(--accent-green); }
+    .t2r-sides { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    @media (max-width: 500px) { .t2r-sides { grid-template-columns: 1fr; } }
+    .t2r-side { padding: 12px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 8px; }
+    .t2r-side-label { font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+
+    /* Preview modal */
+    .preview-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.8); z-index: 1000; display: none; overflow-y: auto; padding: 20px; }
+    .preview-close { position: fixed; top: 16px; right: 16px; z-index: 1001; background: var(--bg-card); border: 1px solid var(--border); color: var(--text-primary); padding: 8px 16px; border-radius: 20px; cursor: pointer; font-family: inherit; font-size: 0.85rem; }
+    .preview-close:hover { border-color: var(--accent-green); }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="nav">
+    <div class="container">
+      <a href="/" class="nav-logo">X<span>HT</span></a>
+      <div class="nav-links">
+        <a href="/">Races</a>
+        <a href="submit.html">Submit</a>
+        <span style="color: var(--text-muted); font-size: 0.85rem;" id="adminLabel">Admin</span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- LOGIN -->
+  <div id="loginView" class="admin-login">
+    <h2 style="margin-bottom: 24px;">Admin Login</h2>
+    <input type="password" id="adminKey" class="admin-input" placeholder="Enter admin key">
+    <button onclick="login()" class="btn btn-primary" style="width: 100%; justify-content: center;">Login</button>
+    <p id="loginError" style="color: var(--accent-red); font-size: 0.85rem; margin-top: 12px; display: none;"></p>
+  </div>
+
+  <!-- DASHBOARD -->
+  <div id="dashboardView" style="display: none; padding: 32px 0;">
+    <div class="container">
+      <h1 style="font-size: 1.5rem; margin-bottom: 8px;">Comment Queue</h1>
+      <p style="color: var(--text-secondary); margin-bottom: 24px;">Review submissions and approve comments to post.</p>
+
+      <!-- Stats -->
+      <div style="display: flex; gap: 16px; margin-bottom: 24px; flex-wrap: wrap;">
+        <div style="background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 16px 24px; flex: 1; min-width: 120px;">
+          <span style="font-size: 1.5rem; font-weight: 800; color: var(--accent-yellow);" id="statPending">0</span>
+          <span style="display: block; font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px;">Pending</span>
+        </div>
+        <div style="background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 16px 24px; flex: 1; min-width: 120px;">
+          <span style="font-size: 1.5rem; font-weight: 800; color: var(--accent-green);" id="statApproved">0</span>
+          <span style="display: block; font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px;">Approved</span>
+        </div>
+        <div style="background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 16px 24px; flex: 1; min-width: 120px;">
+          <span style="font-size: 1.5rem; font-weight: 800; color: var(--accent-red);" id="statRejected">0</span>
+          <span style="display: block; font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px;">Rejected</span>
+        </div>
+      </div>
+
+      <!-- Tabs -->
+      <div class="tab-bar">
+        <button class="tab-btn active" onclick="switchTab('pending_filter')">New</button>
+        <button class="tab-btn" onclick="switchTab('pending')">Pending</button>
+        <button class="tab-btn" onclick="switchTab('approved')">Approved</button>
+        <button class="tab-btn" onclick="switchTab('rejected')">Rejected</button>
+        <button class="tab-btn" onclick="switchTab('races')">Races</button>
+      </div>
+
+      <!-- Queue list -->
+      <div id="queueList"></div>
+    </div>
+  </div>
+
+  <!-- PREVIEW OVERLAY -->
+  <div class="preview-overlay" id="previewOverlay">
+    <button class="preview-close" onclick="closePreview()">Đóng preview</button>
+    <div id="previewContent" style="max-width: 700px; margin: 40px auto;"></div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <p>XHT Admin — Internal use only</p>
+    </div>
+  </footer>
+
+  <script>
+    const API_BASE = 'https://api.xhardtech.com';
+    let adminKey = '';
+    let currentTab = 'pending';
+
+    function login() {
+      adminKey = document.getElementById('adminKey').value.trim();
+      if (!adminKey) return;
+      loadQueue('pending_filter').then(ok => {
+        if (ok) {
+          document.getElementById('loginView').style.display = 'none';
+          document.getElementById('dashboardView').style.display = 'block';
+          document.getElementById('adminLabel').textContent = 'Admin (logged in)';
+          document.getElementById('adminLabel').style.color = 'var(--accent-green)';
+          // Load all stats
+          loadStats();
+        } else {
+          document.getElementById('loginError').textContent = 'Invalid admin key';
+          document.getElementById('loginError').style.display = 'block';
+        }
+      });
+    }
+
+    // Enter key to login
+    document.getElementById('adminKey').addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') login();
+    });
+
+    async function loadStats() {
+      for (const status of ['pending', 'approved', 'rejected']) {
+        try {
+          const res = await fetch(`${API_BASE}/queue?status=${status}`, {
+            headers: { 'Authorization': `Bearer ${adminKey}` },
+          });
+          const data = await res.json();
+          document.getElementById(`stat${status.charAt(0).toUpperCase() + status.slice(1)}`).textContent = data.count || 0;
+        } catch {}
+      }
+    }
+
+    async function loadQueue(status) {
+      try {
+        const endpoint = status === 'pending_filter'
+          ? `${API_BASE}/pending-filter`
+          : `${API_BASE}/queue?status=${status}`;
+        const res = await fetch(endpoint, {
+          headers: { 'Authorization': `Bearer ${adminKey}` },
+        });
+        if (res.status === 401) return false;
+        const data = await res.json();
+        renderQueue(data.submissions || [], status);
+        return true;
+      } catch (err) {
+        document.getElementById('queueList').innerHTML = `
+          <div class="empty-state">
+            <p>Could not connect to API</p>
+            <p style="font-size: 0.8rem; margin-top: 8px;">${err.message}</p>
+          </div>
+        `;
+        return false;
+      }
+    }
+
+    function renderQueue(submissions, status) {
+      const list = document.getElementById('queueList');
+
+      if (submissions.length === 0) {
+        list.innerHTML = `<div class="empty-state"><p>No ${status} submissions</p></div>`;
+        return;
+      }
+
+      list.innerHTML = submissions.map(s => `
+        <div class="queue-card" id="card-${s.id}">
+          <div class="queue-meta">
+            <span>${s.platform}</span>
+            <span>${new Date(s.submitted_at).toLocaleString()}</span>
+            <a href="${s.url}" target="_blank" style="color: var(--accent-green);">Open original ↗</a>
+            <a href="/result.html?id=${s.id}" target="_blank" style="color: var(--text-muted); font-size: 0.8rem;">Result page ↗</a>
+          </div>
+
+          ${s.filter ? `
+          <div class="filter-info">
+            <span class="filter-tag pass">${s.filter.topic || 'unfiltered'}</span>
+            <span class="filter-tag info">VN: ${s.filter.vietnam_related ? 'Yes' : 'No'}</span>
+            <span class="filter-tag info">Directions: ${s.filter.directions_count || '?'}</span>
+          </div>
+          ` : `
+          <div class="filter-info">
+            <span class="filter-tag info">${s.status}</span>
+          </div>
+          `}
+
+          <!-- Content thô -->
+          <div class="queue-content">${escapeHtml(s.content_preview)}</div>
+
+          ${status === 'pending' || status === 'pending_filter' ? `
+            <!-- TEXT2RACE FIELDS -->
+            <div class="t2r-section">
+              <div class="t2r-section-title">Text2Race — AI sinh hoặc admin nhập</div>
+
+              <div class="t2r-row">
+                <label>Quote</label>
+              </div>
+              <textarea class="t2r-textarea" id="t2r-quote-${s.id}" placeholder="Trích dẫn nguyên văn từ post/comment...">${escapeHtml(s.quote_text || s.content_preview || '')}</textarea>
+
+              <div class="t2r-row" style="margin-top: 8px;">
+                <label>Tác giả</label>
+                <input class="t2r-input" id="t2r-author-${s.id}" placeholder="Tên người viết" value="${escapeHtml(s.quote_author || '')}">
+                <label style="min-width: 50px;">Viết tắt</label>
+                <input class="t2r-input" id="t2r-initials-${s.id}" placeholder="VD: NA" value="${escapeHtml(s.quote_author_initials || '')}" style="max-width: 60px;">
+              </div>
+
+              <div class="t2r-row">
+                <label>Platform</label>
+                <input class="t2r-input" id="t2r-platform-${s.id}" placeholder="Facebook" value="${escapeHtml(s.quote_platform || s.platform || '')}">
+                <label style="min-width: 50px;">Ngày</label>
+                <input class="t2r-input" id="t2r-date-${s.id}" placeholder="DD/MM/YYYY" value="${escapeHtml(s.quote_date || '')}">
+              </div>
+
+              <div class="t2r-row">
+                <label>AI Insight</label>
+              </div>
+              <textarea class="t2r-textarea" id="t2r-insight-${s.id}" placeholder="AI hiểu: người này tin rằng...">${escapeHtml(s.ai_insight || '')}</textarea>
+
+              <div class="t2r-row">
+                <label>Race title</label>
+                <input class="t2r-input" id="t2r-race-${s.id}" placeholder="Tên cuộc đua (AI sinh)" value="${escapeHtml(s.race_title || '')}">
+                <label style="min-width: 40px;">Type</label>
+                <select class="t2r-input" id="t2r-type-${s.id}" style="max-width: 50px;">
+                  ${[1,2,3,4,5,6].map(i => `<option value="${i}" ${(s.content_type||0)==i?'selected':''}>${i}</option>`).join('')}
+                </select>
+              </div>
+
+              <div class="t2r-sides">
+                <div class="t2r-side">
+                  <div class="t2r-side-label">Bên 1 (quan điểm người viết)</div>
+                  <div class="t2r-row">
+                    <label>Icon</label>
+                    <input class="t2r-input" id="t2r-s1icon-${s.id}" placeholder="🔋" value="${s.side1_icon || ''}" style="max-width: 50px;">
+                    <input class="t2r-input" id="t2r-s1name-${s.id}" placeholder="Tên bên 1" value="${escapeHtml(s.side1_name || '')}">
+                  </div>
+                  <div class="t2r-row">
+                    <label>Context</label>
+                    <input class="t2r-input" id="t2r-s1ctx-${s.id}" placeholder="Công ty, bối cảnh..." value="${escapeHtml(s.side1_context || '')}">
+                  </div>
+                </div>
+                <div class="t2r-side">
+                  <div class="t2r-side-label">Bên 2 (hướng khác)</div>
+                  <div class="t2r-row">
+                    <label>Icon</label>
+                    <input class="t2r-input" id="t2r-s2icon-${s.id}" placeholder="🔀" value="${s.side2_icon || '🔀'}" style="max-width: 50px;">
+                    <input class="t2r-input" id="t2r-s2name-${s.id}" placeholder="Tên bên 2" value="${escapeHtml(s.side2_name || '')}">
+                  </div>
+                  <div class="t2r-row">
+                    <label>Context</label>
+                    <input class="t2r-input" id="t2r-s2ctx-${s.id}" placeholder="Giải pháp khác?" value="${escapeHtml(s.side2_context || '')}">
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Reply (legacy, optional) -->
+            <details style="margin-bottom: 12px;">
+              <summary style="font-size: 0.8rem; color: var(--text-muted); cursor: pointer;">Reply gốc (tùy chọn)</summary>
+              <textarea class="queue-reply" id="reply-${s.id}" style="margin-top: 8px;">${escapeHtml(s.suggested_reply || '')}</textarea>
+            </details>
+
+            <div class="queue-actions">
+              <button class="btn btn-primary btn-sm" onclick="approveSubmission('${s.id}', '${status}')">Approve Race Page</button>
+              <button class="btn btn-secondary btn-sm" onclick="previewRace('${s.id}')">Preview</button>
+              <button class="btn btn-red btn-sm" onclick="rejectSubmission('${s.id}', '${status}')">Reject</button>
+            </div>
+          ` : status === 'approved' ? `
+            <!-- Approved: show text2race summary -->
+            ${s.quote_text ? `
+            <div style="padding: 12px; background: var(--bg-secondary); border-radius: var(--radius-sm); margin-bottom: 12px;">
+              <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 4px;">${s.side1_icon || ''} ${escapeHtml(s.side1_name || '')} vs ${s.side2_icon || '🔀'} ${escapeHtml(s.side2_name || '')}</p>
+              <p style="font-size: 0.85rem; color: var(--text-secondary); font-style: italic;">"${escapeHtml(s.quote_text.substring(0, 100))}..."</p>
+              <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 4px;">— ${escapeHtml(s.quote_author || '')} &middot; ${escapeHtml(s.race_title || '')}</p>
+            </div>
+            ` : `
+            <div style="padding: 12px; background: var(--bg-secondary); border-radius: var(--radius-sm); margin-bottom: 12px;">
+              <p style="font-size: 0.85rem; color: var(--text-secondary);">${escapeHtml(s.final_reply || s.suggested_reply || '')}</p>
+            </div>
+            `}
+            <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+              <a href="/result.html?id=${s.id}" target="_blank" class="copy-btn">Xem race page ↗</a>
+              ${!s.race_id ? `<button class="copy-btn" onclick="promptMerge('${s.id}')" style="color: var(--accent-green);">Gộp vào race →</button>` : `<span style="font-size: 0.75rem; color: var(--text-muted);">Đã trong race</span>`}
+            </div>
+          ` : `
+            <p style="font-size: 0.85rem; color: var(--text-muted);">Rejected at ${s.rejected_at ? new Date(s.rejected_at).toLocaleString() : 'unknown'}</p>
+          `}
+        </div>
+      `).join('');
+    }
+
+    function switchTab(status) {
+      currentTab = status;
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      document.querySelector(`.tab-btn[onclick="switchTab('${status}')"]`).classList.add('active');
+      if (status === 'races') {
+        loadRaces();
+      } else {
+        loadQueue(status);
+      }
+    }
+
+    async function loadRaces() {
+      const list = document.getElementById('queueList');
+      try {
+        const res = await fetch(`${API_BASE}/races`);
+        const data = await res.json();
+        if (!data.races || data.races.length === 0) {
+          list.innerHTML = '<div class="empty-state"><p>Chưa có race nào. Approve submissions rồi tạo race.</p></div>';
+          return;
+        }
+        list.innerHTML = data.races.map(r => `
+          <div class="queue-card">
+            <div class="queue-meta">
+              <span style="font-weight: 700; font-size: 1rem;">${escapeHtml(r.title)}</span>
+              <span style="color: ${r.status === 'open' ? 'var(--accent-green)' : 'var(--text-muted)'}; font-size: 0.75rem; text-transform: uppercase;">${r.status}</span>
+            </div>
+            <div style="display: flex; gap: 12px; margin: 12px 0; flex-wrap: wrap;">
+              ${r.sides.map((s, i) => `
+                <div style="flex: 1; min-width: 150px; padding: 12px; background: var(--bg-secondary); border-radius: var(--radius-sm); text-align: center;">
+                  <span style="font-size: 1.4rem;">${s.icon}</span>
+                  <div style="font-size: 0.8rem; font-weight: 600; margin: 4px 0;">${escapeHtml(s.name)}</div>
+                  <span style="font-size: 1.2rem; font-weight: 800; color: var(--accent-green);">${s.count}</span>
+                  <span style="font-size: 0.65rem; color: var(--text-muted); display: block;">opinions</span>
+                </div>
+              `).join('')}
+            </div>
+            <div style="display: flex; gap: 8px; font-size: 0.8rem;">
+              <a href="/race.html?slug=${r.slug}" target="_blank" style="color: var(--accent-green);">Xem race page ↗</a>
+              <span style="color: var(--text-muted);">Measurability: ${'★'.repeat(r.measurability || 0)}${'☆'.repeat(5 - (r.measurability || 0))}</span>
+            </div>
+          </div>
+        `).join('');
+      } catch (err) {
+        list.innerHTML = `<div class="empty-state"><p>Lỗi: ${err.message}</p></div>`;
+      }
+    }
+
+    // Collect text2race fields from form
+    function getT2RFields(id) {
+      const val = (elId) => {
+        const el = document.getElementById(elId);
+        return el ? el.value.trim() : '';
+      };
+      return {
+        quote_text: val(`t2r-quote-${id}`),
+        quote_author: val(`t2r-author-${id}`),
+        quote_author_initials: val(`t2r-initials-${id}`),
+        quote_platform: val(`t2r-platform-${id}`),
+        quote_date: val(`t2r-date-${id}`),
+        ai_insight: val(`t2r-insight-${id}`),
+        race_title: val(`t2r-race-${id}`),
+        content_type: parseInt(val(`t2r-type-${id}`)) || 1,
+        side1_icon: val(`t2r-s1icon-${id}`),
+        side1_name: val(`t2r-s1name-${id}`),
+        side1_context: val(`t2r-s1ctx-${id}`),
+        side1_count: 1,
+        side2_icon: val(`t2r-s2icon-${id}`) || '🔀',
+        side2_name: val(`t2r-s2name-${id}`),
+        side2_context: val(`t2r-s2ctx-${id}`),
+        side2_count: 0,
+      };
+    }
+
+    // Preview race page in overlay
+    function previewRace(id) {
+      const t2r = getT2RFields(id);
+      const overlay = document.getElementById('previewOverlay');
+      const content = document.getElementById('previewContent');
+
+      content.innerHTML = `
+        <div class="race-page" style="background: var(--bg-primary); border-radius: var(--radius); overflow: hidden;">
+          <section class="quote-hero" style="padding: 40px 0 32px;">
+            <div class="quote-container">
+              <div class="quote-source-tag">
+                <span class="platform">${escapeHtml(t2r.quote_platform)}</span>
+                <span>&middot; ${escapeHtml(t2r.quote_date)}</span>
+              </div>
+              <span class="quote-mark">"</span>
+              <div class="quote-text" style="font-size: 1.2rem;">${escapeHtml(t2r.quote_text)}</div>
+              <div class="quote-author">
+                <div class="quote-avatar">${escapeHtml(t2r.quote_author_initials)}</div>
+                <div class="quote-author-info">
+                  <div class="quote-author-name">${escapeHtml(t2r.quote_author)}</div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <div class="ai-insight" style="margin-bottom: 20px;">
+            <div class="ai-insight-card">
+              <span class="ai-insight-icon">🔍</span>
+              <div class="ai-insight-text"><strong>AI hiểu:</strong> ${escapeHtml(t2r.ai_insight)}</div>
+            </div>
+          </div>
+
+          <div class="race-section" style="margin-top: 20px;">
+            <div class="race-section-header">
+              <span class="label">Cuộc đua: ${escapeHtml(t2r.race_title)}</span>
+              <span class="line"></span>
+            </div>
+            <div class="sides-grid">
+              <div class="side-card active">
+                <span class="side-icon">${t2r.side1_icon}</span>
+                <div class="side-name">${escapeHtml(t2r.side1_name)}</div>
+                <div class="side-sub">${escapeHtml(t2r.side1_context)}</div>
+                <span class="side-count">1</span>
+                <span class="side-count-label">người đồng ý</span>
+              </div>
+              <div class="side-card empty">
+                <span class="side-icon">${t2r.side2_icon}</span>
+                <div class="side-name">${escapeHtml(t2r.side2_name)}</div>
+                <div class="side-sub">${escapeHtml(t2r.side2_context)}</div>
+                <span class="side-count" style="color: var(--text-muted);">0</span>
+                <span class="side-count-label">người nghĩ khác</span>
+                <p class="empty-msg">Chưa ai phản bác</p>
+              </div>
+            </div>
+          </div>
+
+          <div style="text-align: center; padding: 20px; color: var(--text-muted); font-size: 0.8rem;">
+            — Preview — Nhấn Approve để publish race page này
+          </div>
+        </div>
+      `;
+
+      overlay.style.display = 'block';
+    }
+
+    function closePreview() {
+      document.getElementById('previewOverlay').style.display = 'none';
+    }
+
+    async function approveSubmission(id, fromStatus) {
+      const replyEl = document.getElementById(`reply-${id}`);
+      const reply = replyEl ? replyEl.value : '';
+      const t2r = getT2RFields(id);
+
+      // Validate required fields
+      if (!t2r.quote_text) {
+        alert('Cần có Quote text trước khi approve');
+        return;
+      }
+
+      try {
+        // If pending_filter, first pass filter with text2race fields
+        if (fromStatus === 'pending_filter') {
+          await fetch(`${API_BASE}/filter-result/${id}`, {
+            method: 'POST',
+            headers: { 'Authorization': `Bearer ${adminKey}`, 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              pass: true,
+              filter: { topic: t2r.race_title || 'manual' },
+              suggested_reply: reply,
+              ...t2r,
+            }),
+          });
+        }
+
+        const res = await fetch(`${API_BASE}/approve/${id}`, {
+          method: 'POST',
+          headers: { 'Authorization': `Bearer ${adminKey}`, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ reply, ...t2r }),
+        });
+
+        if (res.ok) {
+          // Copy result page URL to clipboard
+          const resultUrl = `${window.location.origin}/result.html?id=${id}`;
+          await navigator.clipboard.writeText(resultUrl);
+          // Remove card with animation
+          const card = document.getElementById(`card-${id}`);
+          card.style.opacity = '0';
+          card.style.transform = 'translateX(20px)';
+          card.style.transition = 'all 0.3s ease';
+          setTimeout(() => {
+            card.remove();
+            loadStats();
+          }, 300);
+          // Notify
+          alert(`Race page live! URL đã copy: ${resultUrl}`);
+        }
+      } catch (err) {
+        alert('Error: ' + err.message);
+      }
+    }
+
+    async function rejectSubmission(id, fromStatus) {
+      if (!confirm('Reject this submission?')) return;
+
+      try {
+        // If pending_filter, reject via filter-result
+        if (fromStatus === 'pending_filter') {
+          await fetch(`${API_BASE}/filter-result/${id}`, {
+            method: 'POST',
+            headers: { 'Authorization': `Bearer ${adminKey}`, 'Content-Type': 'application/json' },
+            body: JSON.stringify({ pass: false, filter: { reason: 'manual_reject' } }),
+          });
+        } else {
+          await fetch(`${API_BASE}/reject/${id}`, {
+            method: 'POST',
+            headers: { 'Authorization': `Bearer ${adminKey}` },
+          });
+        }
+
+        const card = document.getElementById(`card-${id}`);
+        card.style.opacity = '0';
+        card.style.transform = 'translateX(-20px)';
+        card.style.transition = 'all 0.3s ease';
+        setTimeout(() => {
+          card.remove();
+          loadStats();
+        }, 300);
+      } catch (err) {
+        alert('Error: ' + err.message);
+      }
+    }
+
+    async function copyReply(id, btn) {
+      const card = document.getElementById(`card-${id}`);
+      const replyText = card.querySelector('.queue-content + div p')?.textContent || '';
+      await navigator.clipboard.writeText(replyText);
+      btn.textContent = 'Copied!';
+      setTimeout(() => btn.textContent = 'Copy reply to clipboard', 2000);
+    }
+
+    async function promptMerge(submissionId) {
+      // Load races
+      const res = await fetch(`${API_BASE}/races`);
+      const data = await res.json();
+      if (!data.races || data.races.length === 0) {
+        alert('Chưa có race nào. Tạo race mới trước.');
+        return;
+      }
+
+      const raceOptions = data.races.map((r, i) => `${i}: ${r.title} (${r.sides.map(s => s.icon + ' ' + s.name).join(' vs ')})`).join('\n');
+      const raceIdx = prompt(`Chọn race để gộp:\n${raceOptions}\n\nNhập số (hoặc Cancel để tạo race mới):`);
+      if (raceIdx === null) return;
+
+      const race = data.races[parseInt(raceIdx)];
+      if (!race) { alert('Không hợp lệ'); return; }
+
+      const sideOptions = race.sides.map((s, i) => `${i}: ${s.icon} ${s.name} (${s.count} opinions)`).join('\n');
+      const sideIdx = prompt(`Gộp vào bên nào?\n${sideOptions}\n\nNhập số:`);
+      if (sideIdx === null) return;
+
+      const mergeRes = await fetch(`${API_BASE}/race/merge/${submissionId}`, {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${adminKey}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ race_id: race.race_id, side_index: parseInt(sideIdx) }),
+      });
+      const result = await mergeRes.json();
+      if (result.ok) {
+        alert(`Đã gộp! Bên ${sideIdx} giờ có ${result.side_count} opinions.`);
+        loadQueue(currentTab);
+      } else {
+        alert('Lỗi: ' + (result.error || 'Unknown'));
+      }
+    }
+
+    function escapeHtml(text) {
+      if (!text) return '';
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+  </script>
+
+</body>
+</html>

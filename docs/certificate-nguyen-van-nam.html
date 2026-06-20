@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-QSPV8R01XR"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-QSPV8R01XR');
+</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Certificate — Nguyễn Văn Nam — XHT</title>
+  <meta name="description" content="Nguyễn Văn Nam đã dự đoán đúng hướng phát triển công nghệ lõi BLE7 cho startup kỳ lân đầu tiên tại Việt Nam.">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    @page {
+      size: A4 landscape;
+      margin: 0;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #0a0a0f;
+      color: #e8e8f0;
+      line-height: 1.4;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 210mm;
+      padding: 12mm;
+    }
+
+    .certificate {
+      width: 273mm;
+      height: 186mm;
+      background: #1a1a2e;
+      border: 2px solid #ffc312;
+      border-radius: 16px;
+      padding: 20px 32px 16px;
+      position: relative;
+      overflow: hidden;
+      text-align: center;
+    }
+
+    .certificate .bar-top,
+    .certificate .bar-bottom {
+      position: absolute;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #ffc312, #f59e0b, #ffc312);
+    }
+    .certificate .bar-top { top: 0; }
+    .certificate .bar-bottom { bottom: 0; }
+
+    .corner {
+      position: absolute;
+      width: 36px;
+      height: 36px;
+      border: 2px solid #ffc312;
+      opacity: 0.4;
+    }
+    .corner-tl { top: 8px; left: 8px; border-right: none; border-bottom: none; border-radius: 6px 0 0 0; }
+    .corner-tr { top: 8px; right: 8px; border-left: none; border-bottom: none; border-radius: 0 6px 0 0; }
+    .corner-bl { bottom: 8px; left: 8px; border-right: none; border-top: none; border-radius: 0 0 0 6px; }
+    .corner-br { bottom: 8px; right: 8px; border-left: none; border-top: none; border-radius: 0 0 6px 0; }
+
+    .cert-badge {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #ffc312, #d97706);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: #000;
+      margin: 0 auto 10px;
+    }
+
+    .cert-title {
+      font-size: 0.6rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      color: #ffc312;
+      margin-bottom: 2px;
+    }
+
+    .cert-heading {
+      font-size: 1.5rem;
+      font-weight: 800;
+      line-height: 1.2;
+      margin-bottom: 8px;
+      color: #e8e8f0;
+    }
+
+    .cert-heading .highlight { color: #f59e0b; }
+
+    .cert-divider {
+      width: 80px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, #ffc312, transparent);
+      margin: 0 auto 8px;
+    }
+
+    .cert-label {
+      font-size: 0.6rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: #555570;
+      margin-bottom: 2px;
+    }
+
+    .cert-name {
+      font-size: 2rem;
+      font-weight: 800;
+      color: #f59e0b;
+      margin-bottom: 2px;
+    }
+
+    .cert-name-sub {
+      font-size: 0.7rem;
+      color: #8888a0;
+      margin-bottom: 10px;
+    }
+
+    /* Two-column layout for stance + race */
+    .cert-body {
+      display: flex;
+      gap: 14px;
+      margin-bottom: 10px;
+    }
+
+    .cert-body-left {
+      flex: 1;
+    }
+
+    .cert-body-right {
+      flex: 1;
+    }
+
+    .cert-stance {
+      padding: 12px 16px;
+      background: rgba(245, 158, 11, 0.08);
+      border: 1px solid rgba(245, 158, 11, 0.2);
+      border-radius: 10px;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .cert-stance-label {
+      font-size: 0.58rem;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: #555570;
+      margin-bottom: 4px;
+    }
+
+    .cert-stance-text {
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: #f59e0b;
+      line-height: 1.45;
+    }
+
+    .cert-race-context {
+      background: #12121a;
+      border: 1px solid #2a2a3e;
+      border-radius: 10px;
+      padding: 12px 14px;
+      text-align: left;
+      height: 100%;
+    }
+
+    .cert-race-context h3 {
+      font-size: 0.72rem;
+      color: #e8e8f0;
+      margin-bottom: 8px;
+      text-align: center;
+    }
+
+    .cert-race-sides {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .cert-side {
+      padding: 6px 10px;
+      border-radius: 6px;
+      text-align: center;
+      font-size: 0.68rem;
+      font-weight: 600;
+      line-height: 1.3;
+    }
+
+    .cert-side.winner {
+      background: rgba(245, 158, 11, 0.15);
+      border: 1px solid #f59e0b;
+      color: #f59e0b;
+    }
+
+    .cert-side.loser {
+      background: #1a1a2e;
+      border: 1px solid #2a2a3e;
+      color: #555570;
+    }
+
+    .cert-side-label {
+      font-size: 0.52rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-left: 8px;
+      opacity: 0.7;
+    }
+
+    /* Bottom row: details + conviction + quote */
+    .cert-bottom {
+      display: flex;
+      gap: 14px;
+      margin-bottom: 10px;
+    }
+
+    .cert-details {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      flex: 0 0 180px;
+    }
+
+    .cert-detail-item {
+      padding: 6px 10px;
+      background: #12121a;
+      border: 1px solid #2a2a3e;
+      border-radius: 6px;
+      text-align: center;
+    }
+
+    .cert-detail-label {
+      font-size: 0.5rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #555570;
+      margin-bottom: 1px;
+    }
+
+    .cert-detail-value {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: #e8e8f0;
+    }
+
+    .cert-detail-value.correct { color: #f59e0b; }
+
+    .cert-quote-section {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .cert-conviction {
+      display: inline-block;
+      padding: 5px 18px;
+      background: rgba(245, 158, 11, 0.15);
+      border-radius: 16px;
+      font-weight: 700;
+      font-size: 0.78rem;
+      color: #ffc312;
+      text-align: center;
+    }
+
+    .cert-quote {
+      font-style: italic;
+      color: #8888a0;
+      font-size: 0.72rem;
+      padding: 8px 14px;
+      border-left: 3px solid #ffc312;
+      text-align: left;
+      background: rgba(255, 195, 18, 0.04);
+      border-radius: 0 6px 6px 0;
+      line-height: 1.5;
+    }
+
+    .cert-quote-author {
+      text-align: right;
+      margin-top: 4px;
+      font-style: normal;
+      font-size: 0.62rem;
+      color: #555570;
+    }
+
+    .cert-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      padding-top: 8px;
+      border-top: 1px solid #2a2a3e;
+    }
+
+    .cert-footer-item { text-align: center; }
+
+    .cert-footer-label {
+      font-size: 0.5rem;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: #555570;
+      margin-bottom: 2px;
+    }
+
+    .cert-footer-value {
+      font-size: 0.68rem;
+      font-weight: 600;
+      color: #8888a0;
+    }
+
+    .cert-seal {
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: #ffc312;
+    }
+
+    .cert-actions {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      margin-top: 16px;
+    }
+    .btn {
+      display: inline-block;
+      padding: 10px 24px;
+      border-radius: 24px;
+      font-weight: 600;
+      font-size: 0.82rem;
+      border: none;
+      cursor: pointer;
+      color: #000;
+    }
+    .btn-primary { background: linear-gradient(135deg, #f59e0b, #d97706); color: #000; }
+    .btn-secondary { background: transparent; color: #e8e8f0; border: 1px solid #2a2a3e; }
+
+    @media print {
+      body { background: #0a0a0f; padding: 12mm; }
+      .cert-actions { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="certificate" id="certificate">
+    <div class="bar-top"></div>
+    <div class="bar-bottom"></div>
+    <div class="corner corner-tl"></div>
+    <div class="corner corner-tr"></div>
+    <div class="corner corner-bl"></div>
+    <div class="corner corner-br"></div>
+
+    <!-- Header -->
+    <div class="cert-badge">XHT</div>
+    <div class="cert-title">XHT Belief Registry</div>
+    <h1 class="cert-heading">Chứng nhận <span class="highlight">Dự đoán Đúng</span></h1>
+    <div class="cert-divider"></div>
+
+    <!-- Name -->
+    <div class="cert-label">Chứng nhận rằng</div>
+    <div class="cert-name">Nguyễn Văn Nam</div>
+    <div class="cert-name-sub">Nhà sáng lập Startup &#8226; Tiên phong BLE / IoT &#8226; Việt Nam</div>
+
+    <!-- Two-column: Stance + Race -->
+    <div class="cert-body">
+      <div class="cert-body-left">
+        <div class="cert-stance">
+          <div class="cert-stance-label">&#10004; Đã dự đoán đúng</div>
+          <div class="cert-stance-text">
+            BLE7 sẽ bùng nổ nhờ Channel Sounding (định vị chính xác cấp cm)
+            &mdash; hướng công nghệ lõi này sẽ tạo ra kỳ lân đầu tiên của Việt Nam trong lĩnh vực IoT
+          </div>
+        </div>
+      </div>
+      <div class="cert-body-right">
+        <div class="cert-race-context">
+          <h3>Cuộc đua: Công nghệ lõi BLE7 &mdash; Hướng đi cho kỳ lân đầu tiên tại VN</h3>
+          <div class="cert-race-sides">
+            <div class="cert-side winner">
+              Channel Sounding &amp; định vị chính xác cấp cm
+              <span class="cert-side-label">&#10004; THẮNG</span>
+            </div>
+            <div class="cert-side loser">
+              Mesh Networking quy mô lớn (BLE Mesh 2.0)
+              <span class="cert-side-label">Về nhì</span>
+            </div>
+            <div class="cert-side loser">
+              Ultra-low Power Sensing &amp; Ambient IoT
+              <span class="cert-side-label">Về nhì</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom row: Details + Quote -->
+    <div class="cert-bottom">
+      <div class="cert-details">
+        <div class="cert-detail-item">
+          <div class="cert-detail-label">Cuộc đua</div>
+          <div class="cert-detail-value">Công nghệ lõi BLE7 VN</div>
+        </div>
+        <div class="cert-detail-item">
+          <div class="cert-detail-label">Kết quả</div>
+          <div class="cert-detail-value correct">&#10004; DỰ ĐOÁN ĐÚNG</div>
+        </div>
+        <div class="cert-detail-item">
+          <div class="cert-detail-label">Ghi nhận niềm tin</div>
+          <div class="cert-detail-value">15 / 01 / 2025</div>
+        </div>
+        <div class="cert-detail-item">
+          <div class="cert-detail-label">Xác nhận đúng</div>
+          <div class="cert-detail-value">20 / 03 / 2026</div>
+        </div>
+      </div>
+      <div class="cert-quote-section">
+        <div class="cert-conviction">&#9733; Điểm niềm tin: 91/100</div>
+        <div class="cert-quote">
+          &ldquo;BLE7 Channel Sounding sẽ là bước nhảy lớn nhất kể từ BLE ra đời. Định vị chính xác cấp
+          cm sẽ mở ra thị trường indoor positioning, asset tracking, smart factory mà GPS không
+          chạm tới được. Startup nào nắm công nghệ ranging này từ đầu sẽ trở thành
+          kỳ lân đầu tiên của ngành IoT Việt Nam.&rdquo;
+          <div class="cert-quote-author">&mdash; Nguyễn Văn Nam, tháng 01/2025</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="cert-footer">
+      <div class="cert-footer-item">
+        <div class="cert-footer-label">Mã chứng nhận</div>
+        <div class="cert-footer-value">XHT-BLE7CS01</div>
+      </div>
+      <div class="cert-footer-item">
+        <div class="cert-seal">XHT</div>
+        <div class="cert-footer-label" style="margin-top:2px;">xhardtech.com</div>
+      </div>
+      <div class="cert-footer-item">
+        <div class="cert-footer-label">Xác minh</div>
+        <div class="cert-footer-value">&#10004; Ghi nhận on-chain</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cert-actions">
+    <button class="btn btn-primary" onclick="window.print()">In / Lưu PDF</button>
+    <button class="btn btn-secondary" onclick="navigator.clipboard.writeText(window.location.href)">Sao chép liên kết</button>
+  </div>
+
+</body>
+</html>

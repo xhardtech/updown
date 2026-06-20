@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-QSPV8R01XR"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-QSPV8R01XR');
+</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Đăng nhập — XHT</title>
+  <meta name="robots" content="noindex">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .contact-option { display: flex; align-items: center; gap: 8px; padding: 8px 14px; border-radius: 20px; border: 1px solid var(--border); background: transparent; color: var(--text-secondary); font-size: 0.8rem; font-weight: 500; cursor: pointer; transition: var(--transition); font-family: inherit; }
+    .contact-option:hover { border-color: var(--accent-green); color: var(--text-primary); }
+    .contact-option.selected { border-color: var(--accent-green); background: rgba(245,158,11,0.08); color: var(--accent-green); font-weight: 600; }
+    .contact-option input[type="radio"] { display: none; }
+  </style>
+</head>
+<body>
+
+  <nav class="nav">
+    <div class="container">
+      <a href="/" class="nav-logo">X<span>HT</span></a>
+    </div>
+  </nav>
+
+  <section class="hero" style="padding: 60px 0 20px;">
+    <div class="container" style="max-width: 400px;">
+
+      <h1 style="font-size: 1.5rem; text-align: center; margin-bottom: 8px;">Đăng nhập XHT</h1>
+      <p style="color: var(--text-secondary); text-align: center; margin-bottom: 20px; font-size: 0.85rem;">
+        Đăng nhập hoặc tạo tài khoản mới — không cần mật khẩu.
+      </p>
+
+      <!-- Contact method selection -->
+      <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 8px;">Nhận link đăng nhập qua:</p>
+      <div style="display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap;" id="contactMethods">
+        <label class="contact-option selected" onclick="selectMethod('email')">
+          <input type="radio" name="method" value="email" checked>
+          📧 Email
+        </label>
+        <label class="contact-option" onclick="selectMethod('zalo')">
+          <input type="radio" name="method" value="zalo">
+          💬 Zalo
+        </label>
+        <label class="contact-option" onclick="selectMethod('sms')">
+          <input type="radio" name="method" value="sms">
+          📱 SMS
+        </label>
+      </div>
+
+      <!-- Input field (changes based on method) -->
+      <form id="loginForm">
+        <input type="text" id="contactInput" placeholder="email@example.com" required style="
+          width: 100%; padding: 14px 16px; background: var(--bg-card);
+          border: 1px solid var(--border); border-radius: var(--radius-sm);
+          color: var(--text-primary); font-size: 1rem; font-family: inherit;
+          outline: none; margin-bottom: 12px;
+        ">
+        <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;" id="loginBtn">
+          Gửi link đăng nhập
+        </button>
+      </form>
+
+      <div id="loginResult" style="display: none; margin-top: 16px;"></div>
+
+      <p style="color: var(--text-muted); font-size: 0.72rem; text-align: center; margin-top: 16px;">
+        Nhập thông tin → admin gửi link đăng nhập → click link → vào ngay.<br>
+        Nếu chưa có tài khoản, hệ thống tự tạo mới.<br>
+        Bằng việc đăng nhập, bạn đồng ý với <a href="#">Điều khoản</a> và <a href="#">Chính sách bảo mật</a>.
+      </p>
+
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <p>XHT — xhardtech.com</p>
+    </div>
+  </footer>
+
+  <script>
+    const API_BASE = 'https://api.xhardtech.com';
+    const params = new URLSearchParams(window.location.search);
+    const redirectUrl = params.get('redirect') || '/';
+
+    let currentMethod = 'email';
+
+    function selectMethod(method) {
+      currentMethod = method;
+      const input = document.getElementById('contactInput');
+
+      document.querySelectorAll('.contact-option').forEach(el => el.classList.remove('selected'));
+      document.querySelector(`.contact-option input[value="${method}"]`).parentElement.classList.add('selected');
+
+      if (method === 'email') {
+        input.type = 'email';
+        input.placeholder = 'email@example.com';
+      } else if (method === 'zalo') {
+        input.type = 'tel';
+        input.placeholder = 'Số điện thoại Zalo (VD: 0901234567)';
+      } else if (method === 'sms') {
+        input.type = 'tel';
+        input.placeholder = 'Số điện thoại nhận SMS (VD: 0901234567)';
+      }
+    }
+
+    // Form submit
+    document.getElementById('loginForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const contact = document.getElementById('contactInput').value.trim();
+      const btn = document.getElementById('loginBtn');
+      const result = document.getElementById('loginResult');
+
+      if (!contact) return;
+      if (window.xhtTrack) xhtTrack.signup(currentMethod);
+
+      btn.disabled = true;
+      btn.textContent = 'Đang gửi...';
+
+      try {
+        const res = await fetch(`${API_BASE}/auth/email`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email: contact, method: currentMethod }),
+        });
+        const data = await res.json();
+
+        if (res.ok) {
+          const methodText = currentMethod === 'email' ? 'email' : currentMethod === 'zalo' ? 'Zalo' : 'SMS';
+          result.innerHTML = `
+            <div style="padding: 16px; background: var(--bg-card); border: 1px solid var(--accent-green); border-radius: var(--radius-sm); text-align: center;">
+              <p style="color: var(--accent-green); font-weight: 600; margin-bottom: 8px;">Yêu cầu đã gửi!</p>
+              <p style="color: var(--text-secondary); font-size: 0.85rem;">Admin sẽ gửi link đăng nhập cho <strong>${contact}</strong> qua ${methodText}.</p>
+              <p style="color: var(--text-muted); font-size: 0.75rem; margin-top: 8px;">Thường trong vòng vài phút.</p>
+            </div>
+          `;
+        } else {
+          result.innerHTML = `
+            <div style="padding: 16px; background: rgba(255,71,87,0.1); border: 1px solid var(--accent-red); border-radius: var(--radius-sm);">
+              <p style="color: var(--accent-red); font-size: 0.85rem;">${data.error || 'Có lỗi xảy ra'}</p>
+            </div>
+          `;
+        }
+        result.style.display = 'block';
+      } catch {
+        result.innerHTML = `
+          <div style="padding: 16px; background: rgba(255,71,87,0.1); border: 1px solid var(--accent-red); border-radius: var(--radius-sm);">
+            <p style="color: var(--accent-red); font-size: 0.85rem;">Không thể kết nối. Thử lại sau.</p>
+          </div>
+        `;
+        result.style.display = 'block';
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Gửi link đăng nhập';
+      }
+    });
+
+    // Check if already logged in → show logged-in state
+    const userMatch = document.cookie.match(/xht_user=([^;]+)/);
+    if (userMatch && document.cookie.includes('xht_user')) {
+      const userName = decodeURIComponent(userMatch[1]);
+      const planMatch = document.cookie.match(/xht_plan=([^;]+)/);
+      const plan = planMatch ? planMatch[1] : 'free';
+
+      document.querySelector('.container[style*="max-width: 400px"]').innerHTML = `
+        <div style="text-align: center; padding: 20px 0;">
+          <div style="width: 56px; height: 56px; border-radius: 50%; background: var(--bg-card); border: 2px solid var(--accent-green); display: flex; align-items: center; justify-content: center; font-size: 1.2rem; font-weight: 800; color: var(--accent-green); margin: 0 auto 16px;">
+            ${userName[0].toUpperCase()}
+          </div>
+          <h2 style="font-size: 1.3rem; margin-bottom: 4px;">Chào ${userName}</h2>
+          <p style="color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 24px;">
+            Gói: <strong style="color: ${plan === 'pro' ? 'var(--accent-green)' : 'var(--text-secondary)'};">${plan === 'pro' ? 'Pro' : 'Free'}</strong>
+          </p>
+          <div style="display: flex; flex-direction: column; gap: 10px; max-width: 280px; margin: 0 auto;">
+            <a href="/dashboard.html" class="btn btn-primary" style="width: 100%; justify-content: center; text-decoration: none;">Bộ sưu tập</a>
+            <a href="/" class="btn btn-secondary" style="width: 100%; justify-content: center; text-decoration: none;">Trang chủ</a>
+            <a href="#" onclick="xhtLogout(); return false;" style="color: var(--text-muted); font-size: 0.8rem; margin-top: 8px;">Đăng xuất</a>
+          </div>
+        </div>
+      `;
+    }
+  </script>
+
+<script src="/xht-auth.js"></script>
+<script src="/xht-track.js"></script>
+</body>
+</html>

@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-QSPV8R01XR"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-QSPV8R01XR');
+</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>XHT · Cuộc họp thông minh cùng AI</title>
+  <meta name="description" content="XHT tạo trang tham chiếu duy nhất cho mỗi sự kiện / hội nghị / cuộc gặp đối tác: hồ sơ các bên, sản phẩm, nhu cầu mua hàng, lịch chương trình. AI cùng bạn lên kế hoạch họp, tổng hợp tài liệu và mở ra thảo luận sâu trước khi cuộc họp diễn ra.">
+  <meta name="keywords" content="cuộc họp thông minh, AI meeting prep, meeting alongside AI, exhibitor index, semiconductor, hội nghị, sự kiện B2B, AI agent reference, procurement intelligence, XHT, xhardtech">
+  <meta property="og:title" content="XHT · Cuộc họp thông minh cùng AI">
+  <meta property="og:description" content="Tạo trang tham chiếu duy nhất cho sự kiện / hội nghị / cuộc gặp. Họp tương tác cùng AI. Người đọc và AI agent dùng chung một URL.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://xhardtech.com/">
+  <link rel="canonical" href="https://xhardtech.com/">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+
+  <!-- Structured data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "XHT · xhardtech.com",
+    "alternateName": "XhardTech",
+    "url": "https://xhardtech.com/",
+    "description": "Nền tảng tạo trang tham chiếu cho cuộc họp thông minh: họp cùng AI. Người đọc và AI agent dùng chung một URL.",
+    "publisher": {"@type": "Organization", "name": "XhardTech", "url": "https://xhardtech.com"}
+  }
+  </script>
+
+  <style>
+    .lang-switcher { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+    .lang-btn { background: none; border: 1px solid var(--border); border-radius: 4px; cursor: pointer; font-size: 0.72rem; font-weight: 700; line-height: 1; padding: 4px 8px; color: var(--text-secondary); transition: var(--transition); letter-spacing: 0.04em; text-transform: uppercase; font-family: inherit; }
+    .lang-btn:hover { color: var(--text-primary); border-color: var(--text-muted); }
+    .lang-btn.active { color: #000; background: var(--gradient-green); border-color: var(--accent-green); }
+    @media (max-width: 500px) { .nav-hide-mobile { display: none !important; } .nav-links { gap: 6px !important; } }
+
+    .hero-section { padding: 72px 0 48px; }
+    .hero-eyebrow { display: inline-block; background: rgba(245,158,11,0.1); border: 1px solid rgba(245,158,11,0.3); color: var(--accent-green); font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; padding: 5px 14px; border-radius: 16px; margin-bottom: 22px; }
+    .hero-section h1 { font-size: clamp(1.9rem, 4.2vw, 2.8rem); font-weight: 800; line-height: 1.2; margin-bottom: 18px; letter-spacing: -0.02em; }
+    .hero-section h1 .accent { background: var(--gradient-green); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .hero-section .lead { font-size: 1.05rem; color: var(--text-secondary); line-height: 1.7; margin-bottom: 14px; max-width: 720px; }
+    .hero-section .sub { font-size: 0.92rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 32px; max-width: 720px; }
+    .hero-section .sub strong { color: var(--text-secondary); }
+
+    .cta-row { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 8px; }
+    .btn-primary-cta { background: var(--gradient-green); color: #000; padding: 12px 22px; border-radius: var(--radius-sm); font-weight: 700; font-size: 0.92rem; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; transition: var(--transition); }
+    .btn-primary-cta:hover { transform: translateY(-1px); box-shadow: 0 6px 24px rgba(245,158,11,0.25); }
+    .btn-secondary-cta { background: var(--bg-card); color: var(--text-primary); padding: 12px 22px; border-radius: var(--radius-sm); font-weight: 600; font-size: 0.92rem; text-decoration: none; border: 1px solid var(--border); display: inline-flex; align-items: center; gap: 8px; transition: var(--transition); }
+    .btn-secondary-cta:hover { border-color: var(--accent-green); color: var(--accent-green); }
+
+    .flagship-section { padding: 28px 0 48px; border-top: 1px solid var(--border); }
+    .usecase-intro { color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 24px; max-width: 720px; line-height: 1.65; }
+    .flow-grid { display: flex; flex-direction: column; gap: 16px; align-items: stretch; }
+    .flow-arrow { text-align: center; font-size: 2rem; color: var(--accent-green); line-height: 1; padding: 4px 0; }
+    .flow-service { /* default gradient (orange) */ }
+    .flow-outcome { background: linear-gradient(135deg, rgba(56,108,176,0.08), rgba(56,108,176,0.02)) !important; border-color: rgba(56,108,176,0.35) !important; }
+    .flow-outcome .label { color: #6ea8d8; }
+    .flow-outcome .flagship-link { color: #6ea8d8; }
+    .flagship-card { background: linear-gradient(135deg, rgba(245,158,11,0.06), rgba(245,158,11,0.02)); border: 1px solid rgba(245,158,11,0.25); border-radius: var(--radius); padding: 32px; }
+    .flagship-card .label { color: var(--accent-green); font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 14px; }
+    .flagship-card h2 { font-size: 1.5rem; font-weight: 800; line-height: 1.3; margin-bottom: 14px; }
+    .flagship-card p { color: var(--text-secondary); font-size: 0.94rem; line-height: 1.65; margin-bottom: 20px; }
+    .flagship-stats { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 22px; }
+    .flagship-stats span { background: rgba(255,255,255,0.04); border: 1px solid var(--border); color: var(--text-secondary); padding: 5px 12px; border-radius: 14px; font-size: 0.78rem; font-weight: 600; }
+    .flagship-link { color: var(--accent-green); text-decoration: none; font-weight: 700; font-size: 0.95rem; display: inline-flex; align-items: center; gap: 6px; }
+    .flagship-link:hover { gap: 10px; transition: gap 0.2s; }
+
+    .how-section { padding: 48px 0; border-top: 1px solid var(--border); }
+    .how-section h2 { font-size: 1.5rem; font-weight: 800; margin-bottom: 8px; }
+    .how-section > .container > p { color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 32px; }
+    .how-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+    @media (max-width: 760px) { .how-grid { grid-template-columns: 1fr; } }
+    .how-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; }
+    .how-card .num { display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 50%; background: var(--gradient-green); color: #000; font-weight: 800; font-size: 0.85rem; margin-bottom: 14px; }
+    .how-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 8px; color: var(--text-primary); }
+    .how-card p { color: var(--text-secondary); font-size: 0.88rem; line-height: 1.6; }
+
+    .ai-block { padding: 36px 0; border-top: 1px solid var(--border); }
+    .ai-block .container > div { background: var(--bg-card); border: 1px solid var(--border); border-left: 3px solid var(--accent-green); border-radius: var(--radius-sm); padding: 24px; }
+    .ai-block h3 { font-size: 0.95rem; font-weight: 700; color: var(--accent-green); margin-bottom: 12px; }
+    .ai-block p { color: var(--text-secondary); font-size: 0.9rem; line-height: 1.65; margin-bottom: 10px; }
+    .ai-block code { background: rgba(255,255,255,0.05); padding: 1px 6px; border-radius: 3px; font-size: 0.82rem; color: var(--accent-green); }
+
+    .latest-section { padding: 48px 0; border-top: 1px solid var(--border); }
+    .latest-section h2 { font-size: 1.5rem; font-weight: 800; margin-bottom: 22px; }
+    .latest-list { display: flex; flex-direction: column; gap: 12px; }
+    .latest-item { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 18px 22px; text-decoration: none; transition: var(--transition); display: block; }
+    .latest-item:hover { border-color: rgba(245,158,11,0.4); }
+    .latest-item .tag { display: inline-block; background: rgba(245,158,11,0.1); color: var(--accent-green); font-size: 0.68rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; padding: 3px 10px; border-radius: 10px; margin-bottom: 8px; }
+    .latest-item h3 { font-size: 1rem; font-weight: 700; color: var(--text-primary); margin-bottom: 6px; line-height: 1.4; }
+    .latest-item p { color: var(--text-secondary); font-size: 0.85rem; line-height: 1.55; }
+
+    .contact-section { padding: 48px 0; border-top: 1px solid var(--border); }
+    .contact-section .container > div { background: linear-gradient(135deg, rgba(245,158,11,0.06), rgba(245,158,11,0.02)); border: 1px solid rgba(245,158,11,0.2); border-radius: var(--radius); padding: 28px; text-align: center; }
+    .contact-section h2 { font-size: 1.25rem; font-weight: 800; margin-bottom: 10px; }
+    .contact-section p { color: var(--text-secondary); font-size: 0.92rem; line-height: 1.6; margin-bottom: 18px; max-width: 580px; margin-left: auto; margin-right: auto; }
+    .contact-section a.cta-email { display: inline-block; background: var(--gradient-green); color: #000; padding: 12px 26px; border-radius: var(--radius-sm); font-weight: 700; font-size: 0.92rem; text-decoration: none; }
+    .contact-section a.cta-email:hover { transform: translateY(-1px); }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="nav">
+    <div class="container">
+      <a href="/" class="nav-logo">X<span>HT</span></a>
+      <div class="nav-links" style="display:flex; gap:8px; align-items:center; flex-wrap: wrap;">
+        <a href="/login.html" id="navLogin" style="color:#000; background:var(--gradient-green); padding:6px 14px; border-radius:16px; font-size:0.75rem; font-weight:600; text-decoration:none;" data-i18n="nav_login">Đăng nhập</a>
+        <a href="/dashboard.html" id="navUser" style="color:var(--accent-green); font-size:0.75rem; font-weight:600; display:none;"></a>
+        <a href="/dashboard.html" style="color:var(--text-secondary); font-size:0.75rem; font-weight:500;" data-i18n="nav_dashboard">Bộ sưu tập</a>
+      </div>
+      <div class="lang-switcher" id="langSwitcher">
+        <button class="lang-btn active" data-lang="vi" title="Tiếng Việt">VI</button>
+        <button class="lang-btn" data-lang="en" title="English">EN</button>
+        <button class="lang-btn" data-lang="zh" title="中文">ZH</button>
+        <button class="lang-btn" data-lang="ja" title="日本語">JA</button>
+        <button class="lang-btn" data-lang="ko" title="한국어">KO</button>
+        <button class="lang-btn" data-lang="fr" title="Français">FR</button>
+        <button class="lang-btn" data-lang="de" title="Deutsch">DE</button>
+        <button class="lang-btn" data-lang="es" title="Español">ES</button>
+        <button class="lang-btn" data-lang="pt" title="Português">PT</button>
+        <button class="lang-btn" data-lang="th" title="ไทย">TH</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero-section">
+    <div class="container" style="max-width: 880px;">
+      <span class="hero-eyebrow" data-i18n="hero_eyebrow">Meeting Prep × AI</span>
+      <h1 data-i18n="hero_h1"><span class="accent">Cuộc họp thông minh cùng AI</span></h1>
+      <p class="lead" data-i18n="hero_lead">
+        Trước mỗi sự kiện, hội nghị, hay cuộc gặp đối tác, XHT giúp bạn lên một chương trình họp hoàn chỉnh giúp bạn <strong>họp cùng AI</strong>. Đồng thời XHT cập nhật <strong>tin tức các sự kiện công nghệ sắp diễn ra</strong> để bạn không bỏ lỡ.
+      </p>
+    </div>
+  </section>
+
+  <!-- CONTACT CTA -->
+  <section class="contact-section">
+    <div class="container" style="max-width: 720px;">
+      <div>
+        <h2 data-i18n="contact_h2">Bạn có sự kiện / hội nghị / cuộc gặp đối tác sắp tới?</h2>
+        <p data-i18n="contact_p">Liên hệ XHT để tạo trang chuẩn bị cuộc họp thông minh.</p>
+        <a href="mailto:assistant@xhardtech.com?subject=Smart%20meeting%20page%20request" class="cta-email" data-i18n="contact_cta">assistant@xhardtech.com</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- LOGIN CARD -->
+  <section style="padding: 40px 0; border-top: 1px solid var(--border);">
+    <div class="container" style="max-width: 460px;">
+      <div id="bottomAuth" style="background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; text-align: center;">
+        <p style="font-size: 0.9rem; font-weight: 700; margin-bottom: 8px;" data-i18n="login_h">Đăng nhập</p>
+        <p style="font-size: 0.78rem; color: var(--text-secondary); margin-bottom: 16px;" data-i18n="login_p">Theo dõi các trang cuộc họp, lưu chủ đề quan tâm, đề xuất trang riêng.</p>
+        <a href="/login.html" class="btn btn-primary" style="width: 100%; justify-content: center; text-decoration: none; padding: 10px; font-size: 0.85rem;" data-i18n="login_btn">Đăng nhập / Đăng ký</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <p>XHT · xhardtech.com · <a href="/news/everything-about-semicon-sea-2026-companies.html" data-i18n="footer_l1">SEMICON SEA 2026</a> · <a href="/news/luat-thu-do-vi-mach-2026.html" data-i18n="footer_l2">Luật Thủ Đô 2026</a> · <a href="/login.html" data-i18n="footer_l3">Đăng nhập</a></p>
+    </div>
+  </footer>
+
+  <script>
+    // === i18n translations ===
+    const translations = {
+      vi: {
+        nav_login: 'Đăng nhập', nav_dashboard: 'Bộ sưu tập',
+        hero_eyebrow: 'Meeting Prep × AI',
+        hero_h1_html: '<span class="accent">Cuộc họp thông minh cùng AI</span>',
+        hero_lead_html: 'Trước mỗi sự kiện, hội nghị, hay cuộc gặp đối tác, XHT giúp bạn lên một chương trình họp hoàn chỉnh giúp bạn <strong>họp cùng AI</strong>. Đồng thời XHT cập nhật <strong>tin tức các sự kiện công nghệ sắp diễn ra</strong> để bạn không bỏ lỡ.',
+        hero_sub_html: '',
+        cta_example: '↓ Xem 2 mẫu giả lập',
+        cta_request: 'Đề xuất trang cho sự kiện của bạn',
+        usecase_intro: 'XHT cung cấp <strong>một dịch vụ</strong> là Interactive Meeting Agenda để <strong>họp cùng AI</strong>. <strong>Giá trị bạn nhận về</strong>: opinion của bạn được lưu vĩnh viễn, và XHT gửi newsletter cho từng người theo đúng hướng bạn đã chọn trong buổi.',
+        how_h2: 'Một trang cuộc họp thông minh dùng để làm gì?',
+        how_intro: 'Ba thời điểm: trước, trong, sau cuộc họp.',
+        how_step1_h: 'Trước cuộc họp',
+        how_step1_p: 'Nghiên cứu các bên: ai sẽ đến, họ làm gì, họ cần gì, lịch chương trình ra sao. AI cùng bạn đào sâu từng đối tác/khách hàng tiềm năng.',
+        how_step2_h: 'Trong cuộc họp',
+        how_step2_p: 'Họp tương tác cùng AI: AI ngồi cùng phòng họp, phản biện và đưa số liệu thị trường ngay khi từng nhóm thảo luận. Mọi quan điểm được ghi lại theo người gửi.',
+        how_step3_h: 'Sau cuộc họp',
+        how_step3_p: 'Các newsletter có giá trị, cá nhân hoá theo hướng bạn đã chọn trong buổi, được XHT gửi về email bạn và lưu vĩnh viễn trong tài khoản XHT.',
+        latest_h2: 'Các trang cuộc họp / chủ đề gần đây',
+        latest_semicon_h: 'Everything About SEMICON SEA 2026 Companies',
+        latest_semicon_p: '120 công ty top · 27 nhóm chuỗi giá trị · Program Day 0–3 đầy đủ · Nhu cầu mua hàng do XHT tổng hợp. Cho người đi sự kiện và AI agent tham chiếu từ báo cáo.',
+        latest_law_h: 'Luật Thủ Đô Sửa Đổi 2026: 6 điều khoản tác động vi mạch Việt Nam',
+        latest_law_p: 'Phân tích Điều 22 (khấu trừ 200% R&D, miễn thuế 5 năm startup), Điều 24 (Hòa Lạc trọng điểm quốc gia), Điều 29 (visa kỹ sư Việt kiều), Điều 30 (HĐND tự quyết ưu đãi).',
+        contact_h2: 'Bạn có sự kiện / hội nghị / cuộc gặp đối tác sắp tới?',
+        contact_p: 'Liên hệ XHT để tạo trang chuẩn bị cuộc họp thông minh.',
+        contact_cta: 'assistant@xhardtech.com',
+        login_h: 'Đăng nhập', login_p: 'Theo dõi các trang cuộc họp, lưu chủ đề quan tâm, đề xuất trang riêng.', login_btn: 'Đăng nhập / Đăng ký',
+        footer_l1: 'SEMICON SEA 2026', footer_l2: 'Luật Thủ Đô 2026', footer_l3: 'Đăng nhập',
+        flow_service_label: 'Dịch vụ XHT cung cấp',
+        flow_service_h2: 'Interactive Meeting Agenda để họp cùng AI',
+        flow_service_desc: 'XHT làm trang agenda tương tác cho buổi gặp của bạn. AI ngồi cùng phòng họp với người, phản biện, gợi ý, đưa số liệu thị trường ngay khi từng nhóm thảo luận. Người tham dự gửi opinion vào hệ thống ngay trong buổi qua kênh online song song với phòng họp, mọi quan điểm được ghi lại theo người gửi.',
+        flow_service_cta: 'Đặt làm agenda cho buổi của bạn →',
+        flow_outcome_label: 'Giá trị user nhận về',
+        flow_outcome_h2: 'Newsletter cá nhân hoá sau sự kiện + Opinion lưu vĩnh viễn',
+        flow_outcome_desc: 'Sau sự kiện, XHT gửi newsletter cho từng người theo các hướng họ đã chọn trong buổi. Đăng nhập XHT về sau, bạn thấy lại quan điểm của mình xếp cạnh quan điểm các buổi khác cùng chủ đề, theo dõi suy nghĩ thay đổi theo thời gian.',
+        flow_outcome_cta: 'Bắt đầu một buổi như vậy →',
+        latest_vimach6_h: 'Offline CĐVM Lần 6: Wafer Fab đang xây và hành động của chúng ta',
+        latest_vimach6_p: 'Trang agenda tương tác cho buổi gặp cộng đồng vi mạch, 18/4/2026 tại Hạ Long. Phân vai theo 3 màu bút (Nhà nước · Nhà trường · Doanh nghiệp), schedule check-in / khai mạc / mini game / 4 lượt thảo luận nhóm, kèm video hướng dẫn và QR vào hệ thống thảo luận online.',
+      },
+      en: {
+        nav_login: 'Sign in', nav_dashboard: 'Collection',
+        hero_eyebrow: 'Meeting Prep × AI',
+        hero_h1_html: '<span class="accent">Smart meetings, alongside AI</span>',
+        hero_lead_html: 'Before every event, conference, or partner meeting, XHT helps you plan a complete program so you can <strong>meet alongside AI</strong>. XHT also keeps you updated on <strong>upcoming tech events</strong> so you don\'t miss out.',
+        hero_sub_html: '',
+        cta_example: '↓ See 2 sample mockups',
+        cta_request: 'Request a page for your event',
+        usecase_intro: 'XHT offers <strong>one service</strong>, an Interactive Meeting Agenda for <strong>meeting alongside AI</strong>. <strong>The value you receive</strong>: your opinions are saved permanently, and XHT emails you a personalized newsletter on the directions you chose during the meeting.',
+        how_h2: 'What is a smart meeting page used for?',
+        how_intro: 'Three moments: before, during, after the meeting.',
+        how_step1_h: 'Before the meeting',
+        how_step1_p: 'Research the participants: who is coming, what they do, what they need, what the schedule looks like. AI helps you dig into each prospect / partner.',
+        how_step2_h: 'During the meeting',
+        how_step2_p: 'Meeting interactively with AI: AI sits in the room, challenges, and brings market data in as each group discusses. Every opinion is recorded against the person who said it.',
+        how_step3_h: 'After the meeting',
+        how_step3_p: 'Valuable newsletters, personalized to the directions you chose during the meeting, are sent to your email and kept permanently in your XHT account.',
+        latest_h2: 'Recent meeting pages / topics',
+        latest_semicon_h: 'Everything About SEMICON SEA 2026 Companies',
+        latest_semicon_p: '120 top companies · 27 value-chain segments · Full Day 0–3 program · Procurement needs curated by XHT. For attendees and AI agents referenced by reports.',
+        latest_law_h: 'Vietnam Capital Law 2026: 6 clauses impacting the semiconductor industry',
+        latest_law_p: 'Analysis of Article 22 (200% R&D deduction, 5-year tax exemption for startups), Article 24 (Hoa Lac as national priority zone), Article 29 (visa for overseas Vietnamese engineers), Article 30 (Hanoi People\'s Council self-deciding incentives).',
+        contact_h2: 'Do you have an event / conference / partner meeting coming up?',
+        contact_p: 'Reach out to XHT to create a smart meeting prep page.',
+        contact_cta: 'assistant@xhardtech.com',
+        login_h: 'Sign in', login_p: 'Follow meeting pages, save topics, request a custom page.', login_btn: 'Sign in / Sign up',
+        footer_l1: 'SEMICON SEA 2026', footer_l2: 'Vietnam Capital Law 2026', footer_l3: 'Sign in',
+        flow_service_label: 'Service XHT provides',
+        flow_service_h2: 'Interactive Meeting Agenda for meeting alongside AI',
+        flow_service_desc: 'XHT builds an interactive agenda page for your gathering. AI sits in the room with you, challenges, suggests, and brings market data in as each group discusses. Attendees submit opinions into the system during the meeting via a parallel online channel, and every opinion is recorded against the person who sent it.',
+        flow_service_cta: 'Commission an agenda for your gathering →',
+        flow_outcome_label: 'Value the user receives',
+        flow_outcome_h2: 'Personalized newsletter after the event + Opinions saved permanently',
+        flow_outcome_desc: 'After the event, XHT sends each attendee a personalized newsletter on the directions they chose during the meeting. Sign back into XHT later and you see your opinions placed next to opinions from other meetings on the same topic, to track how your thinking has changed over time.',
+        flow_outcome_cta: 'Start a meeting like this →',
+        latest_vimach6_h: 'Offline Vietnam Semiconductor Community #6: Wafer Fab being built, our action',
+        latest_vimach6_p: 'Interactive agenda page for the Vietnam semiconductor community gathering on 18 April 2026 at Ha Long. Roles by 3 pen colors (Government · Academia · Industry), schedule for check-in / opening / mini game / 4 breakout discussions, with video guides and QR into the online discussion system.',
+      },
+
+      zh: {
+        nav_login: '登录', nav_dashboard: '收藏',
+        hero_eyebrow: '会议准备 × AI',
+        hero_h1_html: '<span class="accent">智能会议，与AI同行</span>',
+        hero_lead_html: '在每场活动、会议或合作伙伴会面之前，XHT帮助您制定完整的会议议程，让您能够<strong>与AI同行开会</strong>。XHT还为您更新<strong>即将举行的科技活动新闻</strong>，让您不错过任何机会。',
+        hero_sub_html: '',
+        cta_example: '↓ 查看2个示例模型',
+        cta_request: '为您的活动申请页面',
+        usecase_intro: 'XHT offers <strong>one service</strong>, an Interactive Meeting Agenda for <strong>meeting alongside AI</strong>. <strong>The value you receive</strong>: your opinions are saved permanently, and XHT emails you a personalized newsletter on the directions you chose during the meeting.',
+        flow_service_label: 'Service XHT provides',
+        flow_service_h2: 'Interactive Meeting Agenda for meeting alongside AI',
+        flow_service_desc: 'XHT builds an interactive agenda page for your gathering. AI sits in the room with you, challenges, suggests, and brings market data in as each group discusses. Attendees submit opinions into the system during the meeting via a parallel online channel, and every opinion is recorded against the person who sent it.',
+        flow_service_cta: 'Commission an agenda for your gathering →',
+        flow_outcome_label: 'Value the user receives',
+        flow_outcome_h2: 'Personalized newsletter after the event + Opinions saved permanently',
+        flow_outcome_desc: 'After the event, XHT sends each attendee a personalized newsletter on the directions they chose during the meeting. Sign back into XHT later and you see your opinions placed next to opinions from other meetings on the same topic, to track how your thinking has changed over time.',
+        flow_outcome_cta: 'Start a meeting like this →',
+        latest_vimach6_h: 'Offline Vietnam Semiconductor Community #6: Wafer Fab being built, our action',
+        latest_vimach6_p: 'Interactive agenda page for the Vietnam semiconductor community gathering on 18 April 2026 at Ha Long. Roles by 3 pen colors (Government · Academia · Industry), schedule for check-in / opening / mini game / 4 breakout discussions, with video guides and QR into the online discussion system.',
+        how_step1_p: 'Research the participants: who is coming, what they do, what they need, what the schedule looks like. AI helps you dig into each prospect / partner.',
+        how_step2_p: 'Meeting interactively with AI: AI sits in the room, challenges, and brings market data in as each group discusses. Every opinion is recorded against the person who said it.',
+        how_step3_p: 'Valuable newsletters, personalized to the directions you chose during the meeting, are sent to your email and kept permanently in your XHT account.',
+        contact_p: '联系XHT为您创建智能会议准备页面。',
+        contact_h2: '您有即将举行的活动 / 会议 / 合作伙伴会面吗？',
+        login_h: '登录',
+        login_p: '关注会议页面、收藏主题、申请定制页面。',
+        login_btn: '登录 / 注册',
+      },
+
+      ja: {
+        nav_login: 'ログイン', nav_dashboard: 'コレクション',
+        hero_eyebrow: 'ミーティング準備 × AI',
+        hero_h1_html: '<span class="accent">AIと共にスマートミーティング</span>',
+        hero_lead_html: 'イベント、カンファレンス、パートナーミーティングの前に、XHTは完全なミーティングプログラムを計画し、<strong>AIと共にミーティング</strong>できるようサポートします。さらにXHTは<strong>これから開催されるテックイベントのニュース</strong>を更新し、見逃しを防ぎます。',
+        hero_sub_html: '',
+        cta_example: '↓ 2つのサンプルモックアップを見る',
+        cta_request: 'イベント用ページをリクエスト',
+        usecase_intro: 'XHT offers <strong>one service</strong>, an Interactive Meeting Agenda for <strong>meeting alongside AI</strong>. <strong>The value you receive</strong>: your opinions are saved permanently, and XHT emails you a personalized newsletter on the directions you chose during the meeting.',
+        flow_service_label: 'Service XHT provides',
+        flow_service_h2: 'Interactive Meeting Agenda for meeting alongside AI',
+        flow_service_desc: 'XHT builds an interactive agenda page for your gathering. AI sits in the room with you, challenges, suggests, and brings market data in as each group discusses. Attendees submit opinions into the system during the meeting via a parallel online channel, and every opinion is recorded against the person who sent it.',
+        flow_service_cta: 'Commission an agenda for your gathering →',
+        flow_outcome_label: 'Value the user receives',
+        flow_outcome_h2: 'Personalized newsletter after the event + Opinions saved permanently',
+        flow_outcome_desc: 'After the event, XHT sends each attendee a personalized newsletter on the directions they chose during the meeting. Sign back into XHT later and you see your opinions placed next to opinions from other meetings on the same topic, to track how your thinking has changed over time.',
+        flow_outcome_cta: 'Start a meeting like this →',
+        latest_vimach6_h: 'Offline Vietnam Semiconductor Community #6: Wafer Fab being built, our action',
+        latest_vimach6_p: 'Interactive agenda page for the Vietnam semiconductor community gathering on 18 April 2026 at Ha Long. Roles by 3 pen colors (Government · Academia · Industry), schedule for check-in / opening / mini game / 4 breakout discussions, with video guides and QR into the online discussion system.',
+        how_step1_p: 'Research the participants: who is coming, what they do, what they need, what the schedule looks like. AI helps you dig into each prospect / partner.',
+        how_step2_p: 'Meeting interactively with AI: AI sits in the room, challenges, and brings market data in as each group discusses. Every opinion is recorded against the person who said it.',
+        how_step3_p: 'Valuable newsletters, personalized to the directions you chose during the meeting, are sent to your email and kept permanently in your XHT account.',
+        contact_p: 'XHTにご連絡いただき、スマートミーティング準備ページを作成しましょう。',
+        contact_h2: 'これから開催されるイベント / カンファレンス / パートナーミーティングはありますか？',
+        login_h: 'ログイン',
+        login_p: 'ミーティングページをフォロー、トピックを保存、カスタムページをリクエスト。',
+        login_btn: 'ログイン / 登録',
+      },
+
+      ko: {
+        nav_login: '로그인', nav_dashboard: '컬렉션',
+        hero_eyebrow: '미팅 준비 × AI',
+        hero_h1_html: '<span class="accent">AI와 함께 스마트 미팅</span>',
+        hero_lead_html: '모든 이벤트, 컨퍼런스, 또는 파트너 미팅 전에 XHT가 완전한 미팅 프로그램을 계획하여 <strong>AI와 함께 미팅</strong>할 수 있도록 도와드립니다. 또한 XHT는 <strong>다가오는 기술 이벤트 뉴스</strong>를 업데이트하여 놓치지 않게 해드립니다.',
+        hero_sub_html: '',
+        cta_example: '↓ 2개의 샘플 목업 보기',
+        cta_request: '귀하의 이벤트 페이지 요청',
+        usecase_intro: 'XHT offers <strong>one service</strong>, an Interactive Meeting Agenda for <strong>meeting alongside AI</strong>. <strong>The value you receive</strong>: your opinions are saved permanently, and XHT emails you a personalized newsletter on the directions you chose during the meeting.',
+        flow_service_label: 'Service XHT provides',
+        flow_service_h2: 'Interactive Meeting Agenda for meeting alongside AI',
+        flow_service_desc: 'XHT builds an interactive agenda page for your gathering. AI sits in the room with you, challenges, suggests, and brings market data in as each group discusses. Attendees submit opinions into the system during the meeting via a parallel online channel, and every opinion is recorded against the person who sent it.',
+        flow_service_cta: 'Commission an agenda for your gathering →',
+        flow_outcome_label: 'Value the user receives',
+        flow_outcome_h2: 'Personalized newsletter after the event + Opinions saved permanently',
+        flow_outcome_desc: 'After the event, XHT sends each attendee a personalized newsletter on the directions they chose during the meeting. Sign back into XHT later and you see your opinions placed next to opinions from other meetings on the same topic, to track how your thinking has changed over time.',
+        flow_outcome_cta: 'Start a meeting like this →',
+        latest_vimach6_h: 'Offline Vietnam Semiconductor Community #6: Wafer Fab being built, our action',
+        latest_vimach6_p: 'Interactive agenda page for the Vietnam semiconductor community gathering on 18 April 2026 at Ha Long. Roles by 3 pen colors (Government · Academia · Industry), schedule for check-in / opening / mini game / 4 breakout discussions, with video guides and QR into the online discussion system.',
+        how_step1_p: 'Research the participants: who is coming, what they do, what they need, what the schedule looks like. AI helps you dig into each prospect / partner.',
+        how_step2_p: 'Meeting interactively with AI: AI sits in the room, challenges, and brings market data in as each group discusses. Every opinion is recorded against the person who said it.',
+        how_step3_p: 'Valuable newsletters, personalized to the directions you chose during the meeting, are sent to your email and kept permanently in your XHT account.',
+        contact_p: 'XHT에 연락하여 스마트 미팅 준비 페이지를 만들어보세요.',
+        contact_h2: '다가오는 이벤트 / 컨퍼런스 / 파트너 미팅이 있으신가요?',
+        login_h: '로그인',
+        login_p: '미팅 페이지 팔로우, 토픽 저장, 커스텀 페이지 요청.',
+        login_btn: '로그인 / 가입',
+      },
+
+      fr: {
+        nav_login: 'Connexion', nav_dashboard: 'Collection',
+        hero_eyebrow: 'Préparation de réunion × IA',
+        hero_h1_html: '<span class="accent">Réunions intelligentes aux côtés de l\'IA</span>',
+        hero_lead_html: 'Avant chaque événement, conférence ou réunion partenaire, XHT vous aide à planifier un programme de réunion complet pour <strong>réunir aux côtés de l\'IA</strong>. XHT met également à jour les <strong>actualités des prochains événements tech</strong> pour que vous ne manquiez rien.',
+        hero_sub_html: '',
+        cta_example: '↓ Voir 2 maquettes exemples',
+        cta_request: 'Demander une page pour votre événement',
+        usecase_intro: 'XHT offers <strong>one service</strong>, an Interactive Meeting Agenda for <strong>meeting alongside AI</strong>. <strong>The value you receive</strong>: your opinions are saved permanently, and XHT emails you a personalized newsletter on the directions you chose during the meeting.',
+        flow_service_label: 'Service XHT provides',
+        flow_service_h2: 'Interactive Meeting Agenda for meeting alongside AI',
+        flow_service_desc: 'XHT builds an interactive agenda page for your gathering. AI sits in the room with you, challenges, suggests, and brings market data in as each group discusses. Attendees submit opinions into the system during the meeting via a parallel online channel, and every opinion is recorded against the person who sent it.',
+        flow_service_cta: 'Commission an agenda for your gathering →',
+        flow_outcome_label: 'Value the user receives',
+        flow_outcome_h2: 'Personalized newsletter after the event + Opinions saved permanently',
+        flow_outcome_desc: 'After the event, XHT sends each attendee a personalized newsletter on the directions they chose during the meeting. Sign back into XHT later and you see your opinions placed next to opinions from other meetings on the same topic, to track how your thinking has changed over time.',
+        flow_outcome_cta: 'Start a meeting like this →',
+        latest_vimach6_h: 'Offline Vietnam Semiconductor Community #6: Wafer Fab being built, our action',
+        latest_vimach6_p: 'Interactive agenda page for the Vietnam semiconductor community gathering on 18 April 2026 at Ha Long. Roles by 3 pen colors (Government · Academia · Industry), schedule for check-in / opening / mini game / 4 breakout discussions, with video guides and QR into the online discussion system.',
+        how_step1_p: 'Research the participants: who is coming, what they do, what they need, what the schedule looks like. AI helps you dig into each prospect / partner.',
+        how_step2_p: 'Meeting interactively with AI: AI sits in the room, challenges, and brings market data in as each group discusses. Every opinion is recorded against the person who said it.',
+        how_step3_p: 'Valuable newsletters, personalized to the directions you chose during the meeting, are sent to your email and kept permanently in your XHT account.',
+        contact_p: 'Contactez XHT pour créer une page de préparation de réunion intelligente.',
+        contact_h2: 'Avez-vous un événement / une conférence / une réunion partenaire à venir ?',
+        login_h: 'Connexion',
+        login_p: 'Suivez les pages de réunion, sauvegardez les sujets, demandez une page personnalisée.',
+        login_btn: 'Se connecter / S\'inscrire',
+      },
+
+      de: {
+        nav_login: 'Anmelden', nav_dashboard: 'Sammlung',
+        hero_eyebrow: 'Meeting-Vorbereitung × KI',
+        hero_h1_html: '<span class="accent">Smarte Meetings gemeinsam mit KI</span>',
+        hero_lead_html: 'Vor jedem Event, jeder Konferenz oder Partnermeeting hilft Ihnen XHT, ein vollständiges Meeting-Programm zu planen, damit Sie <strong>gemeinsam mit KI meeten</strong> können. XHT hält Sie auch über <strong>kommende Tech-Events</strong> auf dem Laufenden.',
+        hero_sub_html: '',
+        cta_example: '↓ 2 Beispiel-Mockups ansehen',
+        cta_request: 'Seite für Ihr Event anfragen',
+        usecase_intro: 'XHT offers <strong>one service</strong>, an Interactive Meeting Agenda for <strong>meeting alongside AI</strong>. <strong>The value you receive</strong>: your opinions are saved permanently, and XHT emails you a personalized newsletter on the directions you chose during the meeting.',
+        flow_service_label: 'Service XHT provides',
+        flow_service_h2: 'Interactive Meeting Agenda for meeting alongside AI',
+        flow_service_desc: 'XHT builds an interactive agenda page for your gathering. AI sits in the room with you, challenges, suggests, and brings market data in as each group discusses. Attendees submit opinions into the system during the meeting via a parallel online channel, and every opinion is recorded against the person who sent it.',
+        flow_service_cta: 'Commission an agenda for your gathering →',
+        flow_outcome_label: 'Value the user receives',
+        flow_outcome_h2: 'Personalized newsletter after the event + Opinions saved permanently',
+        flow_outcome_desc: 'After the event, XHT sends each attendee a personalized newsletter on the directions they chose during the meeting. Sign back into XHT later and you see your opinions placed next to opinions from other meetings on the same topic, to track how your thinking has changed over time.',
+        flow_outcome_cta: 'Start a meeting like this →',
+        latest_vimach6_h: 'Offline Vietnam Semiconductor Community #6: Wafer Fab being built, our action',
+        latest_vimach6_p: 'Interactive agenda page for the Vietnam semiconductor community gathering on 18 April 2026 at Ha Long. Roles by 3 pen colors (Government · Academia · Industry), schedule for check-in / opening / mini game / 4 breakout discussions, with video guides and QR into the online discussion system.',
+        how_step1_p: 'Research the participants: who is coming, what they do, what they need, what the schedule looks like. AI helps you dig into each prospect / partner.',
+        how_step2_p: 'Meeting interactively with AI: AI sits in the room, challenges, and brings market data in as each group discusses. Every opinion is recorded against the person who said it.',
+        how_step3_p: 'Valuable newsletters, personalized to the directions you chose during the meeting, are sent to your email and kept permanently in your XHT account.',
+        contact_p: 'Wenden Sie sich an XHT, um eine Smart-Meeting-Vorbereitungsseite zu erstellen.',
+        contact_h2: 'Haben Sie ein anstehendes Event / Konferenz / Partnermeeting?',
+        login_h: 'Anmelden',
+        login_p: 'Folgen Sie Meeting-Seiten, speichern Sie Themen, fordern Sie eine eigene Seite an.',
+        login_btn: 'Anmelden / Registrieren',
+      },
+
+      es: {
+        nav_login: 'Iniciar sesión', nav_dashboard: 'Colección',
+        hero_eyebrow: 'Preparación de reuniones × IA',
+        hero_h1_html: '<span class="accent">Reuniones inteligentes junto a la IA</span>',
+        hero_lead_html: 'Antes de cada evento, conferencia o reunión con socios, XHT te ayuda a planificar un programa de reunión completo para que puedas <strong>reunirte junto a la IA</strong>. XHT también te mantiene al día con <strong>noticias de próximos eventos tech</strong> para que no te pierdas nada.',
+        hero_sub_html: '',
+        cta_example: '↓ Ver 2 maquetas de muestra',
+        cta_request: 'Solicitar una página para tu evento',
+        usecase_intro: 'XHT offers <strong>one service</strong>, an Interactive Meeting Agenda for <strong>meeting alongside AI</strong>. <strong>The value you receive</strong>: your opinions are saved permanently, and XHT emails you a personalized newsletter on the directions you chose during the meeting.',
+        flow_service_label: 'Service XHT provides',
+        flow_service_h2: 'Interactive Meeting Agenda for meeting alongside AI',
+        flow_service_desc: 'XHT builds an interactive agenda page for your gathering. AI sits in the room with you, challenges, suggests, and brings market data in as each group discusses. Attendees submit opinions into the system during the meeting via a parallel online channel, and every opinion is recorded against the person who sent it.',
+        flow_service_cta: 'Commission an agenda for your gathering →',
+        flow_outcome_label: 'Value the user receives',
+        flow_outcome_h2: 'Personalized newsletter after the event + Opinions saved permanently',
+        flow_outcome_desc: 'After the event, XHT sends each attendee a personalized newsletter on the directions they chose during the meeting. Sign back into XHT later and you see your opinions placed next to opinions from other meetings on the same topic, to track how your thinking has changed over time.',
+        flow_outcome_cta: 'Start a meeting like this →',
+        latest_vimach6_h: 'Offline Vietnam Semiconductor Community #6: Wafer Fab being built, our action',
+        latest_vimach6_p: 'Interactive agenda page for the Vietnam semiconductor community gathering on 18 April 2026 at Ha Long. Roles by 3 pen colors (Government · Academia · Industry), schedule for check-in / opening / mini game / 4 breakout discussions, with video guides and QR into the online discussion system.',
+        how_step1_p: 'Research the participants: who is coming, what they do, what they need, what the schedule looks like. AI helps you dig into each prospect / partner.',
+        how_step2_p: 'Meeting interactively with AI: AI sits in the room, challenges, and brings market data in as each group discusses. Every opinion is recorded against the person who said it.',
+        how_step3_p: 'Valuable newsletters, personalized to the directions you chose during the meeting, are sent to your email and kept permanently in your XHT account.',
+        contact_p: 'Contacta a XHT para crear una página de preparación de reuniones inteligentes.',
+        contact_h2: '¿Tienes un próximo evento / conferencia / reunión con socios?',
+        login_h: 'Iniciar sesión',
+        login_p: 'Sigue páginas de reuniones, guarda temas, solicita una página personalizada.',
+        login_btn: 'Iniciar sesión / Registrarse',
+      },
+
+      pt: {
+        nav_login: 'Entrar', nav_dashboard: 'Coleção',
+        hero_eyebrow: 'Preparação de reuniões × IA',
+        hero_h1_html: '<span class="accent">Reuniões inteligentes ao lado da IA</span>',
+        hero_lead_html: 'Antes de cada evento, conferência ou reunião com parceiros, XHT te ajuda a planejar um programa de reunião completo para você <strong>se reunir ao lado da IA</strong>. XHT também te mantém atualizado com <strong>notícias dos próximos eventos tech</strong> para você não perder nada.',
+        hero_sub_html: '',
+        cta_example: '↓ Ver 2 maquetes de amostra',
+        cta_request: 'Solicitar uma página para seu evento',
+        usecase_intro: 'XHT offers <strong>one service</strong>, an Interactive Meeting Agenda for <strong>meeting alongside AI</strong>. <strong>The value you receive</strong>: your opinions are saved permanently, and XHT emails you a personalized newsletter on the directions you chose during the meeting.',
+        flow_service_label: 'Service XHT provides',
+        flow_service_h2: 'Interactive Meeting Agenda for meeting alongside AI',
+        flow_service_desc: 'XHT builds an interactive agenda page for your gathering. AI sits in the room with you, challenges, suggests, and brings market data in as each group discusses. Attendees submit opinions into the system during the meeting via a parallel online channel, and every opinion is recorded against the person who sent it.',
+        flow_service_cta: 'Commission an agenda for your gathering →',
+        flow_outcome_label: 'Value the user receives',
+        flow_outcome_h2: 'Personalized newsletter after the event + Opinions saved permanently',
+        flow_outcome_desc: 'After the event, XHT sends each attendee a personalized newsletter on the directions they chose during the meeting. Sign back into XHT later and you see your opinions placed next to opinions from other meetings on the same topic, to track how your thinking has changed over time.',
+        flow_outcome_cta: 'Start a meeting like this →',
+        latest_vimach6_h: 'Offline Vietnam Semiconductor Community #6: Wafer Fab being built, our action',
+        latest_vimach6_p: 'Interactive agenda page for the Vietnam semiconductor community gathering on 18 April 2026 at Ha Long. Roles by 3 pen colors (Government · Academia · Industry), schedule for check-in / opening / mini game / 4 breakout discussions, with video guides and QR into the online discussion system.',
+        how_step1_p: 'Research the participants: who is coming, what they do, what they need, what the schedule looks like. AI helps you dig into each prospect / partner.',
+        how_step2_p: 'Meeting interactively with AI: AI sits in the room, challenges, and brings market data in as each group discusses. Every opinion is recorded against the person who said it.',
+        how_step3_p: 'Valuable newsletters, personalized to the directions you chose during the meeting, are sent to your email and kept permanently in your XHT account.',
+        contact_p: 'Entre em contato com XHT para criar uma página de preparação de reuniões inteligentes.',
+        contact_h2: 'Você tem um próximo evento / conferência / reunião com parceiros?',
+        login_h: 'Entrar',
+        login_p: 'Acompanhe páginas de reuniões, salve tópicos, solicite uma página personalizada.',
+        login_btn: 'Entrar / Registrar',
+      },
+
+      th: {
+        nav_login: 'เข้าสู่ระบบ', nav_dashboard: 'คอลเลกชัน',
+        hero_eyebrow: 'เตรียมการประชุม × AI',
+        hero_h1_html: '<span class="accent">การประชุมอัจฉริยะร่วมกับ AI</span>',
+        hero_lead_html: 'ก่อนทุกงานอีเวนต์ การประชุม หรือการพบปะคู่ค้า XHT ช่วยคุณวางแผนกำหนดการประชุมครบถ้วน เพื่อให้คุณ<strong>ประชุมร่วมกับ AI</strong>ได้ XHT ยังอัปเดต<strong>ข่าวอีเวนต์เทคโนโลยีที่กำลังจะเกิดขึ้น</strong>เพื่อให้คุณไม่พลาด',
+        hero_sub_html: '',
+        cta_example: '↓ ดูตัวอย่างจำลอง 2 แบบ',
+        cta_request: 'ขอหน้าสำหรับอีเวนต์ของคุณ',
+        usecase_intro: 'XHT offers <strong>one service</strong>, an Interactive Meeting Agenda for <strong>meeting alongside AI</strong>. <strong>The value you receive</strong>: your opinions are saved permanently, and XHT emails you a personalized newsletter on the directions you chose during the meeting.',
+        flow_service_label: 'Service XHT provides',
+        flow_service_h2: 'Interactive Meeting Agenda for meeting alongside AI',
+        flow_service_desc: 'XHT builds an interactive agenda page for your gathering. AI sits in the room with you, challenges, suggests, and brings market data in as each group discusses. Attendees submit opinions into the system during the meeting via a parallel online channel, and every opinion is recorded against the person who sent it.',
+        flow_service_cta: 'Commission an agenda for your gathering →',
+        flow_outcome_label: 'Value the user receives',
+        flow_outcome_h2: 'Personalized newsletter after the event + Opinions saved permanently',
+        flow_outcome_desc: 'After the event, XHT sends each attendee a personalized newsletter on the directions they chose during the meeting. Sign back into XHT later and you see your opinions placed next to opinions from other meetings on the same topic, to track how your thinking has changed over time.',
+        flow_outcome_cta: 'Start a meeting like this →',
+        latest_vimach6_h: 'Offline Vietnam Semiconductor Community #6: Wafer Fab being built, our action',
+        latest_vimach6_p: 'Interactive agenda page for the Vietnam semiconductor community gathering on 18 April 2026 at Ha Long. Roles by 3 pen colors (Government · Academia · Industry), schedule for check-in / opening / mini game / 4 breakout discussions, with video guides and QR into the online discussion system.',
+        how_step1_p: 'Research the participants: who is coming, what they do, what they need, what the schedule looks like. AI helps you dig into each prospect / partner.',
+        how_step2_p: 'Meeting interactively with AI: AI sits in the room, challenges, and brings market data in as each group discusses. Every opinion is recorded against the person who said it.',
+        how_step3_p: 'Valuable newsletters, personalized to the directions you chose during the meeting, are sent to your email and kept permanently in your XHT account.',
+        contact_p: 'ติดต่อ XHT เพื่อสร้างหน้าเตรียมการประชุมอัจฉริยะ',
+        contact_h2: 'คุณมีอีเวนต์ / การประชุม / การพบปะคู่ค้าที่กำลังจะมาถึงหรือไม่?',
+        login_h: 'เข้าสู่ระบบ',
+        login_p: 'ติดตามหน้าการประชุม บันทึกหัวข้อ ขอหน้าที่กำหนดเอง',
+        login_btn: 'เข้าสู่ระบบ / สมัครสมาชิก',
+      },
+    };
+
+    let currentLang = localStorage.getItem('xht-lang') || 'vi';
+
+    function t(key) {
+      const lang = translations[currentLang] || translations.en;
+      return (lang && lang[key]) || translations.en[key] || translations.vi[key] || '';
+    }
+
+    function applyLanguage(lang) {
+      currentLang = lang;
+      localStorage.setItem('xht-lang', lang);
+      document.documentElement.lang = lang;
+
+      const dict = translations[currentLang] || translations.en;
+      const enDict = translations.en;
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.dataset.i18n;
+        const htmlKey = key + '_html';
+        const val = dict[htmlKey] || dict[key] || enDict[htmlKey] || enDict[key] || '';
+        if (val !== '') el.innerHTML = val;
+      });
+
+      document.querySelectorAll('.lang-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.lang === lang);
+      });
+    }
+
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+      btn.addEventListener('click', () => applyLanguage(btn.dataset.lang));
+    });
+    applyLanguage(currentLang);
+  </script>
+
+<script src="/xht-auth.js"></script>
+<script src="/xht-track.js"></script>
+</body>
+</html>
