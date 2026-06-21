@@ -60,7 +60,7 @@ if [ ! -f "$ALL" ]; then
 fi
 
 echo "[4/4] emcc -> ${OUT} + V${TOP}.wasm ..."
-emcc -O3 \
+emcc -O3 -D'VL_CPU_RELAX()=' \
   -I "$MDIR" -I "$VINC" \
   "$ALL" \
   "$HARNESS" \
