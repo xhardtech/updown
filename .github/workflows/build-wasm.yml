@@ -15,7 +15,7 @@ on:
         description: 'path to the .v inside the repo (default <top>.v)'
         required: false
         default: ''
-  repo_dispatch:
+  repository_dispatch:
     types: [build-wasm]
 
 permissions:
