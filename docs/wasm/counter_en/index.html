@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>XhardTech — RTL in your browser (WASM)</title>
+<meta name="description" content="A Verilator-compiled RTL design running entirely in your browser via WebAssembly — no server." />
+<style>
+:root{--bg:#0a0a0f;--card:#16161f;--line:#26262f;--grad:linear-gradient(135deg,#f59e0b,#d97706);--ok:#23d18b;--text:#ededf2;--text2:#8c8c9c;--muted:#56566a;--r:10px}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:Inter,system-ui,sans-serif;line-height:1.55;max-width:680px;margin:0 auto;padding:40px 20px}
+.logo{font-weight:800;font-size:1.05rem;margin-bottom:24px}.logo .x{background:var(--grad);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+h1{font-size:1.6rem;font-weight:800;letter-spacing:-.02em;margin-bottom:7px}
+.sub{color:var(--text2);margin-bottom:24px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px;text-align:center}
+.ctr{font-size:3.4rem;font-weight:800;font-variant-numeric:tabular-nums;background:var(--grad);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.lbl{font-size:.78rem;color:var(--text2);font-weight:600;text-transform:uppercase;letter-spacing:.04em}
+.cps{font-size:1rem;color:var(--text2);margin-top:6px}.cps b{color:var(--ok)}
+#status{color:var(--muted);margin-top:12px;font-size:.85rem}
+.btns{margin-top:18px}
+button{font-size:.92rem;font-weight:600;padding:10px 18px;margin:0 5px;border-radius:var(--r);border:1px solid var(--line);background:transparent;color:var(--text);cursor:pointer;font-family:inherit}
+button.p{background:var(--grad);color:#000;border:none;font-weight:700}
+.foot{color:var(--muted);font-size:.8rem;text-align:center;margin-top:28px}
+code{font-family:'JetBrains Mono',monospace;background:#0a0a0f;padding:1px 6px;border-radius:4px;color:var(--text2)}
+</style>
+</head>
+<body>
+  <div class="logo"><span class="x">Xhard</span>Tech</div>
+  <h1>RTL running in your browser.</h1>
+  <p class="sub">A 6-bit RTL counter (<code>counter_en</code>), Verilator-compiled to WebAssembly and
+     simulated <strong>entirely client-side</strong> in a Web Worker — no server-side simulation.</p>
+
+  <div class="card">
+    <div class="lbl">counter — io_out[7:2]</div>
+    <div class="ctr" id="ctr">--</div>
+    <div class="cps" id="cps">cycles/sec: <b id="cpsval">--</b></div>
+    <div class="cps">cycles: <span id="cyc">--</span></div>
+    <div id="status">loading WASM…</div>
+    <div class="btns">
+      <button class="p" id="start">Start</button>
+      <button id="stop">Stop</button>
+      <button id="reset">Reset</button>
+    </div>
+  </div>
+  <p class="foot">Backend B (Verilator → WASM) · runs on your CPU, scales to every visitor · <a href="/" style="color:var(--text2)">← xhardtech.com</a></p>
+
+<script type="module">
+  const $=id=>document.getElementById(id);
+  const worker = new Worker('./sim.worker.js', { type: 'module' });
+  worker.onmessage = (e) => {
+    const m = e.data;
+    if (m.type === 'ready')   { $('status').textContent = 'WASM loaded — ready.'; $('status').dataset.ready='1'; worker.postMessage({ cmd: 'start' }); }
+    if (m.type === 'started') { $('status').textContent = 'running…'; }
+    if (m.type === 'stopped') { $('status').textContent = 'stopped.'; }
+    if (m.type === 'tick') {
+      $('ctr').textContent = m.ctr;
+      $('cpsval').textContent = Math.round(m.cycles_per_sec).toLocaleString();
+      $('cyc').textContent = m.cycles.toLocaleString();
+      $('status').dataset.cps = Math.round(m.cycles_per_sec);   // for automated tests
+      $('status').dataset.ctr = m.ctr;
+    }
+  };
+  worker.onerror = (e) => { $('status').textContent = 'worker error: ' + e.message; };
+  $('start').onclick = () => worker.postMessage({ cmd: 'start' });
+  $('stop').onclick  = () => worker.postMessage({ cmd: 'stop'  });
+  $('reset').onclick = () => worker.postMessage({ cmd: 'reset' });
+  // auto-start happens on the 'ready' message above (start-before-ready is lost in a module worker)
+</script>
+</body>
+</html>
