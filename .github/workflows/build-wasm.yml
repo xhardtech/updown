@@ -1,0 +1,75 @@
+name: build-wasm
+# Build a user RTL design to WebAssembly (Verilator -> emcc) on a GitHub-hosted runner
+# and publish it to docs/wasm/run/<top>/ so it runs client-side on www.xhardtech.com.
+# Public repo => unlimited minutes; ephemeral runner => sandboxed compile of untrusted RTL.
+on:
+  workflow_dispatch:
+    inputs:
+      repo: { description: 'design git repo (https github/gitlab)', required: true }
+      top:  { description: 'top module name', required: true }
+      rtl:  { description: 'path to the .v inside the repo (default <top>.v)', required: false, default: '' }
+  repo_dispatch:
+    types: [build-wasm]   # Cloudflare Worker triggers this with client_payload {repo, top, rtl}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: build-wasm-${{ github.event.inputs.top || github.event.client_payload.top }}
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Resolve inputs
+        run: |
+          echo "REPO=${{ github.event.inputs.repo || github.event.client_payload.repo }}" >> "$GITHUB_ENV"
+          echo "TOP=${{ github.event.inputs.top || github.event.client_payload.top }}"   >> "$GITHUB_ENV"
+          echo "RTL=${{ github.event.inputs.rtl || github.event.client_payload.rtl }}"   >> "$GITHUB_ENV"
+
+      - name: Validate inputs
+        run: |
+          echo "$REPO" | grep -E '^https://(github\.com|gitlab\.com)/[A-Za-z0-9._/-]+$' || { echo "repo must be a github/gitlab https URL"; exit 1; }
+          echo "$TOP"  | grep -E '^[A-Za-z_][A-Za-z0-9_]*$' || { echo "bad top name"; exit 1; }
+
+      - name: Install Verilator
+        run: sudo apt-get update && sudo apt-get install -y --no-install-recommends verilator
+
+      - uses: mymindstorm/setup-emsdk@v14
+
+      - name: Clone design (shallow, no submodules)
+        run: |
+          rm -rf /tmp/design
+          GIT_TERMINAL_PROMPT=0 timeout 60 git clone --depth 1 --no-recurse-submodules "$REPO" /tmp/design
+          du -sh /tmp/design | awk '{print "design size:",$1}'
+
+      - name: Security scan (reject \$c/DPI/\$system/file-IO)
+        run: bash tools/wasm/scan_rtl.sh /tmp/design
+
+      - name: Resolve RTL file
+        run: |
+          if [ -n "$RTL" ]; then SRC="/tmp/design/$RTL"; else SRC="$(find /tmp/design -name "${TOP}.v" | head -1)"; fi
+          [ -f "$SRC" ] || { echo "RTL not found (set the rtl input)"; exit 1; }
+          echo "SRC=$SRC" >> "$GITHUB_ENV"
+
+      - name: Build WASM
+        run: |
+          OUT="docs/wasm/run/${TOP}"
+          rm -rf "$OUT"; mkdir -p "$OUT"
+          bash tools/wasm/build_wasm_any.sh "$SRC" "$TOP" "$OUT"
+          # keep only the runtime artifacts; drop build junk
+          find "$OUT" -mindepth 1 ! -name "V${TOP}.mjs" ! -name "V${TOP}.wasm" ! -name "${TOP}.config.json" -prune -exec rm -rf {} +
+          ls -la "$OUT"
+
+      - name: Publish (commit to Pages)
+        run: |
+          git config user.name  "xhardtech-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add "docs/wasm/run/${TOP}"
+          git commit -m "wasm(actions): build ${TOP} from ${REPO}" || { echo "no change"; exit 0; }
+          git push
+          echo "LIVE: https://www.xhardtech.com/wasm/run/runner.html?top=${TOP}&base=/wasm/run/${TOP}"
