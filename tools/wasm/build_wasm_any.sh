@@ -1,15 +1,9 @@
 #!/usr/bin/env bash
 # Port-aware, design-agnostic Verilator->WASM build pipeline.
-#
-# Usage: ./build_wasm_any.sh <rtl.v> <top> [outdir]
-#
-# Stages:
-#   1. verilator --xml-only --top-module <top> <rtl.v>   -> port list (XML)
-#   2. gen_harness.py parses ports, codegens sim_main_<top>_wasm.cpp +
-#      <top>.config.json + <top>.exports.txt
-#   3. verilator --cc -O3 + emcc -> V<top>.mjs + V<top>.wasm
-#
-# Requires verilator (4.038 OK) and emcc (source ~/emsdk/emsdk_env.sh) on PATH.
+#   Usage: ./build_wasm_any.sh <rtl.v> <top> [outdir]
+#   1. verilator --xml-only -> ports; 2. gen_harness.py -> harness+config;
+#   3. verilator --cc -O3; 4. emcc -> V<top>.mjs + V<top>.wasm
+# Works with Verilator 4.038 (local) and 5.020 (Ubuntu runner).
 set -euo pipefail
 
 RTL="${1:?usage: build_wasm_any.sh <rtl.v> <top> [outdir]}"
@@ -23,10 +17,10 @@ OUT="${OUTDIR}/V${TOP}.mjs"
 
 [ -f "$RTL" ] || { echo "RTL not found: $RTL"; exit 1; }
 command -v verilator >/dev/null || { echo "verilator not on PATH"; exit 1; }
-command -v emcc      >/dev/null || { echo "emcc not on PATH (source ~/emsdk/emsdk_env.sh)"; exit 1; }
+command -v emcc      >/dev/null || { echo "emcc not on PATH (source emsdk_env.sh)"; exit 1; }
 mkdir -p "$OUTDIR"
 
-echo "[1/4] verilator --xml-only (extracting ports of '$TOP') ..."
+echo "[1/4] verilator --xml-only (ports of '$TOP') ..."
 rm -rf "$XDIR"
 verilator --xml-only --top-module "$TOP" "$RTL" --Mdir "$XDIR"
 XML="${XDIR}/V${TOP}.xml"
@@ -43,29 +37,34 @@ echo "[3/4] verilator --cc -O3 -> C++ model ..."
 rm -rf "$MDIR"
 verilator --cc -O3 --top-module "$TOP" "$RTL" --Mdir "$MDIR"
 
-# Verilator 4.038 emits per-class .cpp, no native __ALL.cpp: synthesize an
-# aggregate TU so emcc compiles one module source.
-ALL="${MDIR}/V${TOP}__ALL.cpp"
-if [ ! -f "$ALL" ]; then
-  {
-    echo "// auto aggregate TU for emcc (Verilator 4.038)"
-    for f in "$MDIR"/V${TOP}.cpp "$MDIR"/V${TOP}__Slow.cpp "$MDIR"/V${TOP}__Syms.cpp; do
-      [ -f "$f" ] && echo "#include \"$(basename "$f")\""
-    done
-    # any extra per-class files (e.g. V<top>___024root*.cpp on newer flows)
-    for f in "$MDIR"/V${TOP}___*.cpp; do
-      [ -e "$f" ] && echo "#include \"$(basename "$f")\""
-    done
-  } > "$ALL"
-fi
+# Aggregate EVERY generated TU into one emcc compilation unit. Verilator emits per-class
+# files (V<top>.cpp, __Slow, __Syms, ___024root*, __ConstPool*, ...) whose names vary by
+# version, so include them ALL (except any __ALL aggregate) to avoid undefined symbols.
+ALL="${MDIR}/V${TOP}__ALL_emcc.cpp"
+{
+  echo "// auto aggregate TU for emcc"
+  for f in "$MDIR"/V${TOP}*.cpp; do
+    bn="$(basename "$f")"
+    case "$bn" in V${TOP}__ALL.cpp|V${TOP}__ALL_emcc.cpp) continue;; esac
+    echo "#include \"$bn\""
+  done
+} > "$ALL"
+
+# Verilator runtime: verilated.cpp only. We do NOT compile verilated_threads.cpp (it needs
+# std::thread/-pthread, which would require SharedArrayBuffer+COOP/COEP — unavailable on GitHub
+# Pages). Single-threaded models never construct VlThreadPool, so its symbol (referenced in
+# 5.x verilated.cpp's lazy thread-pool path but never called) is left undefined and tolerated
+# via -sERROR_ON_UNDEFINED_SYMBOLS=0 below.
+RT=("${VINC}/verilated.cpp")
 
 echo "[4/4] emcc -> ${OUT} + V${TOP}.wasm ..."
 emcc -O3 \
   -I "$MDIR" -I "$VINC" \
   "$ALL" \
   "$HARNESS" \
-  "${VINC}/verilated.cpp" \
+  "${RT[@]}" \
   -sMODULARIZE -sEXPORT_ES6 -sALLOW_MEMORY_GROWTH \
+  -sERROR_ON_UNDEFINED_SYMBOLS=0 \
   -sEXPORTED_RUNTIME_METHODS=ccall,cwrap \
   -sEXPORTED_FUNCTIONS="$EXPORTS" \
   -o "$OUT"
