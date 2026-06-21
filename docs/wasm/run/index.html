@@ -1,0 +1,18 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>XhardTech — run any RTL in your browser</title>
+<style>
+:root{--bg:#0a0a0f;--card:#16161f;--line:#26262f;--grad:linear-gradient(135deg,#f59e0b,#d97706);--text:#ededf2;--text2:#8c8c9c;--r:10px}
+*{box-sizing:border-box;margin:0;padding:0}body{background:var(--bg);color:var(--text);font-family:Inter,system-ui,sans-serif;max-width:680px;margin:0 auto;padding:40px 20px;line-height:1.55}
+.logo{font-weight:800;margin-bottom:24px}.logo .x{background:var(--grad);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+h1{font-size:1.6rem;font-weight:800;margin-bottom:6px}.sub{color:var(--text2);margin-bottom:24px}
+a.card{display:block;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 20px;margin-bottom:12px;text-decoration:none;color:var(--text)}
+a.card:hover{border-color:#56566a}.card b{font-weight:700}.card span{color:var(--text2);font-size:.88rem}
+.foot{color:#56566a;font-size:.8rem;margin-top:24px}
+</style></head><body>
+<div class="logo"><span class="x">Xhard</span>Tech</div>
+<h1>Run RTL in your browser.</h1>
+<p class="sub">Verilator-compiled to WebAssembly, simulated entirely client-side — no server. Pick a design:</p>
+<a class="card" href="./runner.html?top=counter_en&base=/wasm/run/counter_en"><b>counter_en</b> — 6-bit enable/reset counter <span>· io_out[7:2]</span></a>
+<a class="card" href="./runner.html?top=updown8&base=/wasm/run/updown8"><b>updown8</b> — 8-bit up/down counter, load + terminal-count <span>· count[7:0], tc</span></a>
+<p class="foot">Backend B (Verilator→WASM) · any single-file RTL compiles to a ~13&nbsp;KB wasm that runs on your CPU. <a href="/" style="color:var(--text2)">← xhardtech.com</a></p>
+</body></html>

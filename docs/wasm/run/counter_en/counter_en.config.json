@@ -1,0 +1,49 @@
+{
+  "top": "counter_en",
+  "clock": "clk",
+  "reset": null,
+  "reset_active_low": null,
+  "outputs": [
+    {
+      "name": "io_out",
+      "width": 8,
+      "truncated": false,
+      "getter": "get_io_out"
+    },
+    {
+      "name": "io_oeb",
+      "width": 8,
+      "truncated": false,
+      "getter": "get_io_oeb"
+    }
+  ],
+  "inputs_settable": [
+    {
+      "name": "io_in",
+      "width": 8,
+      "setter": "set_io_in"
+    }
+  ],
+  "ports": [
+    {
+      "name": "clk",
+      "dir": "input",
+      "width": 1
+    },
+    {
+      "name": "io_in",
+      "dir": "input",
+      "width": 8
+    },
+    {
+      "name": "io_out",
+      "dir": "output",
+      "width": 8
+    },
+    {
+      "name": "io_oeb",
+      "dir": "output",
+      "width": 8
+    }
+  ]
+}

@@ -1,0 +1,84 @@
+{
+  "top": "updown8",
+  "clock": "clk",
+  "reset": "rst",
+  "reset_active_low": false,
+  "outputs": [
+    {
+      "name": "count",
+      "width": 8,
+      "truncated": false,
+      "getter": "get_count"
+    },
+    {
+      "name": "tc",
+      "width": 1,
+      "truncated": false,
+      "getter": "get_tc"
+    }
+  ],
+  "inputs_settable": [
+    {
+      "name": "en",
+      "width": 1,
+      "setter": "set_en"
+    },
+    {
+      "name": "up",
+      "width": 1,
+      "setter": "set_up"
+    },
+    {
+      "name": "load",
+      "width": 1,
+      "setter": "set_load"
+    },
+    {
+      "name": "data",
+      "width": 8,
+      "setter": "set_data"
+    }
+  ],
+  "ports": [
+    {
+      "name": "clk",
+      "dir": "input",
+      "width": 1
+    },
+    {
+      "name": "rst",
+      "dir": "input",
+      "width": 1
+    },
+    {
+      "name": "en",
+      "dir": "input",
+      "width": 1
+    },
+    {
+      "name": "up",
+      "dir": "input",
+      "width": 1
+    },
+    {
+      "name": "load",
+      "dir": "input",
+      "width": 1
+    },
+    {
+      "name": "data",
+      "dir": "input",
+      "width": 8
+    },
+    {
+      "name": "count",
+      "dir": "output",
+      "width": 8
+    },
+    {
+      "name": "tc",
+      "dir": "output",
+      "width": 1
+    }
+  ]
+}
