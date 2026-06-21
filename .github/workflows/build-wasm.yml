@@ -5,18 +5,21 @@ name: build-wasm
 on:
   workflow_dispatch:
     inputs:
-      repo: { description: 'design git repo (https github/gitlab)', required: true }
-      top:  { description: 'top module name', required: true }
-      rtl:  { description: 'path to the .v inside the repo (default <top>.v)', required: false, default: '' }
+      repo:
+        description: 'design git repo (https github/gitlab)'
+        required: true
+      top:
+        description: 'top module name'
+        required: true
+      rtl:
+        description: 'path to the .v inside the repo (default <top>.v)'
+        required: false
+        default: ''
   repo_dispatch:
-    types: [build-wasm]   # Cloudflare Worker triggers this with client_payload {repo, top, rtl}
+    types: [build-wasm]
 
 permissions:
   contents: write
-
-concurrency:
-  group: build-wasm-${{ github.event.inputs.top || github.event.client_payload.top }}
-  cancel-in-progress: false
 
 jobs:
   build:
@@ -28,8 +31,8 @@ jobs:
       - name: Resolve inputs
         run: |
           echo "REPO=${{ github.event.inputs.repo || github.event.client_payload.repo }}" >> "$GITHUB_ENV"
-          echo "TOP=${{ github.event.inputs.top || github.event.client_payload.top }}"   >> "$GITHUB_ENV"
-          echo "RTL=${{ github.event.inputs.rtl || github.event.client_payload.rtl }}"   >> "$GITHUB_ENV"
+          echo "TOP=${{ github.event.inputs.top || github.event.client_payload.top }}"     >> "$GITHUB_ENV"
+          echo "RTL=${{ github.event.inputs.rtl || github.event.client_payload.rtl }}"     >> "$GITHUB_ENV"
 
       - name: Validate inputs
         run: |
@@ -47,7 +50,7 @@ jobs:
           GIT_TERMINAL_PROMPT=0 timeout 60 git clone --depth 1 --no-recurse-submodules "$REPO" /tmp/design
           du -sh /tmp/design | awk '{print "design size:",$1}'
 
-      - name: Security scan (reject \$c/DPI/\$system/file-IO)
+      - name: Security scan
         run: bash tools/wasm/scan_rtl.sh /tmp/design
 
       - name: Resolve RTL file
@@ -61,15 +64,14 @@ jobs:
           OUT="docs/wasm/run/${TOP}"
           rm -rf "$OUT"; mkdir -p "$OUT"
           bash tools/wasm/build_wasm_any.sh "$SRC" "$TOP" "$OUT"
-          # keep only the runtime artifacts; drop build junk
           find "$OUT" -mindepth 1 ! -name "V${TOP}.mjs" ! -name "V${TOP}.wasm" ! -name "${TOP}.config.json" -prune -exec rm -rf {} +
           ls -la "$OUT"
 
-      - name: Publish (commit to Pages)
+      - name: Publish to Pages
         run: |
           git config user.name  "xhardtech-bot"
           git config user.email "actions@users.noreply.github.com"
-          git add "docs/wasm/run/${TOP}"
+          git add -f "docs/wasm/run/${TOP}"
           git commit -m "wasm(actions): build ${TOP} from ${REPO}" || { echo "no change"; exit 0; }
           git push
           echo "LIVE: https://www.xhardtech.com/wasm/run/runner.html?top=${TOP}&base=/wasm/run/${TOP}"
