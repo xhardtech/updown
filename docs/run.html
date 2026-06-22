@@ -74,6 +74,12 @@ iframe{width:100%;height:520px;border:0;display:block}
 .repo .rsub{font-size:.74rem;color:var(--text2);margin-top:1px}
 .repo .rlang{font-size:.7rem;color:var(--muted)}
 .repo .rpriv{font-size:.66rem;font-weight:700;text-transform:uppercase;color:var(--muted);border:1px solid var(--line);border-radius:6px;padding:1px 5px}
+.kv .ksub{font-size:.74rem;color:var(--muted);font-weight:400;margin-top:3px;line-height:1.45}
+.repo .rtag{font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;padding:2px 7px;border-radius:6px;align-self:center;white-space:nowrap}
+.rtag-logic{background:rgba(140,140,156,.16);color:#b9b9c8}
+.rtag-crypto{background:rgba(35,209,139,.16);color:#7af0c0}
+.rtag-cpu{background:rgba(245,158,11,.16);color:#f4c87a}
+.lockhint{font-size:.7rem;color:var(--muted);font-weight:400}
 /* OTP modal (ported from index.html) */
 .modal{position:fixed;inset:0;background:rgba(0,0,0,.72);display:none;align-items:center;justify-content:center;z-index:50;padding:18px}
 .modal.show{display:flex}
@@ -247,9 +253,12 @@ async function poll(forkSlug){
 }
 
 // ============ PICKER FLOW ============
-let pickerData=null;      // {owner,repos,verified,buildCount,gateAt}
-let selRepo='self';       // 'self' or a full_name
+let pickerData=null;      // {owner,repos,templates,verified,buildCount,gateAt}
+let selRepo=null;         // 'template:<id>' or '<owner/name>'
+let selTop='';            // current top hint (auto for templates, detected/edited for repos)
+let topLocked=false;      // true when a template is selected (its bundled module name is fixed)
 let forking=false;
+const TAG_ICON={logic:'▦',crypto:'🔒',cpu:'▣'};
 
 function fmtAge(iso){
   if(!iso) return '';
@@ -283,18 +292,18 @@ function connectCard(){
 
 function pickerCard(){
   const d=pickerData;
-  const rows=[];
-  // self / bundled demo always first
-  rows.push(repoRow({full_name:'self',name:'self (bundled demo)',language:'Verilog',pushed_at:null,_self:true}));
-  for(const r of (d.repos||[])) rows.push(repoRow(r));
+  const tmplRows=(d.templates||[]).map(t=>templateRow(t)).join('');
+  const repoRows=(d.repos||[]).map(r=>repoRow(r)).join('');
   const gateNote = (d.buildCount>=d.gateAt && !d.verified)
     ? `<div class="note info">You&rsquo;ve built <b>${esc(d.buildCount)}</b> projects. The next one needs a quick email verification &mdash; we&rsquo;ll ask when you hit Build.</div>` : '';
   return `<div class="card">
     <div class="kv"><span class="k">Connected as</span><span class="v mono" style="color:var(--green)">${esc(d.owner)}</span></div>
-    <div class="kv"><span class="k">Pick a repository</span></div>
-    <div class="picker" id="picker">${rows.join('')}</div>
-    <div class="kv" style="margin-top:14px"><span class="k">Top module</span>
-      <input id="ftop" class="inp" placeholder="top module name" value="${esc(defaultTop(selRepo==='self'?'lfsr8':selRepo))}"></div>
+    <div class="kv"><span class="k">Start from a template</span><span class="ksub">A new repo is created in <b style="color:var(--text2)">your</b> GitHub with this design&rsquo;s RTL &mdash; your Actions build it to WebAssembly, your Pages hosts it.</span></div>
+    <div class="picker" id="tmplPicker">${tmplRows}</div>
+    ${repoRows?`<div class="kv" style="margin-top:16px"><span class="k">&hellip;or build one of your own repositories</span><span class="ksub">We detect the top module from its RTL; edit it if needed.</span></div>
+    <div class="picker" id="picker">${repoRows}</div>`:''}
+    <div class="kv" style="margin-top:14px"><span class="k">Top module <span id="ftopHint" class="lockhint"></span></span>
+      <input id="ftop" class="inp" placeholder="top module name" value="${esc(selTop)}" oninput="onTopInput()" autocomplete="off"></div>
     ${gateNote}
     <button class="btn btn-p" id="buildBtn" style="width:100%;justify-content:center;margin-top:6px" onclick="buildAndRun()">
       <span class="mono">&#9654;</span> Build &amp; Run
@@ -302,28 +311,52 @@ function pickerCard(){
     <div id="fmsg"></div>
   </div>`;
 }
-function repoRow(r){
-  const isSel = (r._self && selRepo==='self') || (!r._self && selRepo===r.full_name);
-  const val = r._self ? 'self' : r.full_name;
-  const meta = r._self
-    ? `<span class="rlang">A ready-to-run LFSR demo &mdash; no repo of your own needed.</span>`
-    : `${r.language?`<span class="rlang">${esc(r.language)}</span>`:''}${r.pushed_at?` <span class="rsub">&middot; ${esc(fmtAge(r.pushed_at))}</span>`:''}`;
-  return `<div class="repo${isSel?' sel':''}" data-val="${esc(val)}" onclick="selectRepo(this)">
+function templateRow(t){
+  const val='template:'+t.id;
+  const icon=TAG_ICON[t.tag]||'▦';
+  return `<div class="repo${selRepo===val?' sel':''}" data-val="${esc(val)}" onclick="selectTemplate('${esc(t.id)}')">
     <span class="rdot"></span>
-    <span class="rmeta"><div class="rname">${esc(r.name||r.full_name)}</div><div class="rsub">${meta}</div></span>
-    ${(!r._self&&r.private)?'<span class="rpriv">private</span>':''}
+    <span class="rmeta"><div class="rname">${icon} ${esc(t.name)}</div><div class="rsub"><span class="rlang">${esc(t.desc||'')}</span></div></span>
+    <span class="rtag rtag-${esc(t.tag)}">${esc(t.tag)}</span>
   </div>`;
 }
-function selectRepo(el){
-  selRepo=el.getAttribute('data-val');
-  document.querySelectorAll('#picker .repo').forEach(x=>x.classList.remove('sel'));
-  el.classList.add('sel');
-  // refresh the default top hint only if the user has not customized it
-  const ti=$('ftop');
-  if(ti && (!ti.value.trim() || ti.dataset.auto==='1')){
-    ti.value=defaultTop(selRepo==='self'?'lfsr8':selRepo);
-    ti.dataset.auto='1';
-  }
+function repoRow(r){
+  const meta=`${r.language?`<span class="rlang">${esc(r.language)}</span>`:''}${r.pushed_at?` <span class="rsub">&middot; ${esc(fmtAge(r.pushed_at))}</span>`:''}`;
+  return `<div class="repo${selRepo===r.full_name?' sel':''}" data-val="${esc(r.full_name)}" onclick="selectRepo('${esc(r.full_name)}')">
+    <span class="rdot"></span>
+    <span class="rmeta"><div class="rname">${esc(r.name||r.full_name)}</div><div class="rsub">${meta}</div></span>
+    ${r.private?'<span class="rpriv">private</span>':''}
+  </div>`;
+}
+function paintSel(){
+  document.querySelectorAll('#tmplPicker .repo, #picker .repo').forEach(x=>x.classList.toggle('sel', x.getAttribute('data-val')===selRepo));
+}
+function setTopHint(txt){ const h=$('ftopHint'); if(h) h.textContent=txt||''; }
+function selectTemplate(id){
+  const t=(pickerData.templates||[]).find(x=>x.id===id); if(!t) return;
+  selRepo='template:'+id; topLocked=true; selTop=t.top;
+  const ti=$('ftop'); if(ti){ ti.value=t.top; ti.readOnly=true; ti.dataset.auto='1'; }
+  setTopHint('— set by template');
+  paintSel();
+}
+function selectRepo(full){
+  selRepo=full; topLocked=false;
+  const ti=$('ftop'); if(ti){ ti.readOnly=false; ti.value='detecting…'; ti.dataset.auto='1'; }
+  setTopHint('— auto-detecting…');
+  paintSel();
+  detectTop(full);
+}
+function onTopInput(){ const ti=$('ftop'); if(!ti) return; delete ti.dataset.auto; selTop=(ti.value||'').trim(); if(!topLocked) setTopHint(''); }
+// Best-effort top-module detection for a user's own repo (server parses its RTL).
+async function detectTop(full){
+  let d;
+  try{ const r=await fetch(`${API}/github/detect-top?repo=${encodeURIComponent(full)}`,{credentials:'include',cache:'no-store'}); d=await r.json().catch(()=>({})); }
+  catch(_){ d={}; }
+  if(selRepo!==full) return;                 // selection changed while detecting
+  const ti=$('ftop'); if(!ti || ti.dataset.auto!=='1') return; // user typed — keep their value
+  const t=(d&&d.top)||defaultTop(full);
+  ti.value=t; selTop=t; ti.dataset.auto='1';
+  setTopHint((d&&d.top)?'— auto-detected':'— guessed (edit if wrong)');
 }
 
 async function loadPicker(){
@@ -342,13 +375,17 @@ async function loadPicker(){
     return;
   }
   pickerData=data;
-  selRepo='self';
+  const t0=(data.templates&&data.templates[0]);
+  if(t0){ selRepo='template:'+t0.id; selTop=t0.top; topLocked=true; }
+  else if(data.repos&&data.repos[0]){ selRepo=data.repos[0].full_name; selTop=defaultTop(data.repos[0].full_name); topLocked=false; }
   $('app').innerHTML=pickerCard();
-  const ti=$('ftop'); if(ti) ti.dataset.auto='1';
+  const ti=$('ftop'); if(ti){ ti.dataset.auto='1'; ti.readOnly=topLocked; }
+  setTopHint(topLocked?'— set by template':'');
 }
 
 async function buildAndRun(){
   if(forking) return;
+  if(!selRepo){ $('fmsg').innerHTML='<div class="note warn">Pick a template or one of your repositories first.</div>'; return; }
   const t=(($('ftop')||{}).value||'').trim();
   if(!/^[A-Za-z_]\w{0,63}$/.test(t)){
     $('fmsg').innerHTML='<div class="note warn">Enter a valid top module name (letters, digits, underscore; must not start with a digit).</div>';
