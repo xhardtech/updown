@@ -105,10 +105,20 @@ jobs:
           if   [ -n "$FILELIST" ]; then SRC="/tmp/design/$FILELIST"
           elif [ -n "$SRCDIR"   ]; then SRC="/tmp/design/$SRCDIR"
           elif [ -n "$RTL"      ]; then SRC="/tmp/design/$RTL"
-          else                          SRC="$(find /tmp/design -name "${TOP}.v" | head -1)"
+          else
+            # AUTO-DETECT: a Chisel source set (*.scala anywhere, ignoring sbt/mill build dirs)
+            # wins; otherwise the conventional <top>.v. Lets a user point at a Chisel repo with
+            # no rtl=... and we find the sources ourselves.
+            SCALA1="$(find /tmp/design -name '*.scala' -not -path '*/project/*' -not -path '*/target/*' | head -1)"
+            if [ -n "$SCALA1" ]; then SRC="/tmp/design"; echo "auto-detected Chisel sources under /tmp/design";
+            else SRC="$(find /tmp/design -name "${TOP}.v" | head -1)"; fi
           fi
-          { [ -f "$SRC" ] || [ -d "$SRC" ]; } || { echo "RTL not found: set srcdir (a dir of *.v), filelist (a .f), or rtl (a .v); '$SRC' missing"; exit 1; }
+          { [ -f "$SRC" ] || [ -d "$SRC" ]; } || { echo "RTL not found: set rtl=<.v|.scala>, srcdir=<dir>, or filelist=<.f>; '$SRC' missing"; exit 1; }
           echo "SRC=$SRC" >> "$GITHUB_ENV"
+          # Flag Chisel so the next step installs scala-cli only when needed.
+          if echo "$SRC" | grep -q '\.scala$' || { [ -d "$SRC" ] && find "$SRC" -name '*.scala' -not -path '*/project/*' -not -path '*/target/*' | grep -q .; }; then
+            echo "CHISEL=1" >> "$GITHUB_ENV"; echo "Chisel design detected"
+          fi
           echo "resolved source set -> $SRC"
           [ -d "$SRC" ] && { echo "  *.v/*.sv in dir:"; find "$SRC" -maxdepth 1 \( -name '*.v' -o -name '*.sv' \) | sort | sed 's/^/    /'; }
           # MEMDIR: where $readmemh/$readmemb data files are looked up. Explicit `memdir` input
@@ -117,6 +127,19 @@ jobs:
           elif [ -d "$SRC"       ]; then echo "MEMDIR=$SRC"              >> "$GITHUB_ENV"
           else                           echo "MEMDIR=$(dirname "$SRC")" >> "$GITHUB_ENV"
           fi
+
+      - name: Setup Chisel toolchain (scala-cli) — only for Chisel designs
+        if: env.CHISEL == '1'
+        run: |
+          # A Chisel design elaborates Scala -> SystemVerilog (firtool) before Verilator. JDK is
+          # preinstalled on ubuntu-latest; we add scala-cli, which auto-resolves Chisel + firtool.
+          # This is exactly the rocket-chip-style flow (sbt/FIRRTL -> Verilog -> Verilator), scaled
+          # to designs that fit a browser-WASM sim. (No Verilator/emcc here — those run below.)
+          echo "Chisel design -> installing scala-cli"
+          curl -fsSL https://github.com/VirtusLab/scala-cli/releases/download/v1.5.0/scala-cli-x86_64-pc-linux.gz | gunzip > /usr/local/bin/scala-cli
+          chmod +x /usr/local/bin/scala-cli
+          java -version
+          /usr/local/bin/scala-cli version || true
 
       - name: Build WASM
         run: |
