@@ -93,7 +93,7 @@ const $=id=>document.getElementById(id);
 const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const qs=new URLSearchParams(location.search);
 const repo=(qs.get('repo')||'').trim();
-const top=(qs.get('top')||'').trim();
+const topMod=(qs.get('top')||'').trim();
 const fork=(qs.get('fork')||'').trim();
 const err=(qs.get('error')||'').trim();
 
@@ -114,7 +114,7 @@ const ERR={
 
 function designCard(){
   const r=esc(repo||'');
-  const t=esc(top||'');
+  const t=esc(topMod||'');
   let errHtml='';
   if(err) errHtml=`<div class="note warn">${esc(ERR[err]||ERR.error)}</div>`;
   return `<div class="card">
@@ -159,7 +159,7 @@ function timeline(state){
 
 function statusCard(data,forkSlug){
   const [owner,name]=forkSlug.split('/');
-  const topQ=encodeURIComponent(top||'');
+  const topQ=encodeURIComponent(topMod||'');
   const ghRepo=`https://github.com/${esc(forkSlug)}`;
   let s=data&&data.status||'unknown';
   const failed = data && data.conclusion==='failure';
@@ -190,7 +190,7 @@ let pollTimer=null, embedded=false;
 async function poll(forkSlug){
   let data;
   try{
-    const r=await fetch(`${API}/fork-status?fork=${encodeURIComponent(forkSlug)}${top?'&top='+encodeURIComponent(top):''}`,{cache:'no-store'});
+    const r=await fetch(`${API}/fork-status?fork=${encodeURIComponent(forkSlug)}${topMod?'&top='+encodeURIComponent(topMod):''}`,{cache:'no-store'});
     data=await r.json();
   }catch(_){ data={status:'unknown'}; }
   // once embedded & live, stop re-rendering so the iframe is not reloaded
