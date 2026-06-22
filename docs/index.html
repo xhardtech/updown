@@ -67,16 +67,12 @@ input:focus,select:focus{outline:none;border-color:var(--green)}
 
 <main><div class="wrap">
   <h1>Run your RTL.</h1>
-  <p class="sub">Fork a hardware design into <b style="color:var(--text)">your own</b> GitHub, build it to WebAssembly in <b style="color:var(--text)">your own</b> CI, and run it from <b style="color:var(--text)">your own</b> GitHub Pages.</p>
+  <p class="sub">Generate a new repo in <b style="color:var(--text)">your own</b> GitHub from a template, build it to WebAssembly in <b style="color:var(--text)">your own</b> CI, and run it from <b style="color:var(--text)">your own</b> GitHub Pages.</p>
 
-  <!-- PRIMARY hero call-to-action: the picker flow (no repo typed) -->
+  <!-- PRIMARY hero call-to-action: the picker flow (generate a new repo into the user's GitHub) -->
   <div class="hero">
     <a class="btn btn-p hero-cta" href="/run">⚡ Run on XhardTech — connect your GitHub &amp; run</a>
-    <p class="hero-sub">Pick a repo from your account &mdash; no URL to paste. We create the repo, the CI, and the Pages site; they&rsquo;re all yours.</p>
   </div>
-
-  <p style="margin-bottom:6px;font-size:.92rem"><a href="/wasm/run/runner.html?top=serv_blink&base=/wasm/run/serv" style="color:var(--green);font-weight:700">▶ Live: run a real RISC-V CPU in your browser (SERV, WASM — no server) →</a></p>
-  <p style="margin-bottom:26px;font-size:.82rem;color:var(--text2)">Compiled from the open-source SERV sources by our pipeline. <a href="/wasm/run/" style="color:var(--text2);text-decoration:underline">Or pick another design →</a></p>
 
   <!-- Secondary: the older queue-based "Run" form -->
   <details class="secondary">
@@ -93,11 +89,6 @@ input:focus,select:focus{outline:none;border-color:var(--green)}
       <div id="jmsg"></div>
     </div>
   </details>
-
-  <div class="runs">
-    <h2>Recent runs</h2>
-    <div id="runsList"><div class="empty">Loading…</div></div>
-  </div>
 </div></main>
 
 <div class="foot"><span class="x" style="font-weight:700;background:var(--grad);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent">Xhard</span><span style="color:var(--muted)">Tech · xhardtech.com</span></div>
@@ -140,9 +131,8 @@ function pcard(p){const i=p.institution,a=p.address,tr=p.trust||{};let h=`<span 
 async function authStart(){const email=$('aEmail').value.trim();$('aM1').innerHTML='';$('aB1').disabled=true;const r=await api('/auth/start',{method:'POST',body:JSON.stringify({email})});$('aB1').disabled=false;if(r.error){$('aM1').innerHTML=`<div class="note warn">${r.error}</div>`;return;}window._e=email;$('aShow').textContent=email;$('s1').style.display='none';$('s2').style.display='block';if(r.delivery!=='smtp'&&r.delivery!=='resend')$('aM2').innerHTML=`<div class="note">Code relayed to admin (email delivery pending).</div>`;}
 async function authVerify(){$('aM2').innerHTML='';$('aB2').disabled=true;const r=await api('/auth/verify',{method:'POST',body:JSON.stringify({email:window._e,code:$('aCode').value.trim()})});$('aB2').disabled=false;if(r.error){$('aM2').innerHTML=`<div class="note warn">${r.error}</div>`;return;}profile=r.profile;nav();$('s2').style.display='none';$('s3').style.display='block';$('prof').innerHTML=pcard(profile);}
 async function setAddress(){$('aM3').innerHTML='';const r=await api('/profile/address',{method:'POST',body:JSON.stringify({line:$('adLine').value,city:$('adCity').value,country:$('adCountry').value})});if(r.error){$('aM3').innerHTML=`<div class="note warn">${r.error}</div>`;return;}profile=r.profile;nav();$('prof').innerHTML=pcard(profile);$('aM3').innerHTML=`<div class="note ${r.geoMatch?'ok':'warn'}">${r.geoMatch?'Address confirmed ✓':'Address could not be confirmed.'}</div>`;}
-async function submitJob(){$('jmsg').innerHTML='';if(!profile){openAuth();return;}$('jbtn').disabled=true;const r=await api('/submit',{method:'POST',body:JSON.stringify({repo:$('jrepo').value.trim(),top:$('jtop').value.trim(),backend:$('jback').value})});$('jbtn').disabled=false;if(r.error){$('jmsg').innerHTML=`<div class="note warn">${r.error}</div>`;return;}$('jmsg').innerHTML=`<div class="note ok">Queued — see it below.</div>`;$('jrepo').value='';$('jtop').value='';runs();}
-async function runs(){const r=await api('/jobs');const el=$('runsList');if(!r.jobs||!r.jobs.length){el.innerHTML='<div class="empty">No runs yet.</div>';return;}el.innerHTML=r.jobs.map(j=>`<div class="run"><span class="st ${j.status}">${j.status}</span><span class="nm"><b>${j.top}</b> <span>${(j.repo||'').replace('https://','').replace('github.com/','')}</span></span><span style="color:var(--muted);font-size:.76rem">${j.ownerInst||''}</span></div>`).join('');}
-(async()=>{const r=await api('/profile/me');profile=r.profile;nav();runs();setInterval(runs,15000);})();
+async function submitJob(){$('jmsg').innerHTML='';if(!profile){openAuth();return;}$('jbtn').disabled=true;const r=await api('/submit',{method:'POST',body:JSON.stringify({repo:$('jrepo').value.trim(),top:$('jtop').value.trim(),backend:$('jback').value})});$('jbtn').disabled=false;if(r.error){$('jmsg').innerHTML=`<div class="note warn">${r.error}</div>`;return;}$('jmsg').innerHTML=`<div class="note ok">Queued &#10003;</div>`;$('jrepo').value='';$('jtop').value='';}
+(async()=>{const r=await api('/profile/me');profile=r.profile;nav();})();
 </script>
 </body>
 </html>
