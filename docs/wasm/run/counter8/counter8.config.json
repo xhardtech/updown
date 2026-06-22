@@ -1,0 +1,46 @@
+{
+  "top": "counter8",
+  "clock": "clk",
+  "reset": "rst",
+  "reset_active_low": false,
+  "terminal": false,
+  "uart": null,
+  "outputs": [
+    {
+      "name": "count",
+      "width": 8,
+      "truncated": false,
+      "getter": "get_count"
+    }
+  ],
+  "inputs_settable": [
+    {
+      "name": "en",
+      "width": 1,
+      "setter": "set_en"
+    }
+  ],
+  "ports": [
+    {
+      "name": "clk",
+      "dir": "input",
+      "width": 1
+    },
+    {
+      "name": "rst",
+      "dir": "input",
+      "width": 1
+    },
+    {
+      "name": "en",
+      "dir": "input",
+      "width": 1
+    },
+    {
+      "name": "count",
+      "dir": "output",
+      "width": 8
+    }
+  ],
+  "wave_max": 512
+}
