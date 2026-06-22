@@ -10,7 +10,32 @@
     "rx_valid": "uart_rx_valid",
     "rx_data": "uart_rx"
   },
-  "outputs": [],
+  "outputs": [
+    {
+      "name": "dbg_pc",
+      "width": 32,
+      "truncated": false,
+      "getter": "get_dbg_pc"
+    },
+    {
+      "name": "dbg_instr",
+      "width": 32,
+      "truncated": false,
+      "getter": "get_dbg_instr"
+    },
+    {
+      "name": "dbg_a0",
+      "width": 32,
+      "truncated": false,
+      "getter": "get_dbg_a0"
+    },
+    {
+      "name": "dbg_t0",
+      "width": 32,
+      "truncated": false,
+      "getter": "get_dbg_t0"
+    }
+  ],
   "inputs_settable": [],
   "ports": [
     {
@@ -42,6 +67,26 @@
       "name": "uart_rx",
       "dir": "input",
       "width": 8
+    },
+    {
+      "name": "dbg_pc",
+      "dir": "output",
+      "width": 32
+    },
+    {
+      "name": "dbg_instr",
+      "dir": "output",
+      "width": 32
+    },
+    {
+      "name": "dbg_a0",
+      "dir": "output",
+      "width": 32
+    },
+    {
+      "name": "dbg_t0",
+      "dir": "output",
+      "width": 32
     }
   ],
   "wave_max": 512
