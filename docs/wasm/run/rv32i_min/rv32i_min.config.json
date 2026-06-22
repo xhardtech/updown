@@ -1,0 +1,43 @@
+{
+  "top": "rv32i_min",
+  "clock": "clk",
+  "reset": "rst",
+  "reset_active_low": false,
+  "outputs": [
+    {
+      "name": "result",
+      "width": 32,
+      "truncated": false,
+      "getter": "get_result"
+    },
+    {
+      "name": "pc",
+      "width": 32,
+      "truncated": false,
+      "getter": "get_pc"
+    }
+  ],
+  "inputs_settable": [],
+  "ports": [
+    {
+      "name": "clk",
+      "dir": "input",
+      "width": 1
+    },
+    {
+      "name": "rst",
+      "dir": "input",
+      "width": 1
+    },
+    {
+      "name": "result",
+      "dir": "output",
+      "width": 32
+    },
+    {
+      "name": "pc",
+      "dir": "output",
+      "width": 32
+    }
+  ]
+}
