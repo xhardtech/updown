@@ -367,6 +367,17 @@ async function loadPicker(){
     data=await r.json().catch(()=>({}));
   }catch(_){ data={error:'error'}; r={status:0}; }
   if(r.status===401||(data&&data.error==='not_connected')){
+    // AUTO-DETECT a signed-in GitHub session: silently try the fast user-OAuth authorize path ONCE.
+    // For a browser already signed into GitHub with the app installed, this round-trips with no
+    // clicks and lands back here connected. Guard against loops via sessionStorage + the ?error param
+    // (a denied/failed attempt comes back with ?error -> we then show the manual Connect button).
+    let tried=false; try{ tried=sessionStorage.getItem('xht_autoconnect')==='1'; }catch(_){}
+    if(!err && !tried){
+      try{ sessionStorage.setItem('xht_autoconnect','1'); }catch(_){}
+      $('app').innerHTML=`<div class="card"><div class="muted"><span class="spin"></span> &nbsp;Detecting your GitHub sign-in&hellip;</div></div>`;
+      location.href=`${API}/oauth/github/authorize`;
+      return;
+    }
     $('app').innerHTML=connectCard();
     return;
   }
@@ -374,6 +385,7 @@ async function loadPicker(){
     $('app').innerHTML=connectCard();
     return;
   }
+  try{ sessionStorage.removeItem('xht_autoconnect'); }catch(_){}
   pickerData=data;
   const t0=(data.templates&&data.templates[0]);
   if(t0){ selRepo='template:'+t0.id; selTop=t0.top; topLocked=true; }
