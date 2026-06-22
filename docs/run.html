@@ -59,6 +59,8 @@ iframe{width:100%;height:520px;border:0;display:block}
 .muted{color:var(--muted)}
 .linkrow{margin-top:12px;font-size:.84rem}
 .linkrow a{color:var(--text2);text-decoration:underline}
+.inp{background:var(--bg);border:1px solid var(--line);border-radius:var(--r);padding:10px 12px;color:var(--text);font-family:'JetBrains Mono',monospace;font-size:.9rem;width:100%}
+.inp:focus{outline:none;border-color:var(--green)}
 </style>
 </head>
 <body>
@@ -74,7 +76,7 @@ iframe{width:100%;height:520px;border:0;display:block}
   <div id="app"><div class="card"><div class="muted">Loading&hellip;</div></div></div>
 
   <div class="expl">
-    <p>This is a one-click, Vercel-Deploy-Button-style setup. We create a repo <b>in your account</b>
+    <p>This is a one-click setup. We create a repo <b>in your account</b>
     from a public template, write your design choice into it, and let <b>your repo&rsquo;s own GitHub Action</b>
     compile the RTL to WebAssembly and publish it to <b>your repo&rsquo;s own GitHub Pages</b>.
     XhardTech only orchestrates the one-time setup &mdash; the repository, the CI minutes, and the
@@ -111,20 +113,26 @@ const ERR={
 };
 
 function designCard(){
-  const r=esc(repo||'self');
-  const t=esc(top||'top');
-  const startUrl=`${API}/oauth/github/start?repo=${encodeURIComponent(repo||'self')}&top=${encodeURIComponent(top||'')}`;
+  const r=esc(repo||'');
+  const t=esc(top||'');
   let errHtml='';
   if(err) errHtml=`<div class="note warn">${esc(ERR[err]||ERR.error)}</div>`;
   return `<div class="card">
-    <div class="kv"><span class="k">Design repository</span><span class="v mono">${repo?r:'bundled demo (self)'}</span></div>
-    <div class="kv"><span class="k">Top module</span><span class="v mono">${t}</span></div>
+    <div class="kv"><span class="k">Design repository</span><input id="frepo" class="inp" placeholder="https://github.com/owner/design  —  or 'self' for the bundled demo" value="${r}"></div>
+    <div class="kv"><span class="k">Top module</span><input id="ftop" class="inp" placeholder="top module name (e.g. lfsr8)" value="${t}"></div>
     ${errHtml}
-    <a class="btn btn-p" style="width:100%;justify-content:center;margin-top:6px" href="${esc(startUrl)}">
+    <button class="btn btn-p" style="width:100%;justify-content:center;margin-top:6px" onclick="goConnect()">
       <span class="mono">&#9654;</span> Connect GitHub &amp; Run
-    </a>
+    </button>
+    <div id="fmsg"></div>
     <div class="note info">You&rsquo;ll install the <b>XhardTech Runner</b> GitHub App on the account where you want the repo created. The new repo, its CI, and its Pages site are all <b>yours</b>.</div>
   </div>`;
+}
+function goConnect(){
+  const r=(($('frepo')||{}).value||'').trim()||'self';
+  const t=(($('ftop')||{}).value||'').trim();
+  if(!t){ $('fmsg').innerHTML='<div class="note warn">Enter the top module name first.</div>'; return; }
+  location.href=`${API}/oauth/github/start?repo=${encodeURIComponent(r)}&top=${encodeURIComponent(t)}`;
 }
 
 function timeline(state){
