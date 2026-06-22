@@ -1,0 +1,48 @@
+{
+  "top": "uart_echo",
+  "clock": "clk",
+  "reset": "rst",
+  "reset_active_low": false,
+  "terminal": true,
+  "uart": {
+    "tx_valid": "uart_tx_valid",
+    "tx_data": "uart_tx",
+    "rx_valid": "uart_rx_valid",
+    "rx_data": "uart_rx"
+  },
+  "outputs": [],
+  "inputs_settable": [],
+  "ports": [
+    {
+      "name": "clk",
+      "dir": "input",
+      "width": 1
+    },
+    {
+      "name": "rst",
+      "dir": "input",
+      "width": 1
+    },
+    {
+      "name": "uart_rx_valid",
+      "dir": "input",
+      "width": 1
+    },
+    {
+      "name": "uart_rx",
+      "dir": "input",
+      "width": 8
+    },
+    {
+      "name": "uart_tx_valid",
+      "dir": "output",
+      "width": 1
+    },
+    {
+      "name": "uart_tx",
+      "dir": "output",
+      "width": 8
+    }
+  ],
+  "wave_max": 512
+}
