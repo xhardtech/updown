@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Run on XhardTech</title>
+<meta name="description" content="Fork an RTL design into your own GitHub, build it to WebAssembly in your own CI, and run it from your own GitHub Pages. One click.">
+<meta property="og:title" content="Run on XhardTech">
+<meta property="og:url" content="https://xhardtech.com/run">
+<link rel="canonical" href="https://xhardtech.com/run">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0a0f;--bg2:#12121a;--card:#16161f;--line:#26262f;--green:#f59e0b;--grad:linear-gradient(135deg,#f59e0b,#d97706);--ok:#23d18b;--text:#ededf2;--text2:#8c8c9c;--muted:#56566a;--r:10px;--t:.2s ease}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:Inter,system-ui,sans-serif;line-height:1.55;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}.mono{font-family:'JetBrains Mono',monospace}
+.wrap{max-width:680px;margin:0 auto;padding:0 20px}
+.nav{border-bottom:1px solid var(--line)}
+.nav .wrap{max-width:980px;display:flex;align-items:center;justify-content:space-between;height:56px}
+.logo{font-weight:800;font-size:1.05rem}.logo .x{background:var(--grad);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.btn{border:none;cursor:pointer;font-family:inherit;font-weight:600;border-radius:var(--r);transition:var(--t);font-size:.9rem;display:inline-flex;align-items:center;gap:7px}
+.btn-p{background:var(--grad);color:#000;padding:11px 18px;font-weight:700}
+.btn-p:hover{filter:brightness(1.05)}.btn-p:disabled{opacity:.5;cursor:not-allowed}
+.btn-g{background:transparent;color:var(--text);padding:8px 14px;border:1px solid var(--line)}.btn-g:hover{border-color:var(--muted)}
+.chip{display:inline-flex;align-items:center;gap:7px;font-size:.82rem;color:var(--text2)}
+.badge{display:inline-flex;gap:5px;align-items:center;font-size:.76rem;font-weight:600;padding:4px 10px;border-radius:20px;background:var(--card);border:1px solid var(--line)}
+main{padding:48px 0 60px}
+h1{font-size:1.9rem;font-weight:800;letter-spacing:-.02em;margin-bottom:7px}
+.sub{color:var(--text2);margin-bottom:30px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px}
+.kv{display:flex;flex-direction:column;gap:6px;margin-bottom:13px}
+.kv .k{font-size:.78rem;color:var(--text2);font-weight:600}
+.kv .v{font-size:.95rem;word-break:break-all}
+.note{font-size:.82rem;padding:9px 12px;border-radius:var(--r);margin-top:10px}
+.note.warn{background:rgba(255,71,87,.08);border:1px solid rgba(255,71,87,.22);color:#ff9aa5}
+.note.ok{background:rgba(35,209,139,.08);border:1px solid rgba(35,209,139,.22);color:#7af0c0}
+.note.info{background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.22);color:#f4c87a}
+.steps{margin-top:6px}
+.expl{font-size:.84rem;color:var(--text2);margin-top:14px;line-height:1.6}
+.expl b{color:var(--text)}
+.tl{list-style:none;margin-top:6px;padding:0}
+.tl li{display:flex;align-items:flex-start;gap:12px;padding:10px 0;position:relative}
+.tl li:not(:last-child)::after{content:"";position:absolute;left:9px;top:28px;bottom:-2px;width:2px;background:var(--line)}
+.dot{flex:0 0 20px;width:20px;height:20px;border-radius:50%;border:2px solid var(--line);background:var(--bg);margin-top:1px;display:flex;align-items:center;justify-content:center;font-size:.7rem;color:var(--muted);z-index:1}
+.tl li.active .dot{border-color:var(--green);color:var(--green)}
+.tl li.done .dot{border-color:var(--ok);background:var(--ok);color:#04140c}
+.tl li.fail .dot{border-color:#ff4757;color:#ff4757}
+.tl .lab{font-size:.92rem;font-weight:600}
+.tl .desc{font-size:.8rem;color:var(--text2)}
+.tl li.pending .lab{color:var(--muted)}
+.spin{display:inline-block;width:11px;height:11px;border:2px solid currentColor;border-right-color:transparent;border-radius:50%;animation:sp .7s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+.frameWrap{margin-top:18px;border:1px solid var(--line);border-radius:var(--r);overflow:hidden;background:#000}
+iframe{width:100%;height:520px;border:0;display:block}
+.pub{margin-top:12px;font-size:.84rem;color:var(--text2)}
+.pub a{color:var(--green);font-weight:600;word-break:break-all}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.foot{border-top:1px solid var(--line);padding:22px 0;color:var(--muted);font-size:.8rem;text-align:center}
+.muted{color:var(--muted)}
+.linkrow{margin-top:12px;font-size:.84rem}
+.linkrow a{color:var(--text2);text-decoration:underline}
+</style>
+</head>
+<body>
+<nav class="nav"><div class="wrap">
+  <a href="/" class="logo"><span class="x">Xhard</span>Tech</a>
+  <a class="btn btn-g" href="/">Home</a>
+</div></nav>
+
+<main><div class="wrap">
+  <h1><span class="mono" style="font-size:1.1rem;vertical-align:middle">&#9654;</span> Run on XhardTech</h1>
+  <p class="sub">Fork a hardware design into <b style="color:var(--text)">your own</b> GitHub, build it to WebAssembly in <b style="color:var(--text)">your own</b> CI, and run it from <b style="color:var(--text)">your own</b> GitHub Pages.</p>
+
+  <div id="app"><div class="card"><div class="muted">Loading&hellip;</div></div></div>
+
+  <div class="expl">
+    <p>This is a one-click, Vercel-Deploy-Button-style setup. We create a repo <b>in your account</b>
+    from a public template, write your design choice into it, and let <b>your repo&rsquo;s own GitHub Action</b>
+    compile the RTL to WebAssembly and publish it to <b>your repo&rsquo;s own GitHub Pages</b>.
+    XhardTech only orchestrates the one-time setup &mdash; the repository, the CI minutes, and the
+    hosting all belong to you. You can edit <span class="mono">xht.json</span> in your new repo at any time,
+    or uninstall the GitHub App to revoke access.</p>
+  </div>
+</div></main>
+
+<div class="foot"><span class="x" style="font-weight:700;background:var(--grad);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent">Xhard</span><span style="color:var(--muted)">Tech &middot; xhardtech.com</span></div>
+
+<script>
+const API='https://api.xhardtech.com/rtl';
+const $=id=>document.getElementById(id);
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const qs=new URLSearchParams(location.search);
+const repo=(qs.get('repo')||'').trim();
+const top=(qs.get('top')||'').trim();
+const fork=(qs.get('fork')||'').trim();
+const err=(qs.get('error')||'').trim();
+
+const ERR={
+  rate_limited:'Too many attempts. Please wait a few minutes and try again.',
+  bad_repo:'That repository link is not valid. Use a GitHub/GitLab URL or "owner/name".',
+  bad_top:'The top module name is not valid.',
+  bad_state:'This sign-in link expired or was tampered with. Please start again.',
+  csrf:'Security check failed. Please start the connect flow again from this page.',
+  expired:'This sign-in request expired. Please try again.',
+  no_install:'We could not confirm your GitHub App installation. Please try again.',
+  token:'GitHub authorization failed. Please try again.',
+  generate_failed:'Could not create the repository in your account. Please try again.',
+  xht_write_failed:'Could not write the design selection to your repository.',
+  fork_failed:'Setup failed. Please try again.',
+  error:'Something went wrong. Please try again.',
+};
+
+function designCard(){
+  const r=esc(repo||'self');
+  const t=esc(top||'top');
+  const startUrl=`${API}/oauth/github/start?repo=${encodeURIComponent(repo||'self')}&top=${encodeURIComponent(top||'')}`;
+  let errHtml='';
+  if(err) errHtml=`<div class="note warn">${esc(ERR[err]||ERR.error)}</div>`;
+  return `<div class="card">
+    <div class="kv"><span class="k">Design repository</span><span class="v mono">${repo?r:'bundled demo (self)'}</span></div>
+    <div class="kv"><span class="k">Top module</span><span class="v mono">${t}</span></div>
+    ${errHtml}
+    <a class="btn btn-p" style="width:100%;justify-content:center;margin-top:6px" href="${esc(startUrl)}">
+      <span class="mono">&#9654;</span> Connect GitHub &amp; Run
+    </a>
+    <div class="note info">You&rsquo;ll install the <b>XhardTech Runner</b> GitHub App on the account where you want the repo created. The new repo, its CI, and its Pages site are all <b>yours</b>.</div>
+  </div>`;
+}
+
+function timeline(state){
+  // state: 'building' | 'built' | 'live' | 'unknown' | 'failed'
+  const failed = state==='failed';
+  function cls(stage){
+    const order=['building','built','live'];
+    const cur=order.indexOf(state);
+    const idx=order.indexOf(stage);
+    if(failed && idx===0) return 'fail';
+    if(cur<0) return idx===0?'active':'pending';
+    if(idx<cur) return 'done';
+    if(idx===cur) return state==='live'?'done':'active';
+    return 'pending';
+  }
+  function mark(c){return c==='done'?'&#10003;':c==='fail'?'&times;':c==='active'?'<span class="spin"></span>':'';}
+  const c1=cls('building'),c2=cls('built'),c3=cls('live');
+  return `<ul class="tl">
+    <li class="${c1}"><span class="dot">${mark(c1)}</span><span><span class="lab">Building in your GitHub Actions</span><br><span class="desc">Your repo&rsquo;s workflow compiles the RTL to WebAssembly.</span></span></li>
+    <li class="${c2}"><span class="dot">${mark(c2)}</span><span><span class="lab">Build succeeded</span><br><span class="desc">Artifacts committed to your repo under <span class="mono">docs/</span>.</span></span></li>
+    <li class="${c3}"><span class="dot">${mark(c3)}</span><span><span class="lab">Live on your GitHub Pages</span><br><span class="desc">Run it in the browser &mdash; no server.</span></span></li>
+  </ul>`;
+}
+
+function statusCard(data,forkSlug){
+  const [owner,name]=forkSlug.split('/');
+  const topQ=encodeURIComponent(top||'');
+  const ghRepo=`https://github.com/${esc(forkSlug)}`;
+  let s=data&&data.status||'unknown';
+  const failed = data && data.conclusion==='failure';
+  if(failed) s='failed';
+  let head=`<div class="kv"><span class="k">Your repository</span><span class="v"><a class="mono" style="color:var(--green)" href="${esc(ghRepo)}" target="_blank" rel="noopener">${esc(forkSlug)}</a></span></div>`;
+  let links='';
+  if(data&&data.runUrl) links+=`<a href="${esc(data.runUrl)}" target="_blank" rel="noopener">View build logs &#8599;</a> `;
+  if(data&&data.pagesUrl) links+=`<a href="${esc(data.pagesUrl)}" target="_blank" rel="noopener">Pages site &#8599;</a>`;
+  let body=`<div class="card">${head}${timeline(s)}`;
+  if(links) body+=`<div class="linkrow">${links}</div>`;
+  if(failed){
+    body+=`<div class="note warn">The build did not succeed. Open the build logs above to see why, then push a fix or edit <span class="mono">xht.json</span> in your repo.</div>`;
+  } else if(s!=='live'){
+    body+=`<div class="note info"><span class="spin"></span> &nbsp;Setting up &mdash; this can take a minute or two while your Action runs and Pages publishes. This page refreshes automatically.</div>`;
+  }
+  body+=`</div>`;
+  // embed runner when live
+  if(data&&data.runnerUrl){
+    const pub=`https://${esc(owner)}.github.io/${esc(name)}/`;
+    body+=`<div class="frameWrap"><iframe src="${esc(data.runnerUrl)}" title="WASM runner" sandbox="allow-scripts allow-same-origin"></iframe></div>
+    <div class="pub">Public link (yours, shareable): <a href="${esc(data.runnerUrl)}" target="_blank" rel="noopener">${esc(data.runnerUrl)}</a><br>
+    <span class="muted">Site root:</span> <a href="${esc(pub)}" target="_blank" rel="noopener">${esc(pub)}</a></div>`;
+  }
+  return body;
+}
+
+let pollTimer=null, embedded=false;
+async function poll(forkSlug){
+  let data;
+  try{
+    const r=await fetch(`${API}/fork-status?fork=${encodeURIComponent(forkSlug)}${top?'&top='+encodeURIComponent(top):''}`,{cache:'no-store'});
+    data=await r.json();
+  }catch(_){ data={status:'unknown'}; }
+  // once embedded & live, stop re-rendering so the iframe is not reloaded
+  if(embedded && data && data.status==='live') return;
+  $('app').innerHTML=statusCard(data,forkSlug);
+  if(data&&data.runnerUrl) embedded=true;
+  const stop = (data && data.runnerUrl) || (data && data.conclusion==='failure');
+  if(stop && pollTimer){ clearInterval(pollTimer); pollTimer=null; }
+}
+
+(function init(){
+  if(fork && /^[\w.-]+\/[\w.-]+$/.test(fork)){
+    poll(fork);
+    pollTimer=setInterval(()=>poll(fork),3000);
+  } else {
+    $('app').innerHTML=designCard();
+  }
+})();
+</script>
+</body>
+</html>

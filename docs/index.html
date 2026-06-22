@@ -60,7 +60,8 @@ input:focus,select:focus{outline:none;border-color:var(--green)}
   <h1>Run your RTL.</h1>
   <p class="sub">Point us at a repo. We run it and show you the result.</p>
   <p style="margin-top:-22px;margin-bottom:6px;font-size:.95rem"><a href="/wasm/run/runner.html?top=serv_blink&base=/wasm/run/serv" style="color:var(--green);font-weight:700">▶ Live: run a real RISC-V CPU in your browser (SERV, WASM — no server) →</a></p>
-  <p style="margin-bottom:26px;font-size:.82rem;color:var(--text2)">Compiled from the open-source SERV sources by our pipeline. <a href="/wasm/run/" style="color:var(--text2);text-decoration:underline">Or pick another design →</a></p>
+  <p style="margin-bottom:10px;font-size:.82rem;color:var(--text2)">Compiled from the open-source SERV sources by our pipeline. <a href="/wasm/run/" style="color:var(--text2);text-decoration:underline">Or pick another design →</a></p>
+  <p style="margin-bottom:26px;font-size:.92rem"><a href="/run?repo=self&top=lfsr8" style="color:var(--green);font-weight:700">⚡ Run on XhardTech — fork a design into YOUR GitHub &amp; run it (Vercel-style) →</a></p>
 
   <div class="card">
     <div class="field"><label>Repository</label><input id="jrepo" placeholder="https://github.com/your/design" autocomplete="off"></div>
@@ -71,6 +72,7 @@ input:focus,select:focus{outline:none;border-color:var(--green)}
       </select></div>
     </div>
     <button class="btn btn-p" id="jbtn" onclick="submitJob()" style="width:100%">Run</button>
+    <button class="btn btn-g" onclick="forkRun()" style="width:100%;margin-top:9px">⚡ Run on XhardTech — fork to your own GitHub →</button>
     <div id="jmsg"></div>
   </div>
 
@@ -121,6 +123,7 @@ async function authStart(){const email=$('aEmail').value.trim();$('aM1').innerHT
 async function authVerify(){$('aM2').innerHTML='';$('aB2').disabled=true;const r=await api('/auth/verify',{method:'POST',body:JSON.stringify({email:window._e,code:$('aCode').value.trim()})});$('aB2').disabled=false;if(r.error){$('aM2').innerHTML=`<div class="note warn">${r.error}</div>`;return;}profile=r.profile;nav();$('s2').style.display='none';$('s3').style.display='block';$('prof').innerHTML=pcard(profile);}
 async function setAddress(){$('aM3').innerHTML='';const r=await api('/profile/address',{method:'POST',body:JSON.stringify({line:$('adLine').value,city:$('adCity').value,country:$('adCountry').value})});if(r.error){$('aM3').innerHTML=`<div class="note warn">${r.error}</div>`;return;}profile=r.profile;nav();$('prof').innerHTML=pcard(profile);$('aM3').innerHTML=`<div class="note ${r.geoMatch?'ok':'warn'}">${r.geoMatch?'Address confirmed ✓':'Address could not be confirmed.'}</div>`;}
 async function submitJob(){$('jmsg').innerHTML='';if(!profile){openAuth();return;}$('jbtn').disabled=true;const r=await api('/submit',{method:'POST',body:JSON.stringify({repo:$('jrepo').value.trim(),top:$('jtop').value.trim(),backend:$('jback').value})});$('jbtn').disabled=false;if(r.error){$('jmsg').innerHTML=`<div class="note warn">${r.error}</div>`;return;}$('jmsg').innerHTML=`<div class="note ok">Queued — see it below.</div>`;$('jrepo').value='';$('jtop').value='';runs();}
+function forkRun(){const repo=$('jrepo').value.trim()||'self';const top=$('jtop').value.trim();if(!top){$('jmsg').innerHTML='<div class="note warn">Enter the top module name first — or try the one-click demo above.</div>';return;}location.href='/run?repo='+encodeURIComponent(repo)+'&top='+encodeURIComponent(top);}
 async function runs(){const r=await api('/jobs');const el=$('runsList');if(!r.jobs||!r.jobs.length){el.innerHTML='<div class="empty">No runs yet.</div>';return;}el.innerHTML=r.jobs.map(j=>`<div class="run"><span class="st ${j.status}">${j.status}</span><span class="nm"><b>${j.top}</b> <span>${(j.repo||'').replace('https://','').replace('github.com/','')}</span></span><span style="color:var(--muted);font-size:.76rem">${j.ownerInst||''}</span></div>`).join('');}
 (async()=>{const r=await api('/profile/me');profile=r.profile;nav();runs();setInterval(runs,15000);})();
 </script>
