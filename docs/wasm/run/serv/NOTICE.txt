@@ -1,0 +1,60 @@
+SERV — attribution and license notice
+======================================
+
+This directory hosts a WebAssembly build of SERV, the award-winning bit-serial
+RISC-V CPU by Olof Kindgren.
+
+  Upstream project : SERV  (https://github.com/olofk/serv)
+  Author / copyright: Olof Kindgren <olof@award-winning.me>, 2018-2024
+  Files served here: Vserv_blink.mjs, Vserv_blink.wasm (Verilator -> emcc build
+                     of the SERV core + the servile convenience wrapper + a small
+                     top wrapper + an assembled RV32I program ROM).
+
+Licensing
+---------
+SERV is open source. The upstream repository (olofk/serv) declares the ISC
+license at the repository level (LICENSE file + README), and that is the license
+that governs the project as a whole:
+
+  Copyright 2019 Olof Kindgren
+  SPDX-License-Identifier: ISC
+
+Individual source files carry SPDX headers:
+  * The SERV core files (serv_top.v, serv_state.v, serv_decode.v, serv_alu.v,
+    serv_rf_*.v, serv_bufreg*.v, serv_ctrl.v, serv_csr.v, serv_immdec.v,
+    serv_mem_if.v, serv_aligner.v)  ............................ ISC
+  * The newer "servile" convenience wrapper + bus glue
+    (servile.v, servile_arbiter.v, servile_mux.v, servile_rf_mem_if.v,
+    serv_compdec.v)  .......................................... Apache-2.0
+
+Both ISC and Apache-2.0 are permissive OSI-approved licenses. Both PERMIT
+redistribution and hosting (including of compiled/derived artifacts such as this
+WebAssembly build) for any purpose, provided the copyright notice and license
+text are preserved. This NOTICE, together with the preserved per-file SPDX
+headers in the source set, satisfies that requirement.
+
+  - ISC: permits use, copy, modify, and distribute, with or without fee,
+    provided the copyright notice and the permission notice appear in all copies.
+  - Apache-2.0: permits reproduction and distribution in source or object form,
+    provided recipients get a copy of the License and retain copyright/attribution
+    notices; it also grants a patent license. (Section 4.)
+
+The full Apache-2.0 license text:  http://www.apache.org/licenses/LICENSE-2.0
+The full ISC license text:         https://opensource.org/license/isc-license-txt
+
+What we built (and what is OURS, not SERV's)
+--------------------------------------------
+The SERV core and servile wrapper RTL are UNMODIFIED upstream files. The only
+new RTL is a thin SoC/top wrapper for the demo:
+
+  serv_blink_wasm.v   top module `serv_blink`: instantiates `servile`, a register-
+                      file SRAM (serv_rf_ram), a 32-word program ROM loaded via
+                      $readmemh("count32.hex"), and a GPIO that captures the
+                      32-bit store word onto an output port so the running CPU is
+                      visible (gpio[31:0] counts up; blink = its LSB).
+  count.S/count32.hex a tiny RV32I program (store-counter-in-a-delay-loop).
+
+These wrapper/program files are authored for this demo and are released under the
+same ISC terms for convenience; they contain no upstream SERV code.
+
+This NOTICE is provided for attribution and is not itself a grant of rights.

@@ -1,0 +1,43 @@
+{
+  "top": "serv_blink",
+  "clock": "clk",
+  "reset": "rst",
+  "reset_active_low": false,
+  "outputs": [
+    {
+      "name": "blink",
+      "width": 1,
+      "truncated": false,
+      "getter": "get_blink"
+    },
+    {
+      "name": "gpio",
+      "width": 32,
+      "truncated": false,
+      "getter": "get_gpio"
+    }
+  ],
+  "inputs_settable": [],
+  "ports": [
+    {
+      "name": "clk",
+      "dir": "input",
+      "width": 1
+    },
+    {
+      "name": "rst",
+      "dir": "input",
+      "width": 1
+    },
+    {
+      "name": "blink",
+      "dir": "output",
+      "width": 1
+    },
+    {
+      "name": "gpio",
+      "dir": "output",
+      "width": 32
+    }
+  ]
+}

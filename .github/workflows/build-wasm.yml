@@ -2,6 +2,23 @@ name: build-wasm
 # Build a user RTL design to WebAssembly (Verilator -> emcc) on a GitHub-hosted runner
 # and publish it to docs/wasm/run/<top>/ so it runs client-side on www.xhardtech.com.
 # Public repo => unlimited minutes; ephemeral runner => sandboxed compile of untrusted RTL.
+#
+# This is the "link a GitHub repo -> run the design" flow. Trigger via the Actions UI
+# (workflow_dispatch) or a repository_dispatch of type `build-wasm`.
+#
+# SINGLE-FILE design (unchanged):     repo + top [+ rtl=path/to/<top>.v]
+# MULTI-FILE design (e.g. a CPU):     repo + top + ONE of
+#     srcdir=<dir>      all *.v / *.sv in that repo dir are compiled together, or
+#     filelist=<x.f>    a Verilator-style .f list (one path per line, # comments ok), or
+#     rtl=<.v|dir|.f>   shorthand that auto-detects which of the three it is.
+# Memory-init: $readmemh/$readmemb data (e.g. a program ROM .hex) is auto-detected and
+#     embedded into the wasm FS; override the set with `hex=...` and its dir with `memdir=`.
+#
+# Worked example (real upstream SERV, github.com/olofk/serv):
+#     repo=https://github.com/olofk/serv  top=<your top>  srcdir=rtl  hex=<prog>.hex
+# olofk/serv ships only the core in rtl/ (no top with a clock/GPIO and no program ROM),
+# so to run it you also need a small top wrapper + an assembled program in the repo --
+# exactly what our serv_blink_wasm.v + count32.hex provide. See docs/wasm/run/SERV_DEMO.md.
 on:
   workflow_dispatch:
     inputs:
@@ -12,7 +29,23 @@ on:
         description: 'top module name'
         required: true
       rtl:
-        description: 'path to the .v inside the repo (default <top>.v)'
+        description: 'RTL inside the repo: a single .v, OR a directory of .v, OR a .f source-list (default <top>.v). Shorthand; for multi-file designs prefer srcdir/filelist below.'
+        required: false
+        default: ''
+      srcdir:
+        description: 'MULTI-FILE: directory in the repo whose *.v / *.sv are all compiled (e.g. rtl or serv/rtl). Takes precedence over rtl.'
+        required: false
+        default: ''
+      filelist:
+        description: 'MULTI-FILE: a .f source-list file in the repo (one path per line, # comments ok; paths relative to the .f dir). Takes precedence over rtl/srcdir.'
+        required: false
+        default: ''
+      hex:
+        description: 'optional space-separated $readmemh/$readmemb data files (e.g. a program ROM hex); paths relative to memdir. Auto-detected from the RTL if blank.'
+        required: false
+        default: ''
+      memdir:
+        description: 'directory the hex/mem data files are looked up in (default: directory of the source set). Use when your hex lives apart from the RTL.'
         required: false
         default: ''
   repository_dispatch:
@@ -33,6 +66,11 @@ jobs:
           echo "REPO=${{ github.event.inputs.repo || github.event.client_payload.repo }}" >> "$GITHUB_ENV"
           echo "TOP=${{ github.event.inputs.top || github.event.client_payload.top }}"     >> "$GITHUB_ENV"
           echo "RTL=${{ github.event.inputs.rtl || github.event.client_payload.rtl }}"     >> "$GITHUB_ENV"
+          echo "SRCDIR=${{ github.event.inputs.srcdir || github.event.client_payload.srcdir }}"     >> "$GITHUB_ENV"
+          echo "FILELIST=${{ github.event.inputs.filelist || github.event.client_payload.filelist }}" >> "$GITHUB_ENV"
+          # `hex` is the new preferred name; accept legacy `memfiles` too. `memdir` is optional.
+          echo "MEMFILES=${{ github.event.inputs.hex || github.event.client_payload.hex || github.event.inputs.memfiles || github.event.client_payload.memfiles }}" >> "$GITHUB_ENV"
+          echo "MEMDIR_IN=${{ github.event.inputs.memdir || github.event.client_payload.memdir }}" >> "$GITHUB_ENV"
 
       - name: Validate inputs
         run: |
@@ -59,17 +97,35 @@ jobs:
       - name: Security scan
         run: bash tools/wasm/scan_rtl.sh /tmp/design
 
-      - name: Resolve RTL file
+      - name: Resolve RTL source set
         run: |
-          if [ -n "$RTL" ]; then SRC="/tmp/design/$RTL"; else SRC="$(find /tmp/design -name "${TOP}.v" | head -1)"; fi
-          [ -f "$SRC" ] || { echo "RTL not found (set the rtl input)"; exit 1; }
+          # build_wasm_any.sh accepts a SINGLE .v, a DIRECTORY of *.v/*.sv (multi-file), or a
+          # .f source-list (multi-file). We pick the source set in this precedence order:
+          #   filelist (.f)  >  srcdir (dir)  >  rtl (shorthand: .v|dir|.f)  >  default <top>.v
+          if   [ -n "$FILELIST" ]; then SRC="/tmp/design/$FILELIST"
+          elif [ -n "$SRCDIR"   ]; then SRC="/tmp/design/$SRCDIR"
+          elif [ -n "$RTL"      ]; then SRC="/tmp/design/$RTL"
+          else                          SRC="$(find /tmp/design -name "${TOP}.v" | head -1)"
+          fi
+          { [ -f "$SRC" ] || [ -d "$SRC" ]; } || { echo "RTL not found: set srcdir (a dir of *.v), filelist (a .f), or rtl (a .v); '$SRC' missing"; exit 1; }
           echo "SRC=$SRC" >> "$GITHUB_ENV"
+          echo "resolved source set -> $SRC"
+          [ -d "$SRC" ] && { echo "  *.v/*.sv in dir:"; find "$SRC" -maxdepth 1 \( -name '*.v' -o -name '*.sv' \) | sort | sed 's/^/    /'; }
+          # MEMDIR: where $readmemh/$readmemb data files are looked up. Explicit `memdir` input
+          # wins; else the dir of the source set (the dir itself, or the .f/.v file's dir).
+          if   [ -n "$MEMDIR_IN" ]; then echo "MEMDIR=/tmp/design/$MEMDIR_IN" >> "$GITHUB_ENV"
+          elif [ -d "$SRC"       ]; then echo "MEMDIR=$SRC"              >> "$GITHUB_ENV"
+          else                           echo "MEMDIR=$(dirname "$SRC")" >> "$GITHUB_ENV"
+          fi
 
       - name: Build WASM
         run: |
           OUT="docs/wasm/run/${TOP}"
           rm -rf "$OUT"; mkdir -p "$OUT"
-          bash tools/wasm/build_wasm_any.sh "$SRC" "$TOP" "$OUT"
+          # MEMFILES (if set) and MEMDIR are read from the env by the build script; blank MEMFILES
+          # triggers auto-detection of $readmemh/$readmemb literals from the RTL.
+          MEMFILES="$MEMFILES" MEMDIR="$MEMDIR" bash tools/wasm/build_wasm_any.sh "$SRC" "$TOP" "$OUT"
+          # keep only the publishable artifacts (the $readmemh data is embedded INTO the wasm)
           find "$OUT" -mindepth 1 ! -name "V${TOP}.mjs" ! -name "V${TOP}.wasm" ! -name "${TOP}.config.json" -prune -exec rm -rf {} +
           ls -la "$OUT"
 

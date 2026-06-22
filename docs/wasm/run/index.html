@@ -8,11 +8,30 @@ h1{font-size:1.6rem;font-weight:800;margin-bottom:6px}.sub{color:var(--text2);ma
 a.card{display:block;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 20px;margin-bottom:12px;text-decoration:none;color:var(--text)}
 a.card:hover{border-color:#56566a}.card b{font-weight:700}.card span{color:var(--text2);font-size:.88rem}
 .foot{color:#56566a;font-size:.8rem;margin-top:24px}
+a.flag{display:block;background:linear-gradient(135deg,#1c1710,#16161f);border:1px solid #5a3f12;border-radius:14px;padding:20px;margin-bottom:18px;text-decoration:none;color:var(--text);position:relative}
+a.flag:hover{border-color:#d97706}
+a.flag .tag{display:inline-block;font-size:.66rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#000;background:var(--grad);border-radius:6px;padding:2px 8px;margin-bottom:9px}
+a.flag .ttl{font-size:1.15rem;font-weight:800;margin-bottom:5px}
+a.flag .ttl .accent{background:var(--grad);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+a.flag .desc{color:var(--text2);font-size:.9rem}
+a.flag .meta{color:#8c8c9c;font-size:.78rem;margin-top:9px}
+a.flag .meta b{color:#cbb089;font-weight:600}
+.sec{color:var(--text2);font-size:.8rem;font-weight:600;text-transform:uppercase;letter-spacing:.05em;margin:18px 0 10px}
 </style></head><body>
 <div class="logo"><span class="x">Xhard</span>Tech</div>
 <h1>Run RTL in your browser.</h1>
 <p class="sub">Verilator-compiled to WebAssembly, simulated entirely client-side — no server. Pick a design:</p>
+
+<a class="flag" href="./runner.html?top=serv_blink&base=/wasm/run/serv">
+  <span class="tag">★ Flagship demo</span>
+  <div class="ttl"><span class="accent">SERV</span> — a real RISC-V CPU running a program in your browser</div>
+  <div class="desc">The famous smallest RISC-V (RV32I). It boots a program from ROM and stores a counter to a GPIO — watch <code>gpio[31:0]</code> count up at ~12.5M cycles/sec, all on your CPU.</div>
+  <div class="meta">Compiled from the <b>SERV sources</b> (21 Verilog files + an assembled program) by the build pipeline — the same multi-file Verilator→WASM path a linked GitHub repo would take. <b>Apache-2.0 / ISC</b> (olofk/serv). <span style="color:#cbb089">License &amp; how-it-was-built →</span></div>
+</a>
+
+<div class="sec">Toy counters</div>
 <a class="card" href="./runner.html?top=counter_en&base=/wasm/run/counter_en"><b>counter_en</b> — 6-bit enable/reset counter <span>· io_out[7:2]</span></a>
 <a class="card" href="./runner.html?top=updown8&base=/wasm/run/updown8"><b>updown8</b> — 8-bit up/down counter, load + terminal-count <span>· count[7:0], tc</span></a>
-<p class="foot">Backend B (Verilator→WASM) · any single-file RTL compiles to a ~13&nbsp;KB wasm that runs on your CPU. <a href="/" style="color:var(--text2)">← xhardtech.com</a></p>
+
+<p class="foot">Backend B (Verilator→WASM) · single-file or multi-file RTL (with $readmemh memory-init) compiles to wasm that runs on your CPU. SERV attribution &amp; license: <a href="./serv/NOTICE.txt" style="color:var(--text2)">NOTICE</a> · <a href="./SERV_DEMO.md" style="color:var(--text2)">SERV_DEMO.md</a>. <a href="/" style="color:var(--text2)">← xhardtech.com</a></p>
 </body></html>
