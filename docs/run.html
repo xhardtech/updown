@@ -61,6 +61,26 @@ iframe{width:100%;height:520px;border:0;display:block}
 .linkrow a{color:var(--text2);text-decoration:underline}
 .inp{background:var(--bg);border:1px solid var(--line);border-radius:var(--r);padding:10px 12px;color:var(--text);font-family:'JetBrains Mono',monospace;font-size:.9rem;width:100%}
 .inp:focus{outline:none;border-color:var(--green)}
+/* repo picker */
+.picker{max-height:340px;overflow-y:auto;border:1px solid var(--line);border-radius:var(--r);margin-top:4px}
+.repo{display:flex;align-items:center;gap:11px;padding:11px 13px;cursor:pointer;border-bottom:1px solid var(--line);transition:var(--t)}
+.repo:last-child{border-bottom:none}
+.repo:hover{background:var(--bg2)}
+.repo.sel{background:rgba(245,158,11,.10);border-left:3px solid var(--green);padding-left:10px}
+.repo .rdot{flex:0 0 14px;width:14px;height:14px;border-radius:50%;border:2px solid var(--muted);transition:var(--t)}
+.repo.sel .rdot{border-color:var(--green);background:var(--green)}
+.repo .rmeta{flex:1;min-width:0}
+.repo .rname{font-size:.9rem;font-weight:600;font-family:'JetBrains Mono',monospace;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.repo .rsub{font-size:.74rem;color:var(--text2);margin-top:1px}
+.repo .rlang{font-size:.7rem;color:var(--muted)}
+.repo .rpriv{font-size:.66rem;font-weight:700;text-transform:uppercase;color:var(--muted);border:1px solid var(--line);border-radius:6px;padding:1px 5px}
+/* OTP modal (ported from index.html) */
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.72);display:none;align-items:center;justify-content:center;z-index:50;padding:18px}
+.modal.show{display:flex}
+.box{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:26px;max-width:400px;width:100%}
+.box h3{margin-bottom:5px}.box .s{font-size:.85rem;color:var(--text2);margin-bottom:18px}.box .cl{float:right;cursor:pointer;color:var(--muted);font-size:1.3rem;line-height:1}
+.box label{font-size:.78rem;color:var(--text2);font-weight:600;display:block;margin-bottom:6px}
+.box .field{margin-bottom:13px}
 </style>
 </head>
 <body>
@@ -87,6 +107,25 @@ iframe{width:100%;height:520px;border:0;display:block}
 
 <div class="foot"><span class="x" style="font-weight:700;background:var(--grad);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent">Xhard</span><span style="color:var(--muted)">Tech &middot; xhardtech.com</span></div>
 
+<!-- Email verification modal (profile gate): ported from index.html /auth/start + /auth/verify -->
+<div class="modal" id="authModal"><div class="box">
+  <span class="cl" onclick="closeAuth()">&times;</span>
+  <div id="s1">
+    <h3>Verify your email</h3>
+    <div class="s">You&rsquo;ve built a couple of projects &mdash; verify your email to keep going. Use your school or work email for a verified badge.</div>
+    <div class="field"><label>Email</label><input id="aEmail" class="inp" placeholder="you@university.edu" autocomplete="email"></div>
+    <button class="btn btn-p" id="aB1" onclick="authStart()" style="width:100%;justify-content:center">Continue</button>
+    <div id="aM1"></div>
+  </div>
+  <div id="s2" style="display:none">
+    <h3>Enter code</h3>
+    <div class="s">Sent to <b id="aShow"></b>.</div>
+    <div class="field"><label>Code</label><input id="aCode" class="inp" placeholder="123456" inputmode="numeric"></div>
+    <button class="btn btn-p" id="aB2" onclick="authVerify()" style="width:100%;justify-content:center">Verify &amp; continue</button>
+    <div id="aM2"></div>
+  </div>
+</div></div>
+
 <script>
 const API='https://api.xhardtech.com/rtl';
 const $=id=>document.getElementById(id);
@@ -96,6 +135,7 @@ const repo=(qs.get('repo')||'').trim();
 const topMod=(qs.get('top')||'').trim();
 const fork=(qs.get('fork')||'').trim();
 const err=(qs.get('error')||'').trim();
+const connected=qs.get('connected')==='1';
 
 const ERR={
   rate_limited:'Too many attempts. Please wait a few minutes and try again.',
@@ -109,6 +149,11 @@ const ERR={
   generate_failed:'Could not create the repository in your account. Please try again.',
   xht_write_failed:'Could not write the design selection to your repository.',
   fork_failed:'Setup failed. Please try again.',
+  no_access:'The XhardTech Runner app can&rsquo;t access that repository. Pick one from the list, or grant the app access to it.',
+  no_install:'We could not confirm your GitHub App installation. Please try again.',
+  bad_repo:'That repository selection is not valid.',
+  bad_top:'The top module name is not valid.',
+  not_connected:'Your GitHub session expired. Please connect again.',
   error:'Something went wrong. Please try again.',
 };
 
@@ -201,12 +246,182 @@ async function poll(forkSlug){
   if(stop && pollTimer){ clearInterval(pollTimer); pollTimer=null; }
 }
 
+// ============ PICKER FLOW ============
+let pickerData=null;      // {owner,repos,verified,buildCount,gateAt}
+let selRepo='self';       // 'self' or a full_name
+let forking=false;
+
+function fmtAge(iso){
+  if(!iso) return '';
+  const d=Date.parse(iso); if(!d) return '';
+  const s=(Date.now()-d)/1000;
+  if(s<3600) return Math.max(1,Math.round(s/60))+'m ago';
+  if(s<86400) return Math.round(s/3600)+'h ago';
+  if(s<2592000) return Math.round(s/86400)+'d ago';
+  return Math.round(s/2592000)+'mo ago';
+}
+function shortName(full){ const p=String(full||'').split('/'); return p[p.length-1]||''; }
+// sanitize a repo short name into a default top-module identifier
+function defaultTop(full){
+  let s=shortName(full).replace(/[^A-Za-z0-9_]/g,'_').replace(/^[^A-Za-z_]+/,'');
+  if(!s) s='top';
+  return s.slice(0,64);
+}
+
+function connectCard(){
+  let errHtml='';
+  if(err) errHtml=`<div class="note warn">${esc(ERR[err]||ERR.error)}</div>`;
+  return `<div class="card">
+    <div class="kv"><span class="k">Step 1</span><span class="v">Connect your GitHub to pick a repository.</span></div>
+    ${errHtml}
+    <button class="btn btn-p" style="width:100%;justify-content:center;margin-top:6px" onclick="location.href='${API}/oauth/github/start'">
+      <span class="mono">&#9654;</span> Connect GitHub
+    </button>
+    <div class="note info">You&rsquo;ll install the <b>XhardTech Runner</b> GitHub App on the account where you want the repo created. The new repo, its CI, and its Pages site are all <b>yours</b>.</div>
+  </div>`;
+}
+
+function pickerCard(){
+  const d=pickerData;
+  const rows=[];
+  // self / bundled demo always first
+  rows.push(repoRow({full_name:'self',name:'self (bundled demo)',language:'Verilog',pushed_at:null,_self:true}));
+  for(const r of (d.repos||[])) rows.push(repoRow(r));
+  const gateNote = (d.buildCount>=d.gateAt && !d.verified)
+    ? `<div class="note info">You&rsquo;ve built <b>${esc(d.buildCount)}</b> projects. The next one needs a quick email verification &mdash; we&rsquo;ll ask when you hit Build.</div>` : '';
+  return `<div class="card">
+    <div class="kv"><span class="k">Connected as</span><span class="v mono" style="color:var(--green)">${esc(d.owner)}</span></div>
+    <div class="kv"><span class="k">Pick a repository</span></div>
+    <div class="picker" id="picker">${rows.join('')}</div>
+    <div class="kv" style="margin-top:14px"><span class="k">Top module</span>
+      <input id="ftop" class="inp" placeholder="top module name" value="${esc(defaultTop(selRepo==='self'?'lfsr8':selRepo))}"></div>
+    ${gateNote}
+    <button class="btn btn-p" id="buildBtn" style="width:100%;justify-content:center;margin-top:6px" onclick="buildAndRun()">
+      <span class="mono">&#9654;</span> Build &amp; Run
+    </button>
+    <div id="fmsg"></div>
+  </div>`;
+}
+function repoRow(r){
+  const isSel = (r._self && selRepo==='self') || (!r._self && selRepo===r.full_name);
+  const val = r._self ? 'self' : r.full_name;
+  const meta = r._self
+    ? `<span class="rlang">A ready-to-run LFSR demo &mdash; no repo of your own needed.</span>`
+    : `${r.language?`<span class="rlang">${esc(r.language)}</span>`:''}${r.pushed_at?` <span class="rsub">&middot; ${esc(fmtAge(r.pushed_at))}</span>`:''}`;
+  return `<div class="repo${isSel?' sel':''}" data-val="${esc(val)}" onclick="selectRepo(this)">
+    <span class="rdot"></span>
+    <span class="rmeta"><div class="rname">${esc(r.name||r.full_name)}</div><div class="rsub">${meta}</div></span>
+    ${(!r._self&&r.private)?'<span class="rpriv">private</span>':''}
+  </div>`;
+}
+function selectRepo(el){
+  selRepo=el.getAttribute('data-val');
+  document.querySelectorAll('#picker .repo').forEach(x=>x.classList.remove('sel'));
+  el.classList.add('sel');
+  // refresh the default top hint only if the user has not customized it
+  const ti=$('ftop');
+  if(ti && (!ti.value.trim() || ti.dataset.auto==='1')){
+    ti.value=defaultTop(selRepo==='self'?'lfsr8':selRepo);
+    ti.dataset.auto='1';
+  }
+}
+
+async function loadPicker(){
+  $('app').innerHTML=`<div class="card"><div class="muted">Loading your repositories&hellip;</div></div>`;
+  let r,data;
+  try{
+    r=await fetch(`${API}/github/repos`,{credentials:'include',cache:'no-store'});
+    data=await r.json().catch(()=>({}));
+  }catch(_){ data={error:'error'}; r={status:0}; }
+  if(r.status===401||(data&&data.error==='not_connected')){
+    $('app').innerHTML=connectCard();
+    return;
+  }
+  if(!data||data.error||!Array.isArray(data.repos)){
+    $('app').innerHTML=connectCard();
+    return;
+  }
+  pickerData=data;
+  selRepo='self';
+  $('app').innerHTML=pickerCard();
+  const ti=$('ftop'); if(ti) ti.dataset.auto='1';
+}
+
+async function buildAndRun(){
+  if(forking) return;
+  const t=(($('ftop')||{}).value||'').trim();
+  if(!/^[A-Za-z_]\w{0,63}$/.test(t)){
+    $('fmsg').innerHTML='<div class="note warn">Enter a valid top module name (letters, digits, underscore; must not start with a digit).</div>';
+    return;
+  }
+  forking=true; const b=$('buildBtn'); if(b) b.disabled=true;
+  $('fmsg').innerHTML='<div class="note info"><span class="spin"></span> &nbsp;Creating your repository&hellip;</div>';
+  let data;
+  try{
+    const resp=await fetch(`${API}/github/fork`,{
+      method:'POST',credentials:'include',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({repo:selRepo,top:t}),
+    });
+    data=await resp.json().catch(()=>({}));
+    if(resp.status===401||(data&&data.error==='not_connected')){
+      forking=false; if(b) b.disabled=false;
+      $('app').innerHTML=connectCard();
+      return;
+    }
+  }catch(_){ data={error:'error'}; }
+
+  if(data&&data.needVerify){
+    // profile gate -> open the email-OTP modal; on success, retry this same build.
+    forking=false; if(b) b.disabled=false;
+    $('fmsg').innerHTML='<div class="note info">One quick step: verify your email to continue.</div>';
+    openAuth(()=>buildAndRun());
+    return;
+  }
+  if(data&&data.fork){
+    location.href=`/run?fork=${encodeURIComponent(data.fork)}&top=${encodeURIComponent(data.top||t)}`;
+    return;
+  }
+  forking=false; if(b) b.disabled=false;
+  $('fmsg').innerHTML=`<div class="note warn">${esc(ERR[data&&data.error]||ERR.fork_failed)}</div>`;
+}
+
+// ============ EMAIL-OTP MODAL (ported from index.html) ============
+let _authEmail=null, _afterVerify=null;
+function openAuth(after){ _afterVerify=after||null; $('s1').style.display='block'; $('s2').style.display='none'; $('aM1').innerHTML=''; $('aM2').innerHTML=''; $('authModal').classList.add('show'); }
+function closeAuth(){ $('authModal').classList.remove('show'); }
+async function apiJSON(p,o={}){ try{ const r=await fetch(API+p,{credentials:'include',headers:{'Content-Type':'application/json'},...o}); return await r.json().catch(()=>({error:'error'})); }catch(_){ return {error:'network'}; } }
+async function authStart(){
+  const email=($('aEmail').value||'').trim();
+  $('aM1').innerHTML=''; $('aB1').disabled=true;
+  const r=await apiJSON('/auth/start',{method:'POST',body:JSON.stringify({email})});
+  $('aB1').disabled=false;
+  if(r.error){ $('aM1').innerHTML=`<div class="note warn">${esc(r.error)}</div>`; return; }
+  _authEmail=email; $('aShow').textContent=email;
+  $('s1').style.display='none'; $('s2').style.display='block';
+  if(r.delivery!=='smtp'&&r.delivery!=='resend') $('aM2').innerHTML='<div class="note info">Code relayed to admin (email delivery pending).</div>';
+}
+async function authVerify(){
+  $('aM2').innerHTML=''; $('aB2').disabled=true;
+  const r=await apiJSON('/auth/verify',{method:'POST',body:JSON.stringify({email:_authEmail,code:($('aCode').value||'').trim()})});
+  $('aB2').disabled=false;
+  if(r.error){ $('aM2').innerHTML=`<div class="note warn">${esc(r.error)}</div>`; return; }
+  closeAuth();
+  const cb=_afterVerify; _afterVerify=null;
+  if(cb) cb();
+}
+
 (function init(){
   if(fork && /^[\w.-]+\/[\w.-]+$/.test(fork)){
+    // existing polling timeline (deep-link result OR picker result)
     poll(fork);
     pollTimer=setInterval(()=>poll(fork),3000);
-  } else {
+  } else if(repo){
+    // existing deep-link "Connect GitHub & Run" card (?repo typed in URL)
     $('app').innerHTML=designCard();
+  } else {
+    // PICKER flow: no repo typed, just connected, or bare /run -> load the repo picker.
+    loadPicker();
   }
 })();
 </script>
